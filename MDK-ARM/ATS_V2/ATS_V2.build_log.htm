@@ -1,0 +1,73 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ?Vision V5.24.2.0
+Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: sitthisak RDNB1, student, LIC=14HV2-9L118-UHK8H-WC9W4-R27W0-NKLNB
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.24.1
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 5 (build 528)
+Assembler:       Armasm.exe V5.06 update 5 (build 528)
+Linker/Locator:  ArmLink.exe V5.06 update 5 (build 528)
+Library Manager: ArmAr.exe V5.06 update 5 (build 528)
+Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
+CPU DLL:         SARMCM3.DLL V5.24.1
+Dialog DLL:      DARMCM1.DLL V1.18.0.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
+Dialog DLL:      TARMCM1.DLL V1.13.0.0
+ 
+<h2>Project:</h2>
+D:\jobESP\ATS\Firmware\ATS_V2\MDK-ARM\ATS_V2.uvprojx
+Project File Date:  06/17/2021
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'ATS_V2'
+compiling main.c...
+.\stm32-ssd1306-master\ssd1306\ssd1306.h(168): warning:  #1295-D: Deprecated declaration ssd1306_GetDisplayOn - give arg types
+  uint8_t ssd1306_GetDisplayOn();
+../Core/Src/main.c(292): warning:  #177-D: variable "delta"  was declared but never referenced
+  	uint32_t delta;
+../Core/Src/main.c(395): warning:  #177-D: variable "delta"  was declared but never referenced
+  	uint32_t delta;
+../Core/Src/main.c(696): warning:  #177-D: variable "tempValue"  was declared but never referenced
+    uint16_t tempValue;
+../Core/Src/main.c(697): warning:  #177-D: variable "datalcd"  was declared but never referenced
+  	char datalcd[10];
+../Core/Src/main.c(1273): warning:  #177-D: variable "strbuff"  was declared but never referenced
+  	char strbuff[20];
+../Core/Src/main.c: 6 warnings, 0 errors
+linking...
+Program Size: Code=44916 RO-data=12652 RW-data=600 ZI-data=8152  
+FromELF: creating hex file...
+"ATS_V2\ATS_V2.axf" - 0 Error(s), 6 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.7.0.pack
+                ARM.CMSIS.5.7.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.4.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F0xx_DFP.2.1.0.pack
+                Keil.STM32F0xx_DFP.2.1.0
+                STMicroelectronics STM32F0 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_ATS_V2
+  C:\Users\RDNB1\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include
+  C:\Users\RDNB1\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.4.0
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>
