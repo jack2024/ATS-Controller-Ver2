@@ -123,13 +123,17 @@ const char* const overmenu[] = { overmenu1, overmenu2, overmenu3, overmenu4, ove
 
 const char sourceselectmenu1[] 	= 	"1.Source1";
 const char sourceselectmenu2[] 	= 	"2.Source2";
-const char sourceselectmenu3[] 	= 	"*ENT Save&Exit";
-const char* const sourceselectmenu[] = { sourceselectmenu1, sourceselectmenu2, sourceselectmenu3};
+const char sourceselectmenu3[] 	= 	"";
+const char sourceselectmenu4[] 	= 	"";
+const char sourceselectmenu5[] 	= 	"*ENT Save&Exit";
+const char* const sourceselectmenu[] = { sourceselectmenu1, sourceselectmenu2, sourceselectmenu3, sourceselectmenu4, sourceselectmenu5};
 
 const char networksystemmenu1[] 	= 	"1.3P4W";
 const char networksystemmenu2[] 	= 	"2.1P2P";
-const char networksystemmenu3[] 	= 	"*ENT Save&Exit";
-const char* const networksystemmenu[] = {networksystemmenu1, networksystemmenu2, networksystemmenu3};
+const char networksystemmenu3[] 	= 	"";
+const char networksystemmenu4[] 	= 	"";
+const char networksystemmenu5[] 	= 	"*ENT Save&Exit";
+const char* const networksystemmenu[] = {networksystemmenu1, networksystemmenu2, networksystemmenu3, networksystemmenu4, networksystemmenu5};
 
 const char datetimemenu1[] 	= 	"1.Set Date";
 const char datetimemenu2[] 	= 	"2.Set Month";
@@ -142,10 +146,20 @@ const char* const datetimemenu[] = { datetimemenu1, datetimemenu2, datetimemenu3
 
 const char systemtypemenu1[] 	= 	"1. 1#Main 2#Gens";
 const char systemtypemenu2[] 	= 	"2. 1#Main 2#Main";
-const char systemtypemenu3[] 	= 	"*ENT Save&Exit";
-const char* const systemtypemenu[] = {systemtypemenu1, systemtypemenu2, systemtypemenu3};
+const char systemtypemenu3[] 	= 	"";
+const char systemtypemenu4[] 	= 	"";
+const char systemtypemenu5[] 	= 	"*ENT Save&Exit";
+const char* const systemtypemenu[] = {systemtypemenu1, systemtypemenu2, systemtypemenu3, systemtypemenu4, systemtypemenu5};
 
-const char freqmenu1[] 	= 	"1. ";
+const char freqmenu1[] 	= 	"1.FreqUnderCutoff";
+const char freqmenu2[] 	= 	"2.FreqUnderReturn";
+const char freqmenu3[] 	= 	"3.FreqOverCutoff";
+const char freqmenu4[] 	= 	"4.FreqOverReturn";
+const char freqmenu5[] 	= 	"5.FreqTimeAbNorm";
+const char freqmenu6[] 	= 	"6.FreqTimeNormal";
+const char freqmenu7[] 	= 	"7.Exit";
+const char* const frequencymenu[] = {freqmenu1, freqmenu2, freqmenu3, freqmenu4, freqmenu5, freqmenu6, freqmenu7};
+
 									
 #define MAXLENGHT 17   //Font_7x10
 																	
@@ -178,8 +192,8 @@ float freqS2;
 uint16_t V2_A;
 uint16_t V2_B;
 uint16_t V2_C;
-
-enum{UnderSet_T,OvererSet_T,MainselectSet_T,ConfigSet_T,TimeSet_T};
+//				0					1								2								3						4						5          6
+enum{UnderSet_T, OvererSet_T, MainselectSet_T, ConfigSet_T, TimeSet_T, SystemSet_T, FreqSet_T};
 enum{VoltCut_T,VoltReturn_T,TimeCut_T,TimeReturn_T,Goback_T};
 
 enum{modeauto,modemanual};
@@ -198,7 +212,7 @@ volatile int8_t lcdflag ;
 
 
 //volatile signed char SubMenu1=0,SubMenu2=0,SubMenu3=0,SubMenu4=0;
-
+//		0			1			2			3
 enum{mainpage_T,Pagemenu1_T,Pagemenu2_T,Pagemenu3_T};	
 volatile signed char PageMenuCount = mainpage_T;
 volatile signed char Submenu1Count =0;
@@ -803,6 +817,17 @@ void buttonRead(void)
 										Submenu2Count =0;
 									}
               		break;
+								case SystemSet_T:
+									if(++Submenu2Count > 6)
+									{
+										Submenu2Count =0;
+									}
+								break;
+								case FreqSet_T:
+										
+								
+								break;									
+								
               	default:
               		break;
               }
@@ -931,6 +956,12 @@ void buttonRead(void)
 										Submenu2Count = 6;
 									}
               		break;
+								case SystemSet_T:
+									if(--Submenu2Count < 0)
+									{
+										Submenu2Count = 1;
+									}
+								break;
               	default:
               		break;
               }
@@ -1176,6 +1207,9 @@ void buttonRead(void)
 										break;
 								}
 								break;
+							case FreqSet_T:
+										
+							break;
 							default:
 								break;
 						}
@@ -1313,11 +1347,9 @@ void lcdupdate(void)
 	
 	//  Show Setting Value
 	if((setvalueselect > NONselect) && (setvalueselect <= SecondsSet))
-	{
-
-		
+	{	
 		switch (setvalueselect)
-    {
+		{
     	case VoltUnderSet:
 				ssd1306_SetCursor(36, 3);
 				ssd1306_WriteString("VoltUnder", Font_7x10, White);	
@@ -1862,6 +1894,68 @@ void lcdupdate(void)
 								}
 							}
 							break;
+							
+						case SystemSet_T:
+							ssd1306_SetCursor(30, 3);
+							ssd1306_WriteString("SystemConfig", Font_7x10, White);
+							ssd1306_SetCursor(5, 3+10+(i*10));
+							if(Submenu2Count <5){
+								strcpy(buff, systemtypemenu[i]);
+								if(Submenu2Count == i){
+									ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}
+							else
+							{
+								
+								if((5 + i) > 4)
+								{
+									break;
+								}
+								strcpy(buff, systemtypemenu[i+5]);
+								if(Submenu2Count == i+5){
+									ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}
+							break;
+							
+						case FreqSet_T:
+							ssd1306_SetCursor(30, 3);
+							ssd1306_WriteString("Frequency", Font_7x10, White);
+						
+							ssd1306_SetCursor(5, 3+10+(i*10));
+							if(Submenu2Count <5){
+								strcpy(buff, frequencymenu[i]);
+								if(Submenu2Count == i){
+								ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}
+							else
+							{
+								
+								if((5 + i) > 8)
+								{
+									break;
+								}
+								strcpy(buff, frequencymenu[i+5]);
+								if(Submenu2Count == i+5){
+									ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}			
+							break;
+						
 						default:
 							break;
 					}
