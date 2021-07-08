@@ -121,9 +121,10 @@ const char main4[] 	= 	"4.ACSystemConfig";
 const char main5[] 	= 	"5.DateTimeConfig";
 const char main6[] 	= 	"6.System Type";
 const char main7[] 	= 	"7.FrequencyConfig";
-const char main8[] 	= 	"8.Exit";
+const char main8[] 	= 	"8.GenSchedule";
+const char main9[] 	= 	"9.Exit";
 
-const char* const mainmenu[] = { main1, main2, main3, main4, main5 ,main6, main7, main8};
+const char* const mainmenu[] = { main1, main2, main3, main4, main5 ,main6, main7, main8, main9};
 
 const char undermenu1[] 	= 	"1.VoltUnderCutoff";
 const char undermenu2[] 	= 	"2.VoltUnderReturn";
@@ -199,6 +200,12 @@ const char freqmenu6[] 	= 	"6.FreqTimeNormal";
 const char freqmenu7[] 	= 	"7.Exit";
 const char* const frequencymenu[] = {freqmenu1, freqmenu2, freqmenu3, freqmenu4, freqmenu5, freqmenu6, freqmenu7};
 
+const char GenSchedulemenu1[] 	= 	"1.Daily";
+const char GenSchedulemenu2[] 	= 	"2.Weekly";
+const char GenSchedulemenu3[] 	= 	"3.Monthly";
+const char GenSchedulemenu4[] 	= 	"4.ENABLE/Disable";
+const char GenSchedulemenu5[] 	= 	"";
+const char* const GenSchedulemenu[] = { GenSchedulemenu1, GenSchedulemenu2, GenSchedulemenu3, GenSchedulemenu4, GenSchedulemenu5};
 									
 #define MAXLENGHT 17   //Font_7x10
 																	
@@ -232,7 +239,7 @@ uint16_t V2_A;
 uint16_t V2_B;
 uint16_t V2_C;
 //				0					1								2								3						4						5          6
-enum{UnderSet_T, OvererSet_T, MainselectSet_T, ConfigSet_T, TimeSet_T, SystemSet_T, FreqSet_T};
+enum{UnderSet_T, OvererSet_T, MainselectSet_T, ConfigSet_T, TimeSet_T, SystemSet_T, FreqSet_T, Schedule_T};
 enum{VoltCut_T,VoltReturn_T,TimeCut_T,TimeReturn_T,Goback_T};
 
 enum{modeauto,modemanual};
@@ -831,7 +838,7 @@ void buttonRead(void)
 							}
           		break;
           	case Pagemenu1_T:
-							if(++Submenu1Count > 7)
+							if(++Submenu1Count > 8)
 							{
 								Submenu1Count =0;
 							}
@@ -1022,7 +1029,7 @@ void buttonRead(void)
           	case Pagemenu1_T:
 							if(--Submenu1Count < 0)
 							{
-								Submenu1Count = 7;
+								Submenu1Count = 8;
 							}
           		break;
 						case Pagemenu2_T:
@@ -1225,7 +1232,7 @@ void buttonRead(void)
 				}
 				else //Mode Auto
 				{
-					if((PageMenuCount == Pagemenu1_T) && (Submenu1Count == 7) )
+					if((PageMenuCount == Pagemenu1_T) && (Submenu1Count == 8) )
 					{
 						
 						if(comparesettingvalue())
@@ -1395,6 +1402,10 @@ void buttonRead(void)
 										PageMenuCount = mainpage_T;
 										setvalueselect = NONselect;
 										break;
+							case Schedule_T:
+								
+							
+								break;
 
 									default:
 										break;
@@ -1780,7 +1791,6 @@ void lcdupdate(void)
 					ssd1306_WriteString(buff, Font_7x10, White);
 				}
 				
-			
 				ssd1306_SetCursor(3, 17);
 				if(DisplayMain == Display1_T)
 				{
@@ -1960,7 +1970,7 @@ void lcdupdate(void)
 					else
 					{
 						
-						if((5 + i) > 7)
+						if((5 + i) > 8)
 						{
 							break;
 						}
@@ -1990,7 +2000,7 @@ void lcdupdate(void)
 							if(Submenu2Count <5){
 								strcpy(buff, undermenu[i]);
 								if(Submenu2Count == i){
-								ssd1306_WriteString(buff, Font_7x10, Black);	
+									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
 								else{
 									ssd1306_WriteString(buff, Font_7x10, White);	
@@ -2193,7 +2203,37 @@ void lcdupdate(void)
 								}
 							}			
 							break;
+						case Schedule_T:
+							ssd1306_SetCursor(22, 3);
+							ssd1306_WriteString("GenSchedule", Font_7x10, White);	
+							
+							ssd1306_SetCursor(5, 3+10+(i*10));
+							if(Submenu2Count <5){
+								strcpy(buff, GenSchedulemenu[i]);
+								if(Submenu2Count == i){
+									ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}
+							else
+							{
+								
+								if((5 + i) > 4)
+								{
+									break;
+								}
+								strcpy(buff, GenSchedulemenu[i+5]);
+								if(Submenu2Count == i+5){
+									ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}	
 						
+							break;
 						default:
 							break;
 					}
