@@ -90,6 +90,29 @@ void EEPROMWriteInt(uint32_t addr, uint16_t Value);
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+const char mountname1[] 	= 	"Jan";
+const char mountname2[] 	= 	"Feb";
+const char mountname3[] 	= 	"Mar";
+const char mountname4[] 	= 	"Apr";
+const char mountname5[] 	= 	"May";
+const char mountname6[] 	= 	"Jun";
+const char mountname7[] 	= 	"Jul";
+const char mountname8[] 	= 	"Aug";
+const char mountname9[] 	= 	"Sep";
+const char mountname10[] 	= 	"Oct";
+const char mountname11[] 	= 	"Nov";
+const char mountname12[] 	= 	"Dec";
+const char* const mountname[] = { mountname1, mountname2, mountname3, mountname4, mountname5 ,mountname6, 
+																	mountname7, mountname8, mountname9, mountname10, mountname11, mountname12};
+
+const char dayname1[] 	= 	"Sun";
+const char dayname2[] 	= 	"Mon";	
+const char dayname3[] 	= 	"Tue";	
+const char dayname4[] 	= 	"Wed";	
+const char dayname5[] 	= 	"Thu";	
+const char dayname6[] 	= 	"Fri";	
+const char dayname7[] 	= 	"Sat.";																		
+
 const char main1[] 	= 	"1.VoltUnderConfig";
 const char main2[] 	= 	"2.VoltOverConfig";
 const char main3[] 	= 	"3.PriorityConfig";
@@ -1504,13 +1527,11 @@ void lcdupdate(void)
 	//static char pageold;
 	static uint16_t toggletime =0; 
 
-	
 //	if(pageold != PageMenuCount)
 //	{
 //		cleardisplay();
 //	}
 	cleardisplay();
-	
 	
 	//  Show Setting Value
 	if((setvalueselect > NONselect) && (setvalueselect <= FreqNormalTimeSet))
