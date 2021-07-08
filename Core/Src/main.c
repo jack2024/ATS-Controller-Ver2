@@ -77,6 +77,13 @@ void EEPROMWriteInt(uint32_t addr, uint16_t Value);
 #define NetworkSelect_addr 0x12 	
 #define ModeSelect_addr 0x14
 #define system_addr 0x16
+
+#define FreqUnderSet_addr 0x18
+#define FreqUnderReturnSet_addr 0x1A
+#define FreqOverSet_addr 0x1C
+#define FreqOverReturnSet_addr 0x1E
+#define FreqABNormalTimeSet_addr 0x20
+#define FreqNormalTimeSet_addr 0x22
 	
 /* USER CODE END PTD */
 
@@ -106,10 +113,16 @@ enum{	NONselect,
 			VoltUnderSet,VoltUnderReturnSet,TimeUnderSet,TimeUnderReturnSet,
 			//  5                6               7              8
 			VoltOverSet, VoltOverReturnSet, TimeOverSet, TimeOverReturnSet,
-			// 9       10        11
+			//9        10        11
 			DateSet, MonthSet, YearSet,
-			// 12        13         14
-			HoursSet, MinuteSet, SecondsSet,  
+			// 12       13         14
+			HoursSet, MinuteSet, SecondsSet, 
+			//	 15              16
+			FreqUnderSet, FreqUnderReturnSet,
+			//	 17              18
+			FreqOverSet, FreqOverReturnSet,
+			//	 17              				18
+			FreqABNormalTimeSet, FreqNormalTimeSet   
 			
 				
 };
@@ -242,6 +255,7 @@ volatile int16_t   freqOverValue, freqOverResValue;
 volatile int16_t   freqOverValue_compare, freqOverResValue_compare;
 
 volatile int16_t 	 freqABnormalTimeSetValue, freqNormalTimeSetValue ;
+volatile int16_t 	 freqABnormalTimeSetValue_compare, freqNormalTimeSetValue_compare ;
 
 volatile int16_t   UnderTimeCount =0 , UnderResTimeCount =0;
 
@@ -1235,8 +1249,34 @@ void buttonRead(void)
 										
 							break;
 							case FreqSet_T:
+								switch (Submenu2Count)
+								{
+									case 0:
+										setvalueselect = 	FreqUnderSet;						
+										break;
+									case 1:
+										setvalueselect = FreqUnderReturnSet;
+										break;
+									case 2:
+										setvalueselect = FreqOverReturnSet;
+										break;
+									case 3:
+										setvalueselect = FreqABNormalTimeSet;
+										break;
+									case 4:
+										setvalueselect = FreqNormalTimeSet;
+										break;
+									case 5:
+										PageMenuCount = mainpage_T;
+										setvalueselect = NONselect;
+										break;
+
+									default:
+										break;
+								}
 										
 							break;
+								
 							default:
 								break;
 						}
@@ -1373,7 +1413,7 @@ void lcdupdate(void)
 	
 	
 	//  Show Setting Value
-	if((setvalueselect > NONselect) && (setvalueselect <= SecondsSet))
+	if((setvalueselect > NONselect) && (setvalueselect <= FreqNormalTimeSet))
 	{	
 		switch (setvalueselect)
 		{
@@ -1498,8 +1538,56 @@ void lcdupdate(void)
 				ssd1306_SetCursor(47, 3+15);
 				snprintf(buff, 4, "%d  ",Timeset.Seconds);
 				ssd1306_WriteString(buff, Font_11x18, White);		
+				break;
+			case FreqUnderSet:
+				ssd1306_SetCursor(36, 3);
+				ssd1306_WriteString("FreqUnder", Font_7x10, White);	
+				
+				ssd1306_SetCursor(47, 3+15);
+				snprintf(buff, 4, "%d  ",freqUnderValue);
+				ssd1306_WriteString(buff, Font_11x18, White);		
+				break;
+			case FreqUnderReturnSet:
+				ssd1306_SetCursor(5, 3);
+				ssd1306_WriteString("SetFreqUnderReturn", Font_7x10, White);	
+				
+				ssd1306_SetCursor(47, 3+15);
+				snprintf(buff, 4, "%d  ", freqUnderResValue);
+				ssd1306_WriteString(buff, Font_11x18, White);		
+				break;
+			case FreqOverSet:
+				ssd1306_SetCursor(36, 3);
+				ssd1306_WriteString("FreqOver", Font_7x10, White);	
+				
+				ssd1306_SetCursor(47, 3+15);
+				snprintf(buff, 4, "%d  ",freqOverValue);
+				ssd1306_WriteString(buff, Font_11x18, White);		
+				break;
+			case FreqOverReturnSet:
+				ssd1306_SetCursor(5, 3);
+				ssd1306_WriteString("SetFreqOverReturn", Font_7x10, White);	
+				
+				ssd1306_SetCursor(47, 3+15);
+				snprintf(buff, 4, "%d  ", freqOverResValue);
+				ssd1306_WriteString(buff, Font_11x18, White);		
+				break;
+			case FreqABNormalTimeSet:
+				ssd1306_SetCursor(5, 3);
+				ssd1306_WriteString("FreqAbNormalTime", Font_7x10, White);	
+				
+				ssd1306_SetCursor(47, 3+15);
+				snprintf(buff, 4, "%d  ", freqABnormalTimeSetValue);
+				ssd1306_WriteString(buff, Font_11x18, White);		
+				break;
+			case FreqNormalTimeSet:
+				ssd1306_SetCursor(15, 3);
+				ssd1306_WriteString("FreqNormalTime", Font_7x10, White);	
+				
+				ssd1306_SetCursor(47, 3+15);
+				snprintf(buff, 4, "%d  ", freqABnormalTimeSetValue);
+				ssd1306_WriteString(buff, Font_11x18, White);		
+				break;
 			
-
     	default:
     		break;
     }
@@ -2170,6 +2258,30 @@ void ReadSetting(void)
 	systemValue = systemValue<<8;
 	systemValue |= *(uint8_t *)0x801F817;
 	
+	freqUnderValue = *(uint8_t *)0x801F818;
+	freqUnderValue = freqUnderValue<<8;
+	freqUnderValue |= *(uint8_t *)0x801F819;
+	
+	freqUnderResValue = *(uint8_t *)0x801F81A;
+	freqUnderResValue = freqUnderResValue<<8;
+	freqUnderResValue |= *(uint8_t *)0x801F81B;
+	
+	freqOverValue = *(uint8_t *)0x801F81C;
+	freqOverValue = freqOverValue<<8;
+	freqOverValue |= *(uint8_t *)0x801F81D;
+	
+	freqOverResValue = *(uint8_t *)0x801F81E;
+	freqOverResValue = freqOverResValue<<8;
+	freqOverResValue |= *(uint8_t *)0x801F81F;
+	
+	freqABnormalTimeSetValue = *(uint8_t *)0x801F820;
+	freqABnormalTimeSetValue = freqABnormalTimeSetValue<<8;
+	freqABnormalTimeSetValue |= *(uint8_t *)0x801F821;
+	
+	freqNormalTimeSetValue = *(uint8_t *)0x801F822;
+	freqNormalTimeSetValue = freqNormalTimeSetValue<<8;
+	freqNormalTimeSetValue |= *(uint8_t *)0x801F823;
+	
 	//SourceSelectValue, NetworkSelectValue;
 	
 	if((UnderValue > 220)||(UnderValue < 150))
@@ -2199,6 +2311,22 @@ void ReadSetting(void)
 		systemValue = main_gens ;
 	}
 	
+	if((freqUnderValue >70)||(freqUnderValue <40))
+		freqUnderValue = 47;
+	if((freqUnderResValue >70)||(freqUnderResValue <40))
+		freqUnderResValue = 48;
+	
+	if((freqOverValue >70)||(freqOverValue <50))
+		freqOverValue = 53;
+	if((freqOverResValue >70)||(freqOverResValue <50))
+		freqOverResValue = 52;
+	
+	if((freqABnormalTimeSetValue >60)||(freqABnormalTimeSetValue <0))
+		freqABnormalTimeSetValue = 5;
+	if((freqNormalTimeSetValue >60)||(freqNormalTimeSetValue <0))
+		freqNormalTimeSetValue = 5;
+	
+	
 	EEPROMWriteInt(UnderSet_addr, UnderValue);
 	EEPROMWriteInt(UnderResSet_addr, UnderResValue);
 	EEPROMWriteInt(UnderTimSet_addr, UnderTimSetValue);
@@ -2212,6 +2340,12 @@ void ReadSetting(void)
 	EEPROMWriteInt(ModeSelect_addr, workmodeValue);
 	EEPROMWriteInt(system_addr, systemValue);
 	
+	EEPROMWriteInt(FreqUnderSet_addr , freqUnderValue);
+	EEPROMWriteInt(FreqUnderReturnSet_addr , freqUnderResValue);
+	EEPROMWriteInt(FreqOverSet_addr , freqOverValue);
+	EEPROMWriteInt(FreqOverReturnSet_addr , freqOverResValue);
+	EEPROMWriteInt(FreqABNormalTimeSet_addr , freqABnormalTimeSetValue);
+	EEPROMWriteInt(FreqNormalTimeSet_addr , freqNormalTimeSetValue);
 }
 /* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
 void storecomparevalue(void)
@@ -2229,6 +2363,13 @@ void storecomparevalue(void)
 	SourceSelectValue_compare = SourceSelectValue;
 	NetworkSelectValue_compare = NetworkSelectValue;
 	systemValue_compare = systemValue;
+	
+	freqUnderValue_compare = freqUnderValue;
+	freqUnderResValue_compare = freqUnderResValue;
+	freqOverValue_compare = freqOverValue;
+	freqOverResValue_compare = freqOverResValue;
+	freqABnormalTimeSetValue_compare = freqABnormalTimeSetValue;
+	freqNormalTimeSetValue_compare = freqNormalTimeSetValue;
 }
 
 void restorevalue(void)
@@ -2244,21 +2385,35 @@ void restorevalue(void)
 	SourceSelectValue = SourceSelectValue_compare;
 	NetworkSelectValue = NetworkSelectValue_compare;
 	systemValue = systemValue_compare;
+	
+	freqUnderValue = freqUnderValue_compare;
+	freqUnderResValue = freqUnderResValue_compare;
+	freqOverValue = freqOverValue_compare;
+	freqOverResValue = freqOverResValue_compare;
+	freqABnormalTimeSetValue = freqABnormalTimeSetValue_compare;
+	freqNormalTimeSetValue = freqNormalTimeSetValue_compare;
 }
 
 uint8_t comparesettingvalue(void)
 {
 	if((UnderValue_compare != UnderValue) ||
-				(UnderResValue_compare != UnderResValue)||
-				(UnderTimSetValue_compare != UnderTimSetValue)||
-				(UnderResTimSetValue_compare != UnderResTimSetValue)||
-				(OverValue_compare != OverValue)||
-				(OverResValue_compare != OverResValue)||
-				(OverTimSetValue_compare != OverTimSetValue)||
-				(OverResTimSetValue_compare != OverResTimSetValue)||
-				(SourceSelectValue_compare != SourceSelectValue)||
-				(NetworkSelectValue_compare != NetworkSelectValue)||
-				(systemValue != systemValue_compare))
+		(UnderResValue_compare != UnderResValue)||
+		(UnderTimSetValue_compare != UnderTimSetValue)||
+		(UnderResTimSetValue_compare != UnderResTimSetValue)||
+		(OverValue_compare != OverValue)||
+		(OverResValue_compare != OverResValue)||
+		(OverTimSetValue_compare != OverTimSetValue)||
+		(OverResTimSetValue_compare != OverResTimSetValue)||
+		(SourceSelectValue_compare != SourceSelectValue)||
+		(NetworkSelectValue_compare != NetworkSelectValue)||
+		(systemValue != systemValue_compare)||
+	
+		(freqUnderValue != freqUnderValue_compare)||
+		(freqUnderResValue != freqUnderResValue_compare)||
+		(freqOverValue != freqOverValue_compare)||
+		(freqOverResValue != freqOverResValue_compare)||
+		(freqABnormalTimeSetValue != freqABnormalTimeSetValue_compare)||
+		(freqNormalTimeSetValue != freqNormalTimeSetValue_compare))
 	{
 		return 1;
 	}

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [ATS_V2\ATS_V2.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ATS_V2\ATS_V2.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Thu Jul 08 08:48:54 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Thu Jul 08 11:38:43 2021
 <BR><P>
 <H3>Maximum Stack Usage =        312 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1366,7 +1366,7 @@ Global Symbols
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_SetDate
 </UL>
 
-<P><STRONG><a name="[f0]"></a>ReadSetting</STRONG> (Thumb, 778 bytes, Stack size 4 bytes, main.o(i.ReadSetting))
+<P><STRONG><a name="[f0]"></a>ReadSetting</STRONG> (Thumb, 1262 bytes, Stack size 4 bytes, main.o(i.ReadSetting))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = ReadSetting &rArr; EEPROMWriteInt
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EEPROMWriteInt
@@ -2016,7 +2016,7 @@ Global Symbols
 
 <P><STRONG><a name="[161]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[128]"></a>buttonRead</STRONG> (Thumb, 3048 bytes, Stack size 8 bytes, main.o(i.buttonRead))
+<P><STRONG><a name="[128]"></a>buttonRead</STRONG> (Thumb, 3124 bytes, Stack size 8 bytes, main.o(i.buttonRead))
 <BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = buttonRead &rArr; lcdupdate &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_SetTime
@@ -2053,12 +2053,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 </UL>
 
-<P><STRONG><a name="[d5]"></a>comparesettingvalue</STRONG> (Thumb, 172 bytes, Stack size 0 bytes, main.o(i.comparesettingvalue))
+<P><STRONG><a name="[d5]"></a>comparesettingvalue</STRONG> (Thumb, 268 bytes, Stack size 0 bytes, main.o(i.comparesettingvalue))
 <BR><BR>[Called By]<UL><LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 </UL>
 
-<P><STRONG><a name="[12c]"></a>lcdupdate</STRONG> (Thumb, 3964 bytes, Stack size 64 bytes, main.o(i.lcdupdate))
+<P><STRONG><a name="[12c]"></a>lcdupdate</STRONG> (Thumb, 4396 bytes, Stack size 64 bytes, main.o(i.lcdupdate))
 <BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = lcdupdate &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteString
@@ -2230,7 +2230,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 </UL>
 
-<P><STRONG><a name="[12b]"></a>storecomparevalue</STRONG> (Thumb, 106 bytes, Stack size 0 bytes, main.o(i.storecomparevalue))
+<P><STRONG><a name="[12b]"></a>storecomparevalue</STRONG> (Thumb, 166 bytes, Stack size 0 bytes, main.o(i.storecomparevalue))
 <BR><BR>[Called By]<UL><LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
 </UL>
 
