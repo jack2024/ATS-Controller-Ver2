@@ -76,6 +76,7 @@ void EEPROMWriteInt(uint32_t addr, uint16_t Value);
 #define SourceSelect_addr 0x10
 #define NetworkSelect_addr 0x12 	
 #define ModeSelect_addr 0x14
+#define system_addr 0x16
 	
 /* USER CODE END PTD */
 
@@ -230,7 +231,9 @@ volatile int16_t   OverValue_compare, OverResValue_compare, OverTimSetValue_comp
 
 volatile uint16_t  SourceSelectValue, NetworkSelectValue;
 volatile uint16_t  SourceSelectValue_compare, NetworkSelectValue_compare;
-volatile uint16_t  workmodeValue;
+volatile uint16_t  workmodeValue ,workmodeValue_compare;
+
+volatile uint16_t  systemValue , systemValue_compare;
 
 volatile int16_t   UnderTimeCount = 0 , UnderResTimeCount=0;
 volatile int16_t   OverTimeCount = 0 , OverResTimeCount=0;
@@ -354,7 +357,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				if(comparesettingvalue())
 				{
 					FlashErase();
-					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 48);
+					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 				}
 			}
 		}
@@ -764,7 +767,7 @@ void buttonRead(void)
 					selecsource = selecsource1;
 					EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 					FlashErase();
-					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 48);
+					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 				}
 				else //Mode Auto
 				{
@@ -818,9 +821,9 @@ void buttonRead(void)
 									}
               		break;
 								case SystemSet_T:
-									if(++Submenu2Count > 6)
+									if(++Submenu2Count > main_main)
 									{
-										Submenu2Count =0;
+										Submenu2Count = main_gens;
 									}
 								break;
 								case FreqSet_T:
@@ -905,7 +908,7 @@ void buttonRead(void)
 					selecsource = selecsourceNON;
 					EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 					FlashErase();
-					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 48);
+					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 				}
 				else //Mode Auto
 				{
@@ -957,9 +960,9 @@ void buttonRead(void)
 									}
               		break;
 								case SystemSet_T:
-									if(--Submenu2Count < 0)
+									if(--Submenu2Count < main_gens )
 									{
-										Submenu2Count = 1;
+										Submenu2Count = main_main ;
 									}
 								break;
               	default:
@@ -1069,7 +1072,7 @@ void buttonRead(void)
 					selecsource = selecsource2;
 					EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 					FlashErase();
-					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 48);
+					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 					system_init();
 				}
 				else //Mode Auto
@@ -1080,7 +1083,7 @@ void buttonRead(void)
 						if(comparesettingvalue())
 						{
 							FlashErase();
-							FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 48);
+							FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 						}
 						/* Save data to Flash */
 						
@@ -1207,6 +1210,11 @@ void buttonRead(void)
 										break;
 								}
 								break;
+							case SystemSet_T:
+								systemValue = Submenu2Count;
+								EEPROMWriteInt(system_addr, systemValue);
+										
+							break;
 							case FreqSet_T:
 										
 							break;
@@ -1282,7 +1290,7 @@ void buttonRead(void)
 					HAL_GPIO_WritePin(LED_Auto_GPIO_Port,LED_Auto_Pin,GPIO_PIN_RESET);
 					EEPROMWriteInt(ModeSelect_addr, modemanual);
 					FlashErase();
-					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 48);
+					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 				}
 				else //workmodeValue = modemanual;
 				{
@@ -1291,7 +1299,7 @@ void buttonRead(void)
 					HAL_GPIO_WritePin(LED_Auto_GPIO_Port,LED_Auto_Pin,GPIO_PIN_SET);
 					EEPROMWriteInt(ModeSelect_addr, modeauto);
 					FlashErase();
-					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 48);
+					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 					
 					switch (SourceSelectValue)
 					{
@@ -2139,6 +2147,10 @@ void ReadSetting(void)
 	workmodeValue = workmodeValue<<8;
 	workmodeValue |= *(uint8_t *)0x801F815;
 	
+	systemValue = *(uint8_t *)0x801F816;
+	systemValue = systemValue<<8;
+	systemValue |= *(uint8_t *)0x801F817;
+	
 	//SourceSelectValue, NetworkSelectValue;
 	
 	if((UnderValue > 220)||(UnderValue < 150))
@@ -2164,6 +2176,9 @@ void ReadSetting(void)
 	if(NetworkSelectValue > NETWORK1P2W){
 		NetworkSelectValue = NETWORK3P4W;
 	}
+	if((systemValue > main_main)||(systemValue < main_gens)){
+		systemValue = main_gens ;
+	}
 	
 	EEPROMWriteInt(UnderSet_addr, UnderValue);
 	EEPROMWriteInt(UnderResSet_addr, UnderResValue);
@@ -2176,6 +2191,7 @@ void ReadSetting(void)
 	EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 	EEPROMWriteInt(NetworkSelect_addr, NetworkSelectValue);
 	EEPROMWriteInt(ModeSelect_addr, workmodeValue);
+	EEPROMWriteInt(system_addr, systemValue);
 	
 }
 /* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
@@ -2193,6 +2209,7 @@ void storecomparevalue(void)
 	
 	SourceSelectValue_compare = SourceSelectValue;
 	NetworkSelectValue_compare = NetworkSelectValue;
+	systemValue_compare = systemValue;
 }
 
 void restorevalue(void)
@@ -2207,6 +2224,7 @@ void restorevalue(void)
 	OverResTimSetValue = OverResTimSetValue_compare;
 	SourceSelectValue = SourceSelectValue_compare;
 	NetworkSelectValue = NetworkSelectValue_compare;
+	systemValue = systemValue_compare;
 }
 
 uint8_t comparesettingvalue(void)
@@ -2220,7 +2238,8 @@ uint8_t comparesettingvalue(void)
 				(OverTimSetValue_compare != OverTimSetValue)||
 				(OverResTimSetValue_compare != OverResTimSetValue)||
 				(SourceSelectValue_compare != SourceSelectValue)||
-				(NetworkSelectValue_compare != NetworkSelectValue))
+				(NetworkSelectValue_compare != NetworkSelectValue)||
+				(systemValue != systemValue_compare))
 	{
 		return 1;
 	}
