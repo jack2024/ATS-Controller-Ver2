@@ -449,7 +449,8 @@ int main(void)
 	ssd1306_Fill(Black);
 	
 	uint32_t delta;
-	
+
+/*
 // off all relay
 //	HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,GPIO_PIN_RESET);
 //	HAL_GPIO_WritePin(LED_Manual_GPIO_Port,LED_Manual_Pin,GPIO_PIN_RESET);
@@ -459,7 +460,7 @@ int main(void)
 //	for(delta = 0; delta < 1; delta ++) {
 //		ssd1306_DrawRectangle(1 + (5*delta),1 + (5*delta) ,SSD1306_WIDTH-1 - (5*delta),SSD1306_HEIGHT-1 - (5*delta),White);
 //	}
-	
+*/	
 	
 	HAL_TIM_Base_Start_IT(&htim7);
 	
@@ -1335,7 +1336,8 @@ void buttonRead(void)
 							case SystemSet_T:
 								systemValue = Submenu2Count;
 								EEPROMWriteInt(system_addr, systemValue);
-										
+								PageMenuCount = mainpage_T;
+								setvalueselect = NONselect;		
 							break;
 							case FreqSet_T:
 								switch (Submenu2Count)
