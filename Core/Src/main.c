@@ -235,8 +235,19 @@ volatile uint16_t  workmodeValue ,workmodeValue_compare;
 
 volatile uint16_t  systemValue , systemValue_compare;
 
-volatile int16_t   UnderTimeCount = 0 , UnderResTimeCount=0;
-volatile int16_t   OverTimeCount = 0 , OverResTimeCount=0;
+volatile int16_t 	 freqUnderValue, freqUnderResValue;
+volatile int16_t 	 freqUnderValue_compare, freqUnderResValue_compare;
+
+volatile int16_t   freqOverValue, freqOverResValue;
+volatile int16_t   freqOverValue_compare, freqOverResValue_compare;
+
+volatile int16_t 	 freqABnormalTimeSetValue, freqNormalTimeSetValue ;
+
+volatile int16_t   UnderTimeCount =0 , UnderResTimeCount =0;
+
+volatile int16_t   freqABnormalTimeCount =0 , freqNormalTime =0;
+
+volatile int16_t   OverTimeCount =0 , OverResTimeCount =0;
 
 volatile int16_t StartMeasureCount = 5000;
 
