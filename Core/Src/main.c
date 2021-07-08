@@ -303,7 +303,6 @@ void HAL_SYSTICK_Callback()
 			HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 		}
 	}
-	
 }
 
 volatile int16_t exticount =0;
@@ -838,7 +837,10 @@ void buttonRead(void)
 									}
 								break;
 								case FreqSet_T:
-										
+									if(++Submenu2Count > 6)
+									{
+										Submenu2Count =0;
+									}
 								
 								break;									
 								
@@ -976,6 +978,12 @@ void buttonRead(void)
 										Submenu2Count = main_main ;
 									}
 								break;
+								case FreqSet_T:
+									if(--Submenu2Count < 0)
+									{
+										Submenu2Count = 6;
+									}
+								break;			
               	default:
               		break;
               }
@@ -1961,7 +1969,7 @@ void lcdupdate(void)
 							else
 							{
 								
-								if((5 + i) > 8)
+								if((5 + i) > 6)
 								{
 									break;
 								}
