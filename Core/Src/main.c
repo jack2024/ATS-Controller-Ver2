@@ -450,7 +450,7 @@ int main(void)
 	
 	uint32_t delta;
 	
-	// off all relay
+// off all relay
 //	HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,GPIO_PIN_RESET);
 //	HAL_GPIO_WritePin(LED_Manual_GPIO_Port,LED_Manual_Pin,GPIO_PIN_RESET);
 //	HAL_GPIO_WritePin(LED_Auto_GPIO_Port,LED_Auto_Pin,GPIO_PIN_SET);
@@ -856,7 +856,10 @@ void buttonRead(void)
 										Submenu2Count =0;
 									}
 								
-								break;									
+								break;
+							
+										
+									
 								
               	default:
               		break;
@@ -909,6 +912,49 @@ void buttonRead(void)
 							case SecondsSet:
 								if(++Timeset.Seconds >59) Timeset.Seconds = 0;
 								break;
+							
+							case FreqUnderSet:
+								if(++freqUnderValue > 50)
+								{
+									freqUnderValue =50;
+								}
+								break;
+								
+							case FreqUnderReturnSet:
+								if(++freqUnderResValue > 50)
+								{
+									freqUnderResValue =50;
+								}
+								break;
+								
+							case FreqOverSet:
+								if(++freqOverValue > 60)
+								{
+									freqOverValue =60;
+								}
+								break;
+									
+							case FreqOverReturnSet:
+								if(++freqOverResValue > 60)
+								{
+									freqOverResValue =60;
+								}
+								break;
+										
+							case FreqABNormalTimeSet:
+								if(++freqABnormalTimeSetValue > 60)
+								{
+									freqABnormalTimeSetValue =60;
+								}
+								break;
+										
+							case FreqNormalTimeSet:
+								if(++freqNormalTimeSetValue  > 60)
+								{
+									freqNormalTimeSetValue  =60;
+								}
+								break;
+									
 							default:
 								break;
 						}
@@ -1081,9 +1127,52 @@ void buttonRead(void)
 								if(--Timeset.Seconds >= 60) Timeset.Seconds = 0;
 							default:
 								break;
+							
+							case FreqUnderSet:
+								if(--freqUnderValue < 40)
+								{
+									freqUnderValue =40;
+								}
+								break;
+								
+							case FreqUnderReturnSet:
+								if(--freqUnderResValue < 40)
+								{
+									freqUnderResValue =40;
+								}
+								break;
+								
+							case FreqOverSet:
+								if(--freqOverValue < 50)
+								{
+									freqOverValue =50;
+								}
+								break;
+									
+							case FreqOverReturnSet:
+								if(--freqOverResValue < 50)
+								{
+									freqOverResValue =50;
+								}
+								break;
+										
+							case FreqABNormalTimeSet:
+								if(--freqABnormalTimeSetValue < 0)
+								{
+									freqABnormalTimeSetValue =0;
+								}
+								break;
+										
+							case FreqNormalTimeSet:
+								if(--freqNormalTimeSetValue  < 0)
+								{
+									freqNormalTimeSetValue  =0;
+								}
+								break;
 						}
 
 							break;
+						
 							
           	default:
           		break;
@@ -1258,15 +1347,24 @@ void buttonRead(void)
 										setvalueselect = FreqUnderReturnSet;
 										break;
 									case 2:
-										setvalueselect = FreqOverReturnSet;
+										setvalueselect = FreqOverSet;
 										break;
 									case 3:
-										setvalueselect = FreqABNormalTimeSet;
+										setvalueselect = FreqOverReturnSet;
 										break;
 									case 4:
-										setvalueselect = FreqNormalTimeSet;
+										setvalueselect = FreqABNormalTimeSet;
 										break;
 									case 5:
+										setvalueselect = FreqNormalTimeSet;
+										break;
+									case 6:
+										EEPROMWriteInt(FreqUnderSet_addr , freqUnderValue);
+										EEPROMWriteInt(FreqUnderReturnSet_addr , freqUnderResValue);
+										EEPROMWriteInt(FreqOverSet_addr , freqOverValue);
+										EEPROMWriteInt(FreqOverReturnSet_addr , freqOverResValue);
+										EEPROMWriteInt(FreqABNormalTimeSet_addr , freqABnormalTimeSetValue);
+										EEPROMWriteInt(FreqNormalTimeSet_addr , freqNormalTimeSetValue);
 										PageMenuCount = mainpage_T;
 										setvalueselect = NONselect;
 										break;
@@ -1584,7 +1682,7 @@ void lcdupdate(void)
 				ssd1306_WriteString("FreqNormalTime", Font_7x10, White);	
 				
 				ssd1306_SetCursor(47, 3+15);
-				snprintf(buff, 4, "%d  ", freqABnormalTimeSetValue);
+				snprintf(buff, 4, "%d  ", freqNormalTimeSetValue);
 				ssd1306_WriteString(buff, Font_11x18, White);		
 				break;
 			
