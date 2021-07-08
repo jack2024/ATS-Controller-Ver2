@@ -3,7 +3,7 @@
 <title>Static Call Graph - [ATS_V2\ATS_V2.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ATS_V2\ATS_V2.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Thu Jul 08 13:52:54 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Thu Jul 08 15:28:08 2021
 <BR><P>
 <H3>Maximum Stack Usage =        312 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1776,8 +1776,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_SetupStage
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_DataOutStage
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_DataInStage
-<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdEPReq
+<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
 </UL>
 
 <P><STRONG><a name="[11a]"></a>USBD_LL_Start</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, usbd_conf.o(i.USBD_LL_Start))
@@ -1799,10 +1799,10 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_EP_Transmit
 <LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_Get_USB_Status
 </UL>
-<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendData
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
+<BR>[Called By]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 <LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlContinueSendData
 <LI><a href="#[f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CDC_DataIn
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendData
 </UL>
 
 <P><STRONG><a name="[116]"></a>USBD_ParseSetupRequest</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, usbd_ctlreq.o(i.USBD_ParseSetupRequest))
@@ -1835,7 +1835,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = USBD_StdDevReq &rArr; USBD_GetDescriptor &rArr; USBD_CtlSendData &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_switch8
-<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
 <LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_SetFeature
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_SetConfig
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_SetAddress
@@ -1843,6 +1842,7 @@ Global Symbols
 <LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_GetDescriptor
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_GetConfig
 <LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_ClrFeature
+<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_SetupStage
 </UL>
@@ -1853,9 +1853,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_StallEP
 <LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_IsStallEP
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_ClearStallEP
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendData
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_SetupStage
 </UL>
@@ -1863,8 +1863,8 @@ Global Symbols
 <P><STRONG><a name="[118]"></a>USBD_StdItfReq</STRONG> (Thumb, 140 bytes, Stack size 16 bytes, usbd_ctlreq.o(i.USBD_StdItfReq))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = USBD_StdItfReq &rArr; USBD_CtlSendStatus &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
-<BR>[Calls]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
+<BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
+<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_SetupStage
 </UL>
@@ -2017,7 +2017,7 @@ Global Symbols
 <P><STRONG><a name="[161]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
 <P><STRONG><a name="[128]"></a>buttonRead</STRONG> (Thumb, 3692 bytes, Stack size 8 bytes, main.o(i.buttonRead))
-<BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = buttonRead &rArr; lcdupdate &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = buttonRead &rArr; lcdupdate &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_SetTime
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_SetDate
@@ -2058,8 +2058,8 @@ Global Symbols
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 </UL>
 
-<P><STRONG><a name="[12c]"></a>lcdupdate</STRONG> (Thumb, 4400 bytes, Stack size 64 bytes, main.o(i.lcdupdate))
-<BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = lcdupdate &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<P><STRONG><a name="[12c]"></a>lcdupdate</STRONG> (Thumb, 4476 bytes, Stack size 72 bytes, main.o(i.lcdupdate))
+<BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = lcdupdate &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteString
 <LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_UpdateScreen
@@ -2405,8 +2405,8 @@ Local Symbols
 <P><STRONG><a name="[103]"></a>USBD_ClrFeature</STRONG> (Thumb, 70 bytes, Stack size 16 bytes, usbd_ctlreq.o(i.USBD_ClrFeature))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = USBD_ClrFeature &rArr; USBD_CtlSendStatus &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
-<BR>[Calls]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
+<BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
+<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
 </UL>
 <BR>[Called By]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
 </UL>
@@ -2424,9 +2424,9 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = USBD_GetDescriptor &rArr; USBD_CtlSendData &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_switch8
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendData
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
 </UL>
@@ -2448,8 +2448,8 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = USBD_SetAddress &rArr; USBD_CtlSendStatus &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
 <BR>[Calls]<UL><LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_SetUSBAddress
-<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
+<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
 </UL>
 <BR>[Called By]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
 </UL>
@@ -2457,10 +2457,10 @@ Local Symbols
 <P><STRONG><a name="[11c]"></a>USBD_SetConfig</STRONG> (Thumb, 244 bytes, Stack size 16 bytes, usbd_ctlreq.o(i.USBD_SetConfig))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = USBD_SetConfig &rArr; USBD_CtlSendStatus &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
-<BR>[Calls]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
+<BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_SetClassConfig
 <LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_ClrClassConfig
+<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
 </UL>
 <BR>[Called By]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
 </UL>
@@ -2520,11 +2520,11 @@ Local Symbols
 <BR>[Address Reference Count : 1]<UL><LI> usbd_cdc.o(.data)
 </UL>
 <P><STRONG><a name="[d]"></a>USBD_CDC_Setup</STRONG> (Thumb, 274 bytes, Stack size 32 bytes, usbd_cdc.o(i.USBD_CDC_Setup))
-<BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = USBD_CDC_Setup &rArr; USBD_CtlSendData &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
+<BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = USBD_CDC_Setup &rArr; USBD_CtlPrepareRx &rArr; USBD_LL_PrepareReceive &rArr; HAL_PCD_EP_Receive &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
-<BR>[Calls]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendData
+<BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlPrepareRx
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendData
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlPrepareRx
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbd_cdc.o(.data)
 </UL>

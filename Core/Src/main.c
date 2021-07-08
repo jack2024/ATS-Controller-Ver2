@@ -89,7 +89,7 @@ void EEPROMWriteInt(uint32_t addr, uint16_t Value);
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+const char mountname0[] 	= 	"";
 const char mountname1[] 	= 	"Jan";
 const char mountname2[] 	= 	"Feb";
 const char mountname3[] 	= 	"Mar";
@@ -102,16 +102,17 @@ const char mountname9[] 	= 	"Sep";
 const char mountname10[] 	= 	"Oct";
 const char mountname11[] 	= 	"Nov";
 const char mountname12[] 	= 	"Dec";
-const char* const mountname[] = { mountname1, mountname2, mountname3, mountname4, mountname5 ,mountname6, 
+const char* const mountname[] = {mountname0, mountname1, mountname2, mountname3, mountname4, mountname5 ,mountname6, 
 																	mountname7, mountname8, mountname9, mountname10, mountname11, mountname12};
-
+const char dayname0[] 	= 	"";
 const char dayname1[] 	= 	"Sun";
 const char dayname2[] 	= 	"Mon";	
 const char dayname3[] 	= 	"Tue";	
 const char dayname4[] 	= 	"Wed";	
 const char dayname5[] 	= 	"Thu";	
 const char dayname6[] 	= 	"Fri";	
-const char dayname7[] 	= 	"Sat.";																		
+const char dayname7[] 	= 	"Sat";
+const char* const dayname[] = {dayname0, dayname1, dayname2, dayname3, dayname4, dayname5 ,dayname6, dayname7};																	
 
 const char main1[] 	= 	"1.VoltUnderConfig";
 const char main2[] 	= 	"2.VoltOverConfig";
@@ -177,7 +178,8 @@ const char datetimemenu2[] 	= 	"2.Set Month";
 const char datetimemenu3[] 	= 	"3.Set Year";
 const char datetimemenu4[] 	= 	"4.Set Hours";
 const char datetimemenu5[] 	= 	"5.Set Minute";
-const char datetimemenu6[] 	= 	"6.Set Seconds";
+const char datetimemenu6[] 	= 	"6.Set Date";
+//const char datetimemenu6[] 	= 	"6.Set Seconds";
 const char datetimemenu7[] 	= 	"7.Exit";
 const char* const datetimemenu[] = { datetimemenu1, datetimemenu2, datetimemenu3, datetimemenu4, datetimemenu5, datetimemenu6, datetimemenu7};
 
@@ -934,7 +936,7 @@ void buttonRead(void)
 								if(++Timeset.Minutes >59) Timeset.Minutes = 0;
 								break;
 							case SecondsSet:
-								if(++Timeset.Seconds >59) Timeset.Seconds = 0;
+								if(++Dateset.WeekDay >7) Dateset.WeekDay = 1;
 								break;
 							
 							case FreqUnderSet:
@@ -1148,7 +1150,7 @@ void buttonRead(void)
 								if(--Timeset.Minutes >= 60) Timeset.Minutes = 0;
 								break;
 							case SecondsSet:
-								if(--Timeset.Seconds >= 60) Timeset.Seconds = 0;
+								if(--Dateset.WeekDay > 7) Dateset.WeekDay = 1;
 							default:
 								break;
 							
@@ -1621,7 +1623,7 @@ void lcdupdate(void)
 				ssd1306_WriteString("SetMont", Font_7x10, White);	
 				
 				ssd1306_SetCursor(47, 3+15);
-				snprintf(buff, 4, "%d  ",Dateset.Month);
+				snprintf(buff, 4, "%s  ",mountname[Dateset.Month]);
 				ssd1306_WriteString(buff, Font_11x18, White);	
 			
     		break;
@@ -1653,11 +1655,11 @@ void lcdupdate(void)
 			
     		break;
     	case SecondsSet:
-				ssd1306_SetCursor(29, 3);
-				ssd1306_WriteString("SetSeconds", Font_7x10, White);	
+				ssd1306_SetCursor(36, 3);
+				ssd1306_WriteString("SetDate", Font_7x10, White);	
 				
 				ssd1306_SetCursor(47, 3+15);
-				snprintf(buff, 4, "%d  ",Timeset.Seconds);
+				snprintf(buff, 4, "%s  ",dayname[Dateset.WeekDay]);
 				ssd1306_WriteString(buff, Font_11x18, White);		
 				break;
 			case FreqUnderSet:
@@ -1900,11 +1902,11 @@ void lcdupdate(void)
 				
 				if(++toggletime % 2)
 				{
-					sprintf(buff,"%d/%d/%d  %d %d",Dateupdate.Date,Dateupdate.Month,Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes);
+					sprintf(buff,"%d/%s/%d %d %d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
 				}
 				else
 				{
-					sprintf(buff,"%d/%d/%d  %d:%d",Dateupdate.Date,Dateupdate.Month,Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes);
+					sprintf(buff,"%d/%s/%d %d:%d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
 				}
 				numofstring = 64 - (((strlen(buff)/2)*7)+3);
 				//ssd1306_SetCursor(3+(14), 17+12+12+12);
