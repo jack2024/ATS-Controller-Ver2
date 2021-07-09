@@ -84,6 +84,14 @@ void EEPROMWriteInt(uint32_t addr, uint16_t Value);
 #define FreqOverReturnSet_addr 0x1E
 #define FreqABNormalTimeSet_addr 0x20
 #define FreqNormalTimeSet_addr 0x22
+
+#define GesScheduleEnable_addr	0x24
+#define GesSchedulePeriod_addr	0x26
+#define GesScheduleDate_addr	0x28
+#define GesScheduleDayofweek_addr	0x2A
+#define GesScheduleHour_addr	0x2C
+#define GesScheduleMinute_addr	0x2E
+#define GesScheduleTime_addr	0x30
 	
 /* USER CODE END PTD */
 
@@ -224,6 +232,7 @@ const char Periodmenu3[] 	= 	"3.Montly";
 const char Periodmenu4[] 	= 	"";
 const char Periodmenu5[] 	= 	"*ENT Save&Exit";
 const char* const Periodmenu[] = { Periodmenu1, Periodmenu2, Periodmenu3, Periodmenu4, Periodmenu5};
+enum{DAILY, WEEKLY, MONTLY};
 
 const char GenStartDateTimemenu1[] 	= 	"1.Date";
 const char GenStartDateTimemenu2[] 	= 	"2.Dayofweek";
@@ -318,6 +327,8 @@ volatile int16_t   UnderTimeCount =0 , UnderResTimeCount =0;
 
 volatile int16_t   freqABnormalTimeCount =0 , freqNormalTime =0;
 
+volatile int16_t   genstarttimeValue, genstarttimeValue_compare ;
+
 volatile int16_t   OverTimeCount =0 , OverResTimeCount =0;
 
 volatile int16_t StartMeasureCount = 5000;
@@ -333,6 +344,19 @@ RTC_DateTypeDef DateGenStartset = {0};
 uint8_t clockdata[4] = {0};
 uint8_t datedata[4] = {0};
 uint8_t timedata[8] = {0};
+
+typedef struct gen{
+	volatile int16_t genschedule_period;
+  volatile int16_t genschedule_enable;
+  volatile int16_t genschedule_hour;
+  volatile int16_t genschedule_minute;
+  volatile int16_t genschedule_dayofweek;
+	volatile int16_t genschedule_date;
+	volatile int16_t genschedule_time;
+} genschedulestart_t;
+genschedulestart_t genschedulestart;
+	
+
 
 /* USER CODE END PV */
 
@@ -409,7 +433,7 @@ void cleardisplay(void)
 	ssd1306_Fill(Black);
 	if(PageMenuCount == mainpage_T)
 	{
-		// write Rectangle
+// write Rectangle
 //		for(delta = 0; delta < 1; delta ++) {
 //			ssd1306_DrawRectangle(1 + (5*delta),1 + (5*delta) ,SSD1306_WIDTH-1 - (5*delta),SSD1306_HEIGHT-1 - (5*delta),White);
 //		}	
@@ -527,7 +551,7 @@ int main(void)
 	CommEnergyIC(SOURCE1, 0, EMMIntEn1, 0x7000);
 	CommEnergyIC(SOURCE2, 0, EMMIntEn1, 0x7000);
 	
-
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -1507,7 +1531,17 @@ void buttonRead(void)
 										setvalueselect = 	ScheduleStartTimeSet;
                 		break;
 									case ScheduleGoback_T:
-										
+										// Save befor goback
+										EEPROMWriteInt(GesScheduleEnable_addr , genschedulestart.genschedule_enable);
+										EEPROMWriteInt(GesSchedulePeriod_addr , genschedulestart.genschedule_period);
+										EEPROMWriteInt(GesScheduleDate_addr , genschedulestart.genschedule_date);
+										EEPROMWriteInt(GesScheduleDayofweek_addr , genschedulestart.genschedule_dayofweek);
+										EEPROMWriteInt(GesScheduleHour_addr , genschedulestart.genschedule_hour);
+										EEPROMWriteInt(GesScheduleMinute_addr , genschedulestart.genschedule_minute);
+										EEPROMWriteInt(GesScheduleTime_addr , genschedulestart.genschedule_time);
+									
+										PageMenuCount = mainpage_T;
+										setvalueselect = NONselect;
                 		break;
                 	default:
                 		break;
@@ -1549,6 +1583,35 @@ void buttonRead(void)
             	case TimeOverReturnSet:
 								EEPROMWriteInt(OverResTimSet_addr, OverResTimSetValue);
             		break;
+							case GenScheduleEnableSet:
+								if(Submenu3Count){
+									genschedulestart.genschedule_enable = 1;
+								}
+								else{
+									genschedulestart.genschedule_enable = 0;
+								}
+							break;
+							case SchedulePeriodSet:
+								switch(Submenu3Count)
+                {
+                	case DAILY:
+										genschedulestart.genschedule_period = DAILY;
+                		break;
+                	case WEEKLY:
+										genschedulestart.genschedule_period = WEEKLY;
+                		break;
+									case MONTLY:
+										genschedulestart.genschedule_period = MONTLY;
+                		break;
+                	default:
+                		break;
+                }
+								break;
+							case ScheduleSetDateTimeSet:
+										
+								break;
+							
+								
 
             	default:
             		break;
