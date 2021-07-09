@@ -52,7 +52,7 @@
 #define NETWORK3P4W		0
 #define NETWORK1P2W		1
 
-#define MENUTIMEOUT		20
+#define MENUTIMEOUT		40
 #define CTRL_ATS_TIMEOUT		5000
 
 /*        fLASH            */
@@ -147,9 +147,10 @@ enum{	NONselect,
 			//	 17              18
 			FreqOverSet, FreqOverReturnSet,
 			//	 17              				18
-			FreqABNormalTimeSet, FreqNormalTimeSet   
-			
-				
+			FreqABNormalTimeSet, FreqNormalTimeSet, 
+			//			19
+			GenScheduleEnableSet
+						
 };
 volatile signed char setvalueselect = NONselect;
 
@@ -179,7 +180,7 @@ const char datetimemenu2[] 	= 	"2.Set Month";
 const char datetimemenu3[] 	= 	"3.Set Year";
 const char datetimemenu4[] 	= 	"4.Set Hours";
 const char datetimemenu5[] 	= 	"5.Set Minute";
-const char datetimemenu6[] 	= 	"6.Set Date";
+const char datetimemenu6[] 	= 	"6.Set Day";
 //const char datetimemenu6[] 	= 	"6.Set Seconds";
 const char datetimemenu7[] 	= 	"7.Exit";
 const char* const datetimemenu[] = { datetimemenu1, datetimemenu2, datetimemenu3, datetimemenu4, datetimemenu5, datetimemenu6, datetimemenu7};
@@ -200,13 +201,33 @@ const char freqmenu6[] 	= 	"6.FreqTimeNormal";
 const char freqmenu7[] 	= 	"7.Exit";
 const char* const frequencymenu[] = {freqmenu1, freqmenu2, freqmenu3, freqmenu4, freqmenu5, freqmenu6, freqmenu7};
 
-const char GenSchedulemenu1[] 	= 	"1.Daily";
-const char GenSchedulemenu2[] 	= 	"2.Weekly";
-const char GenSchedulemenu3[] 	= 	"3.Monthly";
-const char GenSchedulemenu4[] 	= 	"4.ENABLE/Disable";
-const char GenSchedulemenu5[] 	= 	"";
+const char GenSchedulemenu1[] 	= 	"1.Disable/Enable";
+const char GenSchedulemenu2[] 	= 	"2.Period";
+const char GenSchedulemenu3[] 	= 	"3.Date/Time";
+const char GenSchedulemenu4[] 	= 	"4.StartTime";
+const char GenSchedulemenu5[] 	= 	"5.Exit";
 const char* const GenSchedulemenu[] = { GenSchedulemenu1, GenSchedulemenu2, GenSchedulemenu3, GenSchedulemenu4, GenSchedulemenu5};
-									
+
+const char GenStartEnablemenu1[] 	= 	"1.Disable";
+const char GenStartEnablemenu2[] 	= 	"2.Enable";
+const char GenStartEnablemenu3[] 	= 	"3.Exit";
+const char GenStartEnablemenu4[] 	= 	"";
+const char GenStartEnablemenu5[] 	= 	"";
+const char* const GenStartEnablemenu[] = {GenStartEnablemenu1, GenStartEnablemenu2, GenStartEnablemenu3, GenStartEnablemenu4, GenStartEnablemenu5};
+
+const char Periodmenu1[] 	= 	"1.Daily";
+const char Periodmenu2[] 	= 	"2.Weekly";
+const char Periodmenu3[] 	= 	"3.Montly";
+const char Periodmenu4[] 	= 	"4.Exit";
+const char Periodmenu5[] 	= 	"";
+const char* const Periodmenu[] = { Periodmenu1, Periodmenu2, Periodmenu3, Periodmenu4};
+
+const char GenStartDateTimemenu1[] 	= 	"1.Date";
+const char GenStartDateTimemenu2[] 	= 	"2.Dayofweek";
+const char GenStartDateTimemenu3[] 	= 	"3.Hours";
+const char GenStartDateTimemenu4[] 	= 	"4.Minute";
+const char GenStartDateTimemenu5[] 	= 	"5.Exit";
+
 #define MAXLENGHT 17   //Font_7x10
 																	
 /* USER CODE END PD */
@@ -238,7 +259,7 @@ float freqS2;
 uint16_t V2_A;
 uint16_t V2_B;
 uint16_t V2_C;
-//				0					1								2								3						4						5          6
+//				0					1								2								3						4						5          6						7
 enum{UnderSet_T, OvererSet_T, MainselectSet_T, ConfigSet_T, TimeSet_T, SystemSet_T, FreqSet_T, Schedule_T};
 enum{VoltCut_T,VoltReturn_T,TimeCut_T,TimeReturn_T,Goback_T};
 
@@ -259,11 +280,12 @@ volatile int8_t lcdflag ;
 
 //volatile signed char SubMenu1=0,SubMenu2=0,SubMenu3=0,SubMenu4=0;
 //		0			1			2			3
-enum{mainpage_T,Pagemenu1_T,Pagemenu2_T,Pagemenu3_T};	
+enum{mainpage_T,Pagemenu1_T,Pagemenu2_T,Pagemenu3_T,Pagemenu4_T};	
 volatile signed char PageMenuCount = mainpage_T;
 volatile signed char Submenu1Count =0;
 volatile signed char Submenu2Count =0;
 volatile signed char Submenu3Count =0;
+
 
 enum{Display1_T,Display2_T,Display3_T,Display4_T};
 volatile signed char DisplayMain =Display1_T;
@@ -301,6 +323,9 @@ RTC_TimeTypeDef Timeupdate = {0};
 RTC_DateTypeDef Dateupdate = {0};
 RTC_TimeTypeDef Timeset = {0};
 RTC_DateTypeDef Dateset = {0};
+
+RTC_TimeTypeDef TimeGenStartset = {0};
+RTC_DateTypeDef DateGenStartset = {0};
 
 uint8_t clockdata[4] = {0};
 uint8_t datedata[4] = {0};
@@ -888,6 +913,12 @@ void buttonRead(void)
 									{
 										Submenu2Count =0;
 									}
+								case Schedule_T:
+									if(++Submenu2Count > 4)
+									{
+										Submenu2Count =0;
+									}
+									break;
 								
 								break;
 							
@@ -1076,7 +1107,13 @@ void buttonRead(void)
 									{
 										Submenu2Count = 6;
 									}
-								break;			
+								break;
+								case Schedule_T:
+									if(--Submenu2Count < 0)
+									{
+										Submenu2Count =4;
+									}
+									break;
               	default:
               		break;
               }
@@ -1157,7 +1194,7 @@ void buttonRead(void)
 								if(--Timeset.Minutes >= 60) Timeset.Minutes = 0;
 								break;
 							case SecondsSet:
-								if(--Dateset.WeekDay > 7) Dateset.WeekDay = 1;
+								if(--Dateset.WeekDay <= 0) Dateset.WeekDay = 7;
 							default:
 								break;
 							
@@ -1402,16 +1439,28 @@ void buttonRead(void)
 										PageMenuCount = mainpage_T;
 										setvalueselect = NONselect;
 										break;
-							case Schedule_T:
-								
-							
-								break;
-
+									
 									default:
 										break;
 								}
 										
 							break;
+							case Schedule_T:
+								switch (Submenu2Count)
+                {
+                	case 0:
+										
+                		break;
+                	case 1:
+                		break;
+									case 2:
+                		break;
+                	default:
+                		break;
+                }
+							
+								break;
+
 								
 							default:
 								break;
@@ -1622,7 +1671,7 @@ void lcdupdate(void)
 			
     		break;
 			case DateSet:
-				ssd1306_SetCursor(36, 3);
+				ssd1306_SetCursor(39, 3);
 				ssd1306_WriteString("SetDate", Font_7x10, White);	
 				
 				ssd1306_SetCursor(47, 3+15);
@@ -1630,7 +1679,7 @@ void lcdupdate(void)
 				ssd1306_WriteString(buff, Font_11x18, White);	
     		break;
     	case MonthSet:
-				ssd1306_SetCursor(36, 3);
+				ssd1306_SetCursor(39, 3);
 				ssd1306_WriteString("SetMont", Font_7x10, White);	
 				
 				ssd1306_SetCursor(47, 3+15);
@@ -1639,7 +1688,7 @@ void lcdupdate(void)
 			
     		break;
 			case YearSet:
-				ssd1306_SetCursor(36, 3);
+				ssd1306_SetCursor(39, 3);
 				ssd1306_WriteString("SetYear", Font_7x10, White);	
 				
 				ssd1306_SetCursor(47, 3+15);
@@ -1648,7 +1697,7 @@ void lcdupdate(void)
 			
     		break;
     	case HoursSet:
-				ssd1306_SetCursor(36, 3);
+				ssd1306_SetCursor(32, 3);
 				ssd1306_WriteString("SetHours", Font_7x10, White);	
 				
 				ssd1306_SetCursor(47, 3+15);
@@ -1657,7 +1706,7 @@ void lcdupdate(void)
 			
     		break;
 			case MinuteSet:
-				ssd1306_SetCursor(36, 3);
+				ssd1306_SetCursor(32, 3);
 				ssd1306_WriteString("SetMinute", Font_7x10, White);		
 				
 				ssd1306_SetCursor(47, 3+15);
@@ -1666,8 +1715,8 @@ void lcdupdate(void)
 			
     		break;
     	case SecondsSet:
-				ssd1306_SetCursor(36, 3);
-				ssd1306_WriteString("SetDate", Font_7x10, White);	
+				ssd1306_SetCursor(43, 3);
+				ssd1306_WriteString("SetDay", Font_7x10, White);	
 				
 				ssd1306_SetCursor(47, 3+15);
 				snprintf(buff, 4, "%s  ",dayname[Dateset.WeekDay]);
@@ -2204,8 +2253,8 @@ void lcdupdate(void)
 							}			
 							break;
 						case Schedule_T:
-							ssd1306_SetCursor(22, 3);
-							ssd1306_WriteString("GenSchedule", Font_7x10, White);	
+							ssd1306_SetCursor(8, 3);
+							ssd1306_WriteString("GenStartSchedule", Font_7x10, White);	
 							
 							ssd1306_SetCursor(5, 3+10+(i*10));
 							if(Submenu2Count <5){
