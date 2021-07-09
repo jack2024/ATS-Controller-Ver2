@@ -240,6 +240,7 @@ const char GenStartDateTimemenu3[] 	= 	"3.Hours";
 const char GenStartDateTimemenu4[] 	= 	"4.Minute";
 const char GenStartDateTimemenu5[] 	= 	"5.Exit";
 const char* const GenStartDateTimemenu[] = { GenStartDateTimemenu1, GenStartDateTimemenu2, GenStartDateTimemenu3, GenStartDateTimemenu4, GenStartDateTimemenu5};
+enum{ScheduleDate_T,ScheduleDayofweek_T,ScheduleSetHours_T,ScheduleMinute_T,Schedulegoback_T};
 
 #define MAXLENGHT 17   //Font_7x10
 																	
@@ -1070,12 +1071,39 @@ void buttonRead(void)
 								default:
 									break;
 							}
-						
-						
+
 							break;
+						case Pagemenu4_T:
+							switch (Submenu3Count)
+              {
+              	case ScheduleDate_T:
+									if(++genschedulestart.genschedule_date > 31){
+										genschedulestart.genschedule_date = 1;
+									}
+              		break;
+              	case ScheduleDayofweek_T:
+									if(++genschedulestart.genschedule_dayofweek > 7){
+											genschedulestart.genschedule_dayofweek = 1;
+									}
+              		break;
+								case ScheduleSetHours_T:
+									if(++genschedulestart.genschedule_hour > 23){
+											genschedulestart.genschedule_hour = 0;
+									}
+              		break;
+								case ScheduleMinute_T:
+									if(++genschedulestart.genschedule_minute > 59){
+											genschedulestart.genschedule_minute = 0;
+									}
+              		break;
 								
-							default:
-								break;
+              	default:
+              		break;
+              }
+							break;
+						
+						default:
+							break;
 						}
 					
 				}
@@ -1518,19 +1546,19 @@ void buttonRead(void)
 							case Schedule_T: //7
 								switch (Submenu2Count)
                 {
-                	case ScheduleEnable_T: 
+                	case ScheduleEnable_T: //0
 										setvalueselect = 	GenScheduleEnableSet;
                 		break;
-                	case SchedulePeriod_T: 
+                	case SchedulePeriod_T:  //1
 										setvalueselect = 	SchedulePeriodSet;
                 		break;
-									case ScheduleSetDateTime_T:
+									case ScheduleSetDateTime_T: //2
 										setvalueselect = 	ScheduleSetDateTimeSet;
                 		break;
-									case ScheduleStartTime_T:
+									case ScheduleStartTime_T: //3
 										setvalueselect = 	ScheduleStartTimeSet;
                 		break;
-									case ScheduleGoback_T:
+									case ScheduleGoback_T: //4
 										// Save befor goback
 										EEPROMWriteInt(GesScheduleEnable_addr , genschedulestart.genschedule_enable);
 										EEPROMWriteInt(GesSchedulePeriod_addr , genschedulestart.genschedule_period);
@@ -1538,10 +1566,22 @@ void buttonRead(void)
 										EEPROMWriteInt(GesScheduleDayofweek_addr , genschedulestart.genschedule_dayofweek);
 										EEPROMWriteInt(GesScheduleHour_addr , genschedulestart.genschedule_hour);
 										EEPROMWriteInt(GesScheduleMinute_addr , genschedulestart.genschedule_minute);
-										EEPROMWriteInt(GesScheduleTime_addr , genschedulestart.genschedule_time);
-									
+										EEPROMWriteInt(GesScheduleTime_addr , genschedulestart.genschedule_time);									
+										
+//										if (Submenu2Count == ScheduleGoback_T)
+//                    {
+//											PageMenuCount = 0;
+//                    }
+//                    else
+//                    {
+//											PageMenuCount--;
+//                    }
+										//PageMenuCount = 0;
+										
+										
 										PageMenuCount = mainpage_T;
-										setvalueselect = NONselect;
+										//PageMenuCount--;
+										//setvalueselect = NONselect;
                 		break;
                 	default:
                 		break;
@@ -1553,6 +1593,7 @@ void buttonRead(void)
 							default:
 								break;
 						}
+
 						PageMenuCount++;
 					}
 					else if(PageMenuCount == Pagemenu3_T)
@@ -1608,9 +1649,32 @@ void buttonRead(void)
                 }
 								break;
 							case ScheduleSetDateTimeSet:
-								PageMenuCount = Pagemenu4_T;
+								switch (Submenu3Count)
+                {
+                	case ScheduleDate_T:
+										
+                		break;
+                	case ScheduleDayofweek_T:
+										
+                		break;
+									case ScheduleSetHours_T:
+										
+                		break;
+                	case ScheduleMinute_T:
+										
+                		break;
+									case Schedulegoback_T:
+										Submenu2Count = 0;
+										PageMenuCount--;
+										setvalueselect = NONselect;
+                		break;
+                	default :
+                		break;
+                }
+								//PageMenuCount = Pagemenu4_T;
 							
 								break;
+							
 							
 								
 
@@ -2099,29 +2163,6 @@ void lcdupdate(void)
 				ssd1306_SetCursor(numofstring , 53);
 				ssd1306_WriteString(buff, Font_7x10, White);
 
-	/*			
-	//			snprintf(buff, 8, "F2 %f", freqS2);
-	//			ssd1306_SetCursor(3+(7*10), 17+12);
-	//			ssd1306_WriteString(buff, Font_7x10, White);
-				
-	//			snprintf(buff, 11, "%f HZ", freqS2);
-	//			ssd1306_SetCursor(3+(7*8), 17*2);
-	//			ssd1306_WriteString(buff, Font_7x10, White);
-
-
-	//			snprintf(buff, 4, "%d Volt", V2_A);
-	//			ssd1306_SetCursor(5, 3+18);
-	//			ssd1306_WriteString(buff, Font_11x18, White);
-	//			
-	//			snprintf(buff, 4, "%d Volt", V2_B);
-	//			ssd1306_SetCursor(5+((11*3)*1)+5, 3+18);
-	//			ssd1306_WriteString(buff, Font_11x18, White);
-	//			
-	//			snprintf(buff, 4, "%d Volt", V2_C);
-	//			ssd1306_SetCursor(5+((11*3)*2)+10, 3+18);
-	//			ssd1306_WriteString(buff, Font_11x18, White);
-	*/
-
 				break;
 			case Pagemenu1_T:
 				ssd1306_SetCursor(50, 3);
@@ -2522,6 +2563,46 @@ void lcdupdate(void)
 					}
         }
 				
+				break;
+			case Pagemenu4_T:
+				switch (Submenu3Count)
+        {
+        	case ScheduleDate_T:
+						ssd1306_SetCursor(11, 3);
+						ssd1306_WriteString("SetStartGenDate", Font_7x10, White);	
+						
+						ssd1306_SetCursor(47, 3+15);
+						snprintf(buff, 4, "%d  ",genschedulestart.genschedule_date);
+						ssd1306_WriteString(buff, Font_11x18, White);	
+        		break;
+        	case ScheduleDayofweek_T:
+						ssd1306_SetCursor(11, 3);
+						ssd1306_WriteString("SetStartGenDay", Font_7x10, White);	
+						
+						ssd1306_SetCursor(47, 3+15);
+						snprintf(buff, 4, "%s  ",dayname[genschedulestart.genschedule_dayofweek]);
+						ssd1306_WriteString(buff, Font_11x18, White);		
+        		break;
+					case ScheduleSetHours_T:
+						ssd1306_SetCursor(8, 3);
+						ssd1306_WriteString("SetStartGenHours", Font_7x10, White);	
+						
+						ssd1306_SetCursor(47, 3+15);
+						snprintf(buff, 4, "%d  ",genschedulestart.genschedule_hour);
+						ssd1306_WriteString(buff, Font_11x18, White);	
+        		break;
+					case ScheduleMinute_T:
+						ssd1306_SetCursor(8, 3);
+						ssd1306_WriteString("SetStartGenMinute", Font_7x10, White);	
+						
+						ssd1306_SetCursor(47, 3+15);
+						snprintf(buff, 4, "%d  ",genschedulestart.genschedule_minute);
+						ssd1306_WriteString(buff, Font_11x18, White);	
+        		break;
+        	default:
+        		break;
+        }
+			
 				break;
 			default:
 				break;
