@@ -1581,7 +1581,7 @@ void buttonRead(void)
 										
 										PageMenuCount = mainpage_T;
 										//PageMenuCount--;
-										//setvalueselect = NONselect;
+										setvalueselect = NONselect;
                 		break;
                 	default:
                 		break;
