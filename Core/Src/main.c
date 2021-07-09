@@ -1608,7 +1608,8 @@ void buttonRead(void)
                 }
 								break;
 							case ScheduleSetDateTimeSet:
-										
+								PageMenuCount = Pagemenu4_T;
+							
 								break;
 							
 								
@@ -1616,8 +1617,16 @@ void buttonRead(void)
             	default:
             		break;
             }
-						setvalueselect = NONselect;
-						PageMenuCount--;
+						if (PageMenuCount == Pagemenu4_T)
+            {
+							
+            }
+            else
+            {
+							setvalueselect = NONselect;
+							PageMenuCount--;
+            }
+						
 					}
 					else
 					{
