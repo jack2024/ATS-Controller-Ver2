@@ -52,7 +52,7 @@
 #define NETWORK3P4W		0
 #define NETWORK1P2W		1
 
-#define MENUTIMEOUT		40
+#define MENUTIMEOUT		20
 #define CTRL_ATS_TIMEOUT		5000
 
 /*        fLASH            */
@@ -148,8 +148,10 @@ enum{	NONselect,
 			FreqOverSet, FreqOverReturnSet,
 			//	 17              				18
 			FreqABNormalTimeSet, FreqNormalTimeSet, 
-			//			19
-			GenScheduleEnableSet
+			//			19      							20
+			GenScheduleEnableSet , SchedulePeriodSet,
+			//				21											22
+			ScheduleSetDateTimeSet , ScheduleStartTimeSet
 						
 };
 volatile signed char setvalueselect = NONselect;
@@ -207,26 +209,28 @@ const char GenSchedulemenu3[] 	= 	"3.Date/Time";
 const char GenSchedulemenu4[] 	= 	"4.StartTime";
 const char GenSchedulemenu5[] 	= 	"5.Exit";
 const char* const GenSchedulemenu[] = { GenSchedulemenu1, GenSchedulemenu2, GenSchedulemenu3, GenSchedulemenu4, GenSchedulemenu5};
+enum{ScheduleEnable_T,SchedulePeriod_T,ScheduleSetDateTime_T,ScheduleStartTime_T,ScheduleGoback_T};
 
 const char GenStartEnablemenu1[] 	= 	"1.Disable";
 const char GenStartEnablemenu2[] 	= 	"2.Enable";
-const char GenStartEnablemenu3[] 	= 	"3.Exit";
+const char GenStartEnablemenu3[] 	= 	"";
 const char GenStartEnablemenu4[] 	= 	"";
-const char GenStartEnablemenu5[] 	= 	"";
+const char GenStartEnablemenu5[] 	= 	"*ENT Save&Exit";
 const char* const GenStartEnablemenu[] = {GenStartEnablemenu1, GenStartEnablemenu2, GenStartEnablemenu3, GenStartEnablemenu4, GenStartEnablemenu5};
 
 const char Periodmenu1[] 	= 	"1.Daily";
 const char Periodmenu2[] 	= 	"2.Weekly";
 const char Periodmenu3[] 	= 	"3.Montly";
-const char Periodmenu4[] 	= 	"4.Exit";
-const char Periodmenu5[] 	= 	"";
-const char* const Periodmenu[] = { Periodmenu1, Periodmenu2, Periodmenu3, Periodmenu4};
+const char Periodmenu4[] 	= 	"";
+const char Periodmenu5[] 	= 	"*ENT Save&Exit";
+const char* const Periodmenu[] = { Periodmenu1, Periodmenu2, Periodmenu3, Periodmenu4, Periodmenu5};
 
 const char GenStartDateTimemenu1[] 	= 	"1.Date";
 const char GenStartDateTimemenu2[] 	= 	"2.Dayofweek";
 const char GenStartDateTimemenu3[] 	= 	"3.Hours";
 const char GenStartDateTimemenu4[] 	= 	"4.Minute";
 const char GenStartDateTimemenu5[] 	= 	"5.Exit";
+const char* const GenStartDateTimemenu[] = { GenStartDateTimemenu1, GenStartDateTimemenu2, GenStartDateTimemenu3, GenStartDateTimemenu4, GenStartDateTimemenu5};
 
 #define MAXLENGHT 17   //Font_7x10
 																	
@@ -279,16 +283,15 @@ volatile int8_t lcdflag ;
 
 
 //volatile signed char SubMenu1=0,SubMenu2=0,SubMenu3=0,SubMenu4=0;
-//		0			1			2			3
+//				0						1						2						3						4
 enum{mainpage_T,Pagemenu1_T,Pagemenu2_T,Pagemenu3_T,Pagemenu4_T};	
 volatile signed char PageMenuCount = mainpage_T;
 volatile signed char Submenu1Count =0;
 volatile signed char Submenu2Count =0;
 volatile signed char Submenu3Count =0;
 
-
-enum{Display1_T,Display2_T,Display3_T,Display4_T};
-volatile signed char DisplayMain =Display1_T;
+enum{Display1_T, Display2_T, Display3_T, Display4_T};
+volatile signed char DisplayMain = Display1_T;
 	
 volatile int16_t 	 UnderValue, UnderResValue, UnderTimSetValue, UnderResTimSetValue;
 volatile int16_t 	 UnderValue_compare, UnderResValue_compare, UnderTimSetValue_compare, UnderResTimSetValue_compare;
@@ -931,104 +934,125 @@ void buttonRead(void)
 
           		break;
 							
-					case Pagemenu3_T:
-						switch (setvalueselect)
-						{
-							case VoltUnderSet:
-								UnderValue++;
-								break;
-							case VoltUnderReturnSet:
-								UnderResValue++;
-								break;
-							case TimeUnderSet:
-								UnderTimSetValue++;
-								break;
-							case TimeUnderReturnSet:
-								UnderResTimSetValue++;
-								break;
-							case VoltOverSet:
-								OverValue++;
-								break;
-							case VoltOverReturnSet:
-								OverResValue++;
-								break;
-							case TimeOverSet:
-								OverTimSetValue++;
-								break;
-							case TimeOverReturnSet:
-								OverResTimSetValue++;
-								break;
-							case DateSet:
-								if(++Dateset.Date > 31 ) Dateset.Date = 1 ;
-								break;
-							case MonthSet:
-								if(++Dateset.Month > 12 ) Dateset.Month = 1 ;
-								break;
-							case YearSet:
-								if(++Dateset.Year > 99 ) Dateset.Year = 0 ;
-								break;
-							case HoursSet:
-								if(++Timeset.Hours > 23) Timeset.Hours = 0;
-								break;
-							case MinuteSet:
-								if(++Timeset.Minutes >59) Timeset.Minutes = 0;
-								break;
-							case SecondsSet:
-								if(++Dateset.WeekDay >7) Dateset.WeekDay = 1;
-								break;
-							
-							case FreqUnderSet:
-								if(++freqUnderValue > 50)
-								{
-									freqUnderValue =50;
-								}
-								break;
+						case Pagemenu3_T:
+							switch (setvalueselect)
+							{
+								case VoltUnderSet:
+									UnderValue++;
+									break;
+								case VoltUnderReturnSet:
+									UnderResValue++;
+									break;
+								case TimeUnderSet:
+									UnderTimSetValue++;
+									break;
+								case TimeUnderReturnSet:
+									UnderResTimSetValue++;
+									break;
+								case VoltOverSet:
+									OverValue++;
+									break;
+								case VoltOverReturnSet:
+									OverResValue++;
+									break;
+								case TimeOverSet:
+									OverTimSetValue++;
+									break;
+								case TimeOverReturnSet:
+									OverResTimSetValue++;
+									break;
+								case DateSet:
+									if(++Dateset.Date > 31 ) Dateset.Date = 1 ;
+									break;
+								case MonthSet:
+									if(++Dateset.Month > 12 ) Dateset.Month = 1 ;
+									break;
+								case YearSet:
+									if(++Dateset.Year > 99 ) Dateset.Year = 0 ;
+									break;
+								case HoursSet:
+									if(++Timeset.Hours > 23) Timeset.Hours = 0;
+									break;
+								case MinuteSet:
+									if(++Timeset.Minutes >59) Timeset.Minutes = 0;
+									break;
+								case SecondsSet:
+									if(++Dateset.WeekDay >7) Dateset.WeekDay = 1;
+									break;
 								
-							case FreqUnderReturnSet:
-								if(++freqUnderResValue > 50)
-								{
-									freqUnderResValue =50;
-								}
-								break;
-								
-							case FreqOverSet:
-								if(++freqOverValue > 60)
-								{
-									freqOverValue =60;
-								}
-								break;
+								case FreqUnderSet:
+									if(++freqUnderValue > 50)
+									{
+										freqUnderValue =50;
+									}
+									break;
 									
-							case FreqOverReturnSet:
-								if(++freqOverResValue > 60)
-								{
-									freqOverResValue =60;
-								}
+								case FreqUnderReturnSet:
+									if(++freqUnderResValue > 50)
+									{
+										freqUnderResValue =50;
+									}
+									break;
+									
+								case FreqOverSet:
+									if(++freqOverValue > 60)
+									{
+										freqOverValue =60;
+									}
+									break;
+										
+								case FreqOverReturnSet:
+									if(++freqOverResValue > 60)
+									{
+										freqOverResValue =60;
+									}
+									break;
+											
+								case FreqABNormalTimeSet:
+									if(++freqABnormalTimeSetValue > 60)
+									{
+										freqABnormalTimeSetValue =60;
+									}
+									break;
+											
+								case FreqNormalTimeSet:
+									if(++freqNormalTimeSetValue  > 60)
+									{
+										freqNormalTimeSetValue  =60;
+									}
+									break;
+								case GenScheduleEnableSet:
+									if(++Submenu3Count > 1)
+									{
+										Submenu3Count =0;
+									}
+								break;
+								case SchedulePeriodSet:
+									if(++Submenu3Count > 2)
+									{
+										Submenu3Count =0;
+									}
+								break;
+								case ScheduleSetDateTimeSet:
+									if(++Submenu3Count > 4)
+									{
+										Submenu3Count =0;
+									}
+								break;
+								case ScheduleStartTimeSet:
+									
 								break;
 										
-							case FreqABNormalTimeSet:
-								if(++freqABnormalTimeSetValue > 60)
-								{
-									freqABnormalTimeSetValue =60;
-								}
-								break;
-										
-							case FreqNormalTimeSet:
-								if(++freqNormalTimeSetValue  > 60)
-								{
-									freqNormalTimeSetValue  =60;
-								}
-								break;
-									
+								default:
+									break;
+							}
+						
+						
+							break;
+								
 							default:
 								break;
 						}
-					
-					
-						break;
-							
-          	default:
-          		break;
-          }
 					
 				}
 				state = st3;
@@ -1114,6 +1138,7 @@ void buttonRead(void)
 										Submenu2Count =4;
 									}
 									break;
+								
               	default:
               		break;
               }
@@ -1121,125 +1146,146 @@ void buttonRead(void)
 							
 						case Pagemenu3_T:
 							switch (setvalueselect)
-						{
-							case VoltUnderSet:
-								UnderValue--;
-								if(UnderValue  <0)
-								{
-									UnderValue =0;
-								}
-								break;
-							case VoltUnderReturnSet:
-								UnderResValue--;
-								if(UnderResValue  <0)
-								{
-									UnderResValue =0;
-								}
-								break;
-							case TimeUnderSet:
-								UnderTimSetValue--;
-								if(UnderTimSetValue <0)
-								{
-									UnderTimSetValue =0;
-								}
-								break;
-							case TimeUnderReturnSet:
-								UnderResTimSetValue--;
-								if(UnderResTimSetValue <0)
-								{
-									UnderResTimSetValue =0;
-								}
-								break;
-							case VoltOverSet:
-								OverValue--;
-								if(OverValue <0)
-								{
-									OverValue =0;
-								}
-								break;
-							case VoltOverReturnSet:
-								OverResValue--;
-								if(OverResValue <0)
-								{
-									OverResValue =0;
-								}
-								break;
-							case TimeOverSet:
-								OverTimSetValue--;
-								if(OverTimSetValue <0)
-								{
-									OverTimSetValue =0;
-								}
-								break;
-							case TimeOverReturnSet:
-								OverResTimSetValue--;
-								if(OverResTimSetValue <0)
-								{
-									OverResTimSetValue =0;
-								}
-								break;
-							case DateSet:
-								if(--Dateset.Date < 1) Dateset.Date = 31 ;
-								break;
-							case MonthSet:
-								if(--Dateset.Month < 1 ) Dateset.Month = 12 ;
-								break;
-							case YearSet:
-								if(--Dateset.Year < 1 ) Dateset.Year = 99 ;
-								break;
-							case HoursSet:
-								if(--Timeset.Hours >= 24) Timeset.Hours = 0;
-								break;
-							case MinuteSet:
-								if(--Timeset.Minutes >= 60) Timeset.Minutes = 0;
-								break;
-							case SecondsSet:
-								if(--Dateset.WeekDay <= 0) Dateset.WeekDay = 7;
-							default:
-								break;
-							
-							case FreqUnderSet:
-								if(--freqUnderValue < 40)
-								{
-									freqUnderValue =40;
-								}
-								break;
+							{
+								case VoltUnderSet:
+									UnderValue--;
+									if(UnderValue  <0)
+									{
+										UnderValue =0;
+									}
+									break;
+								case VoltUnderReturnSet:
+									UnderResValue--;
+									if(UnderResValue  <0)
+									{
+										UnderResValue =0;
+									}
+									break;
+								case TimeUnderSet:
+									UnderTimSetValue--;
+									if(UnderTimSetValue <0)
+									{
+										UnderTimSetValue =0;
+									}
+									break;
+								case TimeUnderReturnSet:
+									UnderResTimSetValue--;
+									if(UnderResTimSetValue <0)
+									{
+										UnderResTimSetValue =0;
+									}
+									break;
+								case VoltOverSet:
+									OverValue--;
+									if(OverValue <0)
+									{
+										OverValue =0;
+									}
+									break;
+								case VoltOverReturnSet:
+									OverResValue--;
+									if(OverResValue <0)
+									{
+										OverResValue =0;
+									}
+									break;
+								case TimeOverSet:
+									OverTimSetValue--;
+									if(OverTimSetValue <0)
+									{
+										OverTimSetValue =0;
+									}
+									break;
+								case TimeOverReturnSet:
+									OverResTimSetValue--;
+									if(OverResTimSetValue <0)
+									{
+										OverResTimSetValue =0;
+									}
+									break;
+								case DateSet:
+									if(--Dateset.Date < 1) Dateset.Date = 31 ;
+									break;
+								case MonthSet:
+									if(--Dateset.Month < 1 ) Dateset.Month = 12 ;
+									break;
+								case YearSet:
+									if(--Dateset.Year < 1 ) Dateset.Year = 99 ;
+									break;
+								case HoursSet:
+									if(--Timeset.Hours >= 24) Timeset.Hours = 0;
+									break;
+								case MinuteSet:
+									if(--Timeset.Minutes >= 60) Timeset.Minutes = 0;
+									break;
+								case SecondsSet:
+									if(--Dateset.WeekDay <= 0) Dateset.WeekDay = 7;
+								default:
+									break;
 								
-							case FreqUnderReturnSet:
-								if(--freqUnderResValue < 40)
-								{
-									freqUnderResValue =40;
-								}
-								break;
-								
-							case FreqOverSet:
-								if(--freqOverValue < 50)
-								{
-									freqOverValue =50;
-								}
-								break;
+								case FreqUnderSet:
+									if(--freqUnderValue < 40)
+									{
+										freqUnderValue =40;
+									}
+									break;
 									
-							case FreqOverReturnSet:
-								if(--freqOverResValue < 50)
-								{
-									freqOverResValue =50;
-								}
-								break;
+								case FreqUnderReturnSet:
+									if(--freqUnderResValue < 40)
+									{
+										freqUnderResValue =40;
+									}
+									break;
+									
+								case FreqOverSet:
+									if(--freqOverValue < 50)
+									{
+										freqOverValue =50;
+									}
+									break;
 										
-							case FreqABNormalTimeSet:
-								if(--freqABnormalTimeSetValue < 0)
-								{
-									freqABnormalTimeSetValue =0;
-								}
+								case FreqOverReturnSet:
+									if(--freqOverResValue < 50)
+									{
+										freqOverResValue =50;
+									}
+									break;
+											
+								case FreqABNormalTimeSet:
+									if(--freqABnormalTimeSetValue < 0)
+									{
+										freqABnormalTimeSetValue =0;
+									}
+									break;
+											
+								case FreqNormalTimeSet:
+									if(--freqNormalTimeSetValue  < 0)
+									{
+										freqNormalTimeSetValue  =0;
+									}
+									break;
+								case GenScheduleEnableSet:
+									if(--Submenu3Count < 0)
+									{
+										Submenu3Count =1;
+									}
 								break;
-										
-							case FreqNormalTimeSet:
-								if(--freqNormalTimeSetValue  < 0)
-								{
-									freqNormalTimeSetValue  =0;
-								}
+								case SchedulePeriodSet:
+									if(--Submenu3Count < 0)
+									{
+										Submenu3Count =2;
+									}
 								break;
-						}
+								case ScheduleSetDateTimeSet:
+									if(--Submenu3Count < 0)
+									{
+										Submenu3Count =4;
+									}
+								break;
+								case ScheduleStartTimeSet:
+									
+								break;
+							}
 
 							break;
 						
@@ -1286,7 +1332,7 @@ void buttonRead(void)
 						// go back
 						switch (Submenu1Count)
 						{
-							case UnderSet_T:
+							case UnderSet_T: //0
 								switch (Submenu2Count)
 								{
 									case 0:
@@ -1310,7 +1356,7 @@ void buttonRead(void)
 								}
 
 								break;
-							case OvererSet_T:
+							case OvererSet_T: //1
 								switch (Submenu2Count)
 								{
 									case 0:
@@ -1334,7 +1380,7 @@ void buttonRead(void)
 								}
 
 								break;
-							case MainselectSet_T:
+							case MainselectSet_T: //2
 								// Save befor back
 								SourceSelectValue = Submenu2Count+1;
 								EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
@@ -1363,14 +1409,14 @@ void buttonRead(void)
 										break;
 								}
 								break;
-							case ConfigSet_T:
+							case ConfigSet_T: //3
 								// Save befor back
 								NetworkSelectValue = Submenu2Count;
 								EEPROMWriteInt(NetworkSelect_addr, NetworkSelectValue);
 								PageMenuCount = mainpage_T;
 								setvalueselect = NONselect;
 								break;
-							case TimeSet_T:
+							case TimeSet_T: //4
 								switch (Submenu2Count)
 								{
 									case 0:
@@ -1402,13 +1448,13 @@ void buttonRead(void)
 										break;
 								}
 								break;
-							case SystemSet_T:
+							case SystemSet_T: //5
 								systemValue = Submenu2Count;
 								EEPROMWriteInt(system_addr, systemValue);
 								PageMenuCount = mainpage_T;
 								setvalueselect = NONselect;		
 							break;
-							case FreqSet_T:
+							case FreqSet_T: //6
 								switch (Submenu2Count)
 								{
 									case 0:
@@ -1445,20 +1491,28 @@ void buttonRead(void)
 								}
 										
 							break;
-							case Schedule_T:
+							case Schedule_T: //7
 								switch (Submenu2Count)
                 {
-                	case 0:
+                	case ScheduleEnable_T: 
+										setvalueselect = 	GenScheduleEnableSet;
+                		break;
+                	case SchedulePeriod_T: 
+										setvalueselect = 	SchedulePeriodSet;
+                		break;
+									case ScheduleSetDateTime_T:
+										setvalueselect = 	ScheduleSetDateTimeSet;
+                		break;
+									case ScheduleStartTime_T:
+										setvalueselect = 	ScheduleStartTimeSet;
+                		break;
+									case ScheduleGoback_T:
 										
-                		break;
-                	case 1:
-                		break;
-									case 2:
                 		break;
                 	default:
                 		break;
                 }
-							
+								Submenu3Count = 0;
 								break;
 
 								
@@ -2290,6 +2344,111 @@ void lcdupdate(void)
 
 							
 				}
+				
+				break;
+				
+			case Pagemenu3_T:
+				for(char i=0; i<5; i++)
+        {
+					switch (setvalueselect)
+					{
+						case GenScheduleEnableSet:
+							ssd1306_SetCursor(15, 3);
+							ssd1306_WriteString("GenStartEnable", Font_7x10, White);	
+							
+							ssd1306_SetCursor(5, 3+10+(i*10));
+							if(Submenu3Count <5){
+								strcpy(buff, GenStartEnablemenu[i]);
+								if(Submenu3Count == i){
+									ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}
+							else
+							{
+								
+								if((5 + i) > 4)
+								{
+									break;
+								}
+								strcpy(buff, GenStartEnablemenu[i+5]);
+								if(Submenu3Count == i+5){
+									ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}	
+							break;
+						case SchedulePeriodSet:
+							ssd1306_SetCursor(15, 3);
+							ssd1306_WriteString("GenStartPeriod", Font_7x10, White);	
+							
+							ssd1306_SetCursor(5, 3+10+(i*10));
+							if(Submenu3Count <5){
+								strcpy(buff, Periodmenu[i]);
+								if(Submenu3Count == i){
+									ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}
+							else
+							{
+								
+								if((5 + i) > 4)
+								{
+									break;
+								}
+								strcpy(buff, Periodmenu[i+5]);
+								if(Submenu3Count == i+5){
+									ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}	
+							break;
+						case ScheduleSetDateTimeSet:
+							ssd1306_SetCursor(8, 3);
+							ssd1306_WriteString("GenStartDateTime", Font_7x10, White);	
+							
+							ssd1306_SetCursor(5, 3+10+(i*10));
+							if(Submenu3Count <5){
+								strcpy(buff, GenStartDateTimemenu[i]);
+								if(Submenu3Count == i){
+									ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}
+							else
+							{
+								
+								if((5 + i) > 4)
+								{
+									break;
+								}
+								strcpy(buff, GenStartDateTimemenu[i+5]);
+								if(Submenu3Count == i+5){
+									ssd1306_WriteString(buff, Font_7x10, Black);	
+								}
+								else{
+									ssd1306_WriteString(buff, Font_7x10, White);	
+								}
+							}	
+							break;
+						case ScheduleStartTimeSet:
+							
+							break;
+						default:
+							break;
+					}
+        }
 				
 				break;
 			default:
