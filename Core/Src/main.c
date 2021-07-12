@@ -186,6 +186,7 @@ const char networksystemmenu3[] 	= 	"";
 const char networksystemmenu4[] 	= 	"";
 const char networksystemmenu5[] 	= 	"*ENT Save&Exit";
 const char* const networksystemmenu[] = {networksystemmenu1, networksystemmenu2, networksystemmenu3, networksystemmenu4, networksystemmenu5};
+enum{sys3P4W,sys1P2W};
 
 const char datetimemenu1[] 	= 	"1.Set Date";
 const char datetimemenu2[] 	= 	"2.Set Month";
@@ -203,6 +204,7 @@ const char systemtypemenu3[] 	= 	"";
 const char systemtypemenu4[] 	= 	"";
 const char systemtypemenu5[] 	= 	"*ENT Save&Exit";
 const char* const systemtypemenu[] = {systemtypemenu1, systemtypemenu2, systemtypemenu3, systemtypemenu4, systemtypemenu5};
+enum{main_main,main_gens};
 
 const char freqmenu1[] 	= 	"1.FreqUnderCutoff";
 const char freqmenu2[] 	= 	"2.FreqUnderReturn";
@@ -287,8 +289,8 @@ enum{selecsourceNON,selecsource1,selecsource2};
 enum{State_nor,State_PreUnder,State_Under,State_PreUnderRes,State_UnderRes,State_PreOver,State_Over,State_PreOverRes,State_OverRes};
 enum{nor, UnderSet, OverSet,UnderResSet,OverResSet,UnderTimSet,OverTimSet,UnderResTimSet,OverResTimSet};
 enum{normal, SetUnder, SetUnderRes,SetUnderTim,SetUnderResTim,SetSource};
-enum{sys3P4W,sys1P2W};
-enum{main_gens,main_main};
+
+
 
 volatile int8_t State = State_nor;
 volatile int16_t selecsource = selecsource1;
@@ -499,7 +501,29 @@ void ats_process(void)
 {
 	if((workmodeValue == modeauto) && (start_ats ==0 ) )
 	{
-		
+		if (SourceSelectValue == SELECTSOURCE1)
+    {
+			if(systemValue == main_main)
+			{
+				
+			}
+			else //(main_gens)
+			{
+
+			}				
+    }
+    else //SourceSelectValue == SELECTSOURCE2
+    {
+			if(systemValue == main_main)
+			{
+				
+			}
+			else //(main_gens)
+			{
+
+			}			
+			
+    }
 		
 	}
 }
