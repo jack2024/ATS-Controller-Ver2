@@ -1676,10 +1676,10 @@ void buttonRead(void)
                 {
 									PageMenuCount = Pagemenu4_T;
                 }
-//                else
-//                {
-//									PageMenuCount--;
-//                }
+                else
+                {
+									PageMenuCount++;
+                }
 								break;
 
             	default:
