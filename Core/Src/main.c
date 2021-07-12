@@ -494,11 +494,11 @@ void Beep(void)
 	//HAL_GPIO_WritePin(Buzzer_GPIO_Port, Buzzer_Pin,OFF_BUZZER);
 }
 
+// ATS Process Function
 void ats_process(void)
 {
 	if((workmodeValue == modeauto) && (start_ats ==0 ) )
 	{
-		
 		
 		
 	}
