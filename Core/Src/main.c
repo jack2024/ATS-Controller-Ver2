@@ -507,16 +507,31 @@ void ats_process(void)
 			{
 				if ((!source1OK)&&(source2OK) )
         {
-					ctrlATScount = CTRL_ATS_TIMEOUT;
-					HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-					HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);	
-//					HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
-//					HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
+					if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin)){
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+					}
+					else{
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+					}
+					
+
         }
         else if ((source1OK)) // Return to normal
         {
-					HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-					HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+					if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin)){
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+					}
+					else{
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+					}
         }
 			}
 			else //(main_gens)
@@ -528,15 +543,39 @@ void ats_process(void)
     {
 			if(systemValue == main_main)
 			{
-				ctrlATScount = CTRL_ATS_TIMEOUT;
-				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+				if ((!source2OK)&&(source1OK) )
+        {
+					if(HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin)){
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+					}
+					else{
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+					}
+					
+
+        }
+        else if ((source2OK)) // Return to normal
+        {
+					if(!HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin)){
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+					}
+					else{
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+					}
+        }
 			}
 			else //(main_gens)
 			{
 
-			}			
-			
+			}
     }
 		
 	}
@@ -623,10 +662,12 @@ int main(void)
   while (1)
   {
 		loopcount++;
-
-				
+			
 		buttonRead();
-		checkauxinput();
+		if(workmodeValue == modemanual)
+		{
+			checkauxinput();
+		}
 		if(((loopcount % 100) == 0) && (lcdflag ==0))// 10.4 ms.
 		{
 			HAL_GPIO_TogglePin(LCD_D2_GPIO_Port,LCD_D2_Pin);

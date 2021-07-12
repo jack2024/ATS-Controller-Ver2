@@ -321,20 +321,15 @@
         <Ww>
           <count>34</count>
           <WinNumber>1</WinNumber>
-          <ItemText>genschedulestart</ItemText>
+          <ItemText>source1OK</ItemText>
         </Ww>
         <Ww>
           <count>35</count>
           <WinNumber>1</WinNumber>
-          <ItemText>source1OK</ItemText>
-        </Ww>
-        <Ww>
-          <count>36</count>
-          <WinNumber>1</WinNumber>
           <ItemText>source2OK</ItemText>
         </Ww>
         <Ww>
-          <count>37</count>
+          <count>36</count>
           <WinNumber>1</WinNumber>
           <ItemText>initstartdelaycount</ItemText>
         </Ww>
