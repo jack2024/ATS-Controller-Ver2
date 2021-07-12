@@ -204,7 +204,7 @@ const char systemtypemenu3[] 	= 	"";
 const char systemtypemenu4[] 	= 	"";
 const char systemtypemenu5[] 	= 	"*ENT Save&Exit";
 const char* const systemtypemenu[] = {systemtypemenu1, systemtypemenu2, systemtypemenu3, systemtypemenu4, systemtypemenu5};
-enum{main_main,main_gens};
+enum{main_gens,main_main};
 
 const char freqmenu1[] 	= 	"1.FreqUnderCutoff";
 const char freqmenu2[] 	= 	"2.FreqUnderReturn";
@@ -499,24 +499,38 @@ void Beep(void)
 // ATS Process Function
 void ats_process(void)
 {
-	if((workmodeValue == modeauto) && (start_ats ==0 ) )
+	if((workmodeValue == modeauto) && (start_ats == 1 ) )
 	{
 		if (SourceSelectValue == SELECTSOURCE1)
     {
 			if(systemValue == main_main)
 			{
-				
+				if ((!source1OK)&&(source2OK) )
+        {
+					ctrlATScount = CTRL_ATS_TIMEOUT;
+					HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+					HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);	
+//					HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
+//					HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
+        }
+        else if ((source1OK)) // Return to normal
+        {
+					HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+					HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+        }
 			}
 			else //(main_gens)
 			{
 
 			}				
     }
-    else //SourceSelectValue == SELECTSOURCE2
+    else //(SourceSelectValue == SELECTSOURCE2)
     {
 			if(systemValue == main_main)
 			{
-				
+				ctrlATScount = CTRL_ATS_TIMEOUT;
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 			}
 			else //(main_gens)
 			{
