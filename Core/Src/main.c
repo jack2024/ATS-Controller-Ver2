@@ -86,7 +86,7 @@ void EEPROMWriteInt(uint32_t addr, uint16_t Value);
 #define FreqNormalTimeSet_addr 0x22
 
 #define GesScheduleEnable_addr	0x24
-#define GesSchedulePeriod_addr	0x26
+#define GesScheduleEvery_addr	0x26
 #define GesScheduleDate_addr	0x28
 #define GesScheduleDayofweek_addr	0x2A
 #define GesScheduleHour_addr	0x2C
@@ -347,7 +347,7 @@ uint8_t datedata[4] = {0};
 uint8_t timedata[8] = {0};
 
 typedef struct gen{
-	volatile int16_t genschedule_period;
+	volatile int16_t genschedule_every;
   volatile int16_t genschedule_enable;
   volatile int16_t genschedule_hour;
   volatile int16_t genschedule_minute;
@@ -355,7 +355,7 @@ typedef struct gen{
 	volatile int16_t genschedule_date;
 	volatile int16_t genschedule_time;
 } genschedulestart_t;
-genschedulestart_t genschedulestart;
+genschedulestart_t genschedulestart ,genschedulestart_compare ;
 	
 
 
@@ -1561,7 +1561,7 @@ void buttonRead(void)
 									case ScheduleGoback_T: //4
 										// Save befor goback
 										EEPROMWriteInt(GesScheduleEnable_addr , genschedulestart.genschedule_enable);
-										EEPROMWriteInt(GesSchedulePeriod_addr , genschedulestart.genschedule_period);
+										EEPROMWriteInt(GesScheduleEvery_addr , genschedulestart.genschedule_every);
 										EEPROMWriteInt(GesScheduleDate_addr , genschedulestart.genschedule_date);
 										EEPROMWriteInt(GesScheduleDayofweek_addr , genschedulestart.genschedule_dayofweek);
 										EEPROMWriteInt(GesScheduleHour_addr , genschedulestart.genschedule_hour);
@@ -1637,13 +1637,13 @@ void buttonRead(void)
 								switch(Submenu3Count)
                 {
                 	case DAILY:
-										genschedulestart.genschedule_period = DAILY;
+										genschedulestart.genschedule_every = DAILY;
                 		break;
                 	case WEEKLY:
-										genschedulestart.genschedule_period = WEEKLY;
+										genschedulestart.genschedule_every = WEEKLY;
                 		break;
 									case MONTLY:
-										genschedulestart.genschedule_period = MONTLY;
+										genschedulestart.genschedule_every = MONTLY;
                 		break;
                 	default:
                 		break;
@@ -2810,6 +2810,34 @@ void ReadSetting(void)
 	freqNormalTimeSetValue = freqNormalTimeSetValue<<8;
 	freqNormalTimeSetValue |= *(uint8_t *)0x801F823;
 	
+	genschedulestart.genschedule_enable	 = *(uint8_t *)0x801F824;
+	genschedulestart.genschedule_enable = genschedulestart.genschedule_enable<<8;
+	genschedulestart.genschedule_enable |= *(uint8_t *)0x801F825;
+	
+	genschedulestart.genschedule_every = *(uint8_t *)0x801F826;
+	genschedulestart.genschedule_every = genschedulestart.genschedule_every<<8;
+	genschedulestart.genschedule_every |= *(uint8_t *)0x801F827;
+	
+	genschedulestart.genschedule_date = *(uint8_t *)0x801F828;
+	genschedulestart.genschedule_date = genschedulestart.genschedule_date<<8;
+	genschedulestart.genschedule_date |= *(uint8_t *)0x801F829;
+	
+	genschedulestart.genschedule_dayofweek = *(uint8_t *)0x801F82A;
+	genschedulestart.genschedule_dayofweek = genschedulestart.genschedule_dayofweek<<8;
+	genschedulestart.genschedule_dayofweek |= *(uint8_t *)0x801F82B;
+	
+	genschedulestart.genschedule_hour = *(uint8_t *)0x801F82C;
+	genschedulestart.genschedule_hour = genschedulestart.genschedule_hour<<8;
+	genschedulestart.genschedule_hour |= *(uint8_t *)0x801F82D;
+	
+	genschedulestart.genschedule_minute = *(uint8_t *)0x801F82E;
+	genschedulestart.genschedule_minute = genschedulestart.genschedule_minute<<8;
+	genschedulestart.genschedule_minute |= *(uint8_t *)0x801F82F;
+	
+	genschedulestart.genschedule_time = *(uint8_t *)0x801F830;
+	genschedulestart.genschedule_time = genschedulestart.genschedule_time<<8;
+	genschedulestart.genschedule_time |= *(uint8_t *)0x801F831;
+	
 	//SourceSelectValue, NetworkSelectValue;
 	
 	if((UnderValue > 220)||(UnderValue < 150))
@@ -2854,6 +2882,18 @@ void ReadSetting(void)
 	if((freqNormalTimeSetValue >60)||(freqNormalTimeSetValue <0))
 		freqNormalTimeSetValue = 5;
 	
+	if((genschedulestart.genschedule_enable >1)||(genschedulestart.genschedule_enable <0))
+		genschedulestart.genschedule_enable = 0;
+	if((genschedulestart.genschedule_every >2)||(genschedulestart.genschedule_every <0))
+		genschedulestart.genschedule_every = 2;
+	if((genschedulestart.genschedule_date >31)||(genschedulestart.genschedule_date <1))
+		genschedulestart.genschedule_date = 1;
+	if((genschedulestart.genschedule_dayofweek >7)||(genschedulestart.genschedule_dayofweek <1))
+		genschedulestart.genschedule_dayofweek = 7;
+	if((genschedulestart.genschedule_hour >23)||(genschedulestart.genschedule_hour <0))
+		genschedulestart.genschedule_hour = 8;
+	if((genschedulestart.genschedule_time >360)||(genschedulestart.genschedule_time <1))
+		genschedulestart.genschedule_time = 5;
 	
 	EEPROMWriteInt(UnderSet_addr, UnderValue);
 	EEPROMWriteInt(UnderResSet_addr, UnderResValue);
@@ -2874,6 +2914,14 @@ void ReadSetting(void)
 	EEPROMWriteInt(FreqOverReturnSet_addr , freqOverResValue);
 	EEPROMWriteInt(FreqABNormalTimeSet_addr , freqABnormalTimeSetValue);
 	EEPROMWriteInt(FreqNormalTimeSet_addr , freqNormalTimeSetValue);
+	
+	EEPROMWriteInt(GesScheduleEnable_addr , genschedulestart.genschedule_enable);
+	EEPROMWriteInt(GesScheduleEvery_addr , genschedulestart.genschedule_every);
+	EEPROMWriteInt(GesScheduleDate_addr , genschedulestart.genschedule_date);
+	EEPROMWriteInt(GesScheduleDayofweek_addr , genschedulestart.genschedule_dayofweek);
+	EEPROMWriteInt(GesScheduleHour_addr , genschedulestart.genschedule_hour);
+	EEPROMWriteInt(GesScheduleMinute_addr , genschedulestart.genschedule_minute);
+	EEPROMWriteInt(GesScheduleTime_addr , genschedulestart.genschedule_time);			
 }
 /* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
 void storecomparevalue(void)
@@ -2898,6 +2946,15 @@ void storecomparevalue(void)
 	freqOverResValue_compare = freqOverResValue;
 	freqABnormalTimeSetValue_compare = freqABnormalTimeSetValue;
 	freqNormalTimeSetValue_compare = freqNormalTimeSetValue;
+	
+	genschedulestart_compare.genschedule_enable = genschedulestart.genschedule_enable;
+	genschedulestart_compare.genschedule_every = genschedulestart.genschedule_every;
+	genschedulestart_compare.genschedule_date = genschedulestart.genschedule_date;
+	genschedulestart_compare.genschedule_dayofweek = genschedulestart.genschedule_dayofweek;
+	genschedulestart_compare.genschedule_hour = genschedulestart.genschedule_hour;
+	genschedulestart_compare.genschedule_minute = genschedulestart.genschedule_minute;
+	genschedulestart_compare.genschedule_time = genschedulestart.genschedule_time;
+
 }
 
 void restorevalue(void)
@@ -2920,6 +2977,14 @@ void restorevalue(void)
 	freqOverResValue = freqOverResValue_compare;
 	freqABnormalTimeSetValue = freqABnormalTimeSetValue_compare;
 	freqNormalTimeSetValue = freqNormalTimeSetValue_compare;
+	
+	genschedulestart.genschedule_enable = genschedulestart_compare.genschedule_enable;
+	genschedulestart.genschedule_every = genschedulestart_compare.genschedule_every;
+	genschedulestart.genschedule_date = genschedulestart_compare.genschedule_date;
+	genschedulestart.genschedule_dayofweek = genschedulestart_compare.genschedule_dayofweek;
+	genschedulestart.genschedule_hour = genschedulestart_compare.genschedule_hour;
+	genschedulestart.genschedule_minute = genschedulestart_compare.genschedule_minute;
+	genschedulestart.genschedule_time = genschedulestart_compare.genschedule_time;
 }
 
 uint8_t comparesettingvalue(void)
@@ -2941,7 +3006,16 @@ uint8_t comparesettingvalue(void)
 		(freqOverValue != freqOverValue_compare)||
 		(freqOverResValue != freqOverResValue_compare)||
 		(freqABnormalTimeSetValue != freqABnormalTimeSetValue_compare)||
-		(freqNormalTimeSetValue != freqNormalTimeSetValue_compare))
+		(freqNormalTimeSetValue != freqNormalTimeSetValue_compare)||
+	
+		(genschedulestart.genschedule_enable != genschedulestart_compare.genschedule_enable)||
+		(genschedulestart.genschedule_every != genschedulestart_compare.genschedule_every)||
+		(genschedulestart.genschedule_date != genschedulestart_compare.genschedule_date)||
+		
+		(genschedulestart.genschedule_dayofweek != genschedulestart_compare.genschedule_dayofweek)||
+		(genschedulestart.genschedule_hour != genschedulestart_compare.genschedule_hour)||
+		(genschedulestart.genschedule_minute != genschedulestart_compare.genschedule_minute)||
+		(genschedulestart.genschedule_time != genschedulestart_compare.genschedule_time))
 	{
 		return 1;
 	}
