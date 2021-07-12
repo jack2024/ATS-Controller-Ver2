@@ -52,7 +52,7 @@
 #define NETWORK3P4W		0
 #define NETWORK1P2W		1
 
-#define MENUTIMEOUT		20
+#define MENUTIMEOUT		60
 #define CTRL_ATS_TIMEOUT		5000
 
 /*        fLASH            */
@@ -1671,7 +1671,7 @@ void buttonRead(void)
                 	default :
                 		break;
                 }
-								//PageMenuCount = Pagemenu4_T;
+								PageMenuCount = Pagemenu4_T;
 							
 								break;
 							
