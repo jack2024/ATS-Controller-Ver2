@@ -440,6 +440,11 @@
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f0xx_hal_msp.c</FilePath>
             </File>
+            <File>
+              <FileName>ats_process.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\ats_process.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

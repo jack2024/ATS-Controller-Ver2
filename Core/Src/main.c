@@ -55,6 +55,8 @@
 #define MENUTIMEOUT		60
 #define CTRL_ATS_TIMEOUT		5000
 
+#define INIT_STARTDELAY	3
+
 /*        fLASH            */
 char Flashdata[48];
 #define FLASH_PAGE_START_ADDRESS    0x0801F800
@@ -264,6 +266,8 @@ float freqS1;
 uint16_t V1_A;
 uint16_t V1_B;
 uint16_t V1_C;
+uint16_t F_S1;
+
 
 float source2_A;
 float source2_B;
@@ -273,6 +277,7 @@ float freqS2;
 uint16_t V2_A;
 uint16_t V2_B;
 uint16_t V2_C;
+uint16_t F_S2;
 //				0					1								2								3						4						5          6						7
 enum{UnderSet_T, OvererSet_T, MainselectSet_T, ConfigSet_T, TimeSet_T, SystemSet_T, FreqSet_T, Schedule_T};
 enum{VoltCut_T,VoltReturn_T,TimeCut_T,TimeReturn_T,Goback_T};
@@ -332,7 +337,9 @@ volatile int16_t   genstarttimeValue, genstarttimeValue_compare ;
 
 volatile int16_t   OverTimeCount =0 , OverResTimeCount =0;
 
-volatile int16_t StartMeasureCount = 5000;
+//volatile int16_t StartMeasureCount = 5000;
+
+volatile signed char initstartdelaycount = INIT_STARTDELAY, start_ats = 0;
 
 RTC_TimeTypeDef Timeupdate = {0};
 RTC_DateTypeDef Dateupdate = {0};
@@ -357,7 +364,7 @@ typedef struct gen{
 } genschedulestart_t;
 genschedulestart_t genschedulestart ,genschedulestart_compare ;
 	
-
+uint8_t source1OK , source2OK;
 
 /* USER CODE END PV */
 
@@ -378,6 +385,7 @@ void storecomparevalue(void);
 void restorevalue(void);
 void system_init(void);
 uint8_t checkauxinput(void);
+void ats_process(void);
 
 volatile int16_t systickcount =0;
 volatile signed char beepcount = 0;
@@ -442,9 +450,6 @@ void cleardisplay(void)
 	
 }
 
-
-
-
 volatile signed char menucount = 0;
 //Interrupt TIM Overflow routine 1 Sec..
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
@@ -470,6 +475,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				}
 			}
 		}
+		if(initstartdelaycount)
+		{
+			if(--initstartdelaycount <=0)
+			{
+				initstartdelaycount =0;
+				start_ats = 1;
+				
+			}
+		}
 	}
 }
 
@@ -480,6 +494,18 @@ void Beep(void)
 	//HAL_Delay(50);
 	//HAL_GPIO_WritePin(Buzzer_GPIO_Port, Buzzer_Pin,OFF_BUZZER);
 }
+
+void ats_process(void)
+{
+	if((workmodeValue == modeauto) && (start_ats ==0 ) )
+	{
+		
+		
+		
+	}
+}
+
+
 
 /* USER CODE END 0 */
 
@@ -552,7 +578,7 @@ int main(void)
 	CommEnergyIC(SOURCE1, 0, EMMIntEn1, 0x7000);
 	CommEnergyIC(SOURCE2, 0, EMMIntEn1, 0x7000);
 	
-	
+	initstartdelaycount = INIT_STARTDELAY;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -2665,13 +2691,90 @@ uint16_t EMMInt1 ,EMMInt2 ,EMMInt3,EMMInt4;
 void readvolt(void)
 {
 	
-	source1_A = GetLineVoltageA(SOURCE1);
 	if(NetworkSelectValue == sys3P4W)
 	{
+		source1_A = GetLineVoltageA(SOURCE1);
 		source1_B = GetLineVoltageB(SOURCE1); 
 		source1_C = GetLineVoltageC(SOURCE1);
+		freqS1 = GetFrequency(SOURCE1);
+		
+		V1_A = (uint16_t)source1_A;
+		V1_B = (uint16_t)source1_B;
+		V1_C = (uint16_t)source1_C;
+		F_S1 = (uint16_t)freqS1;
+		
+		source2_A = GetLineVoltageA(SOURCE2);
+		source2_B = GetLineVoltageB(SOURCE2); 
+		source2_C = GetLineVoltageC(SOURCE2);
+		freqS2 = GetFrequency(SOURCE2);
+		
+		V2_A = (uint16_t)source2_A;
+		V2_B = (uint16_t)source2_B;
+		V2_C = (uint16_t)source2_C;
+		F_S2 = (uint16_t)freqS2;
+		
+		if((V1_A > UnderValue) && (V1_B > UnderValue) && (V1_C > UnderValue)&&
+			(V1_A < OverValue) && (V1_B < OverValue) && (V1_C < OverValue) &&
+			(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) )
+		{
+			source1OK = 1;
+			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
+		}
+		else{
+			source1OK = 0;
+			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
+		}
+		
+		if((V2_A > UnderValue) && (V2_B > UnderValue) && (V2_C > UnderValue)&&
+			(V2_A < OverValue) && (V2_B < OverValue) && (V2_C < OverValue) &&
+			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) )
+		{
+			source2OK = 1;
+			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+		}
+		else{
+			source2OK = 0;
+			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+		}
 	}
-	freqS1 = GetFrequency(SOURCE1);
+	else if(NetworkSelectValue == sys1P2W)
+	{
+		source1_A = GetLineVoltageA(SOURCE1);
+		freqS1 = GetFrequency(SOURCE1);
+		V1_A = (uint16_t)source1_A;
+		F_S1 = (uint16_t)freqS1;
+		
+		source2_A = GetLineVoltageA(SOURCE2);
+		freqS2 = GetFrequency(SOURCE2);
+		V2_A = (uint16_t)source2_A;
+		F_S2 = (uint16_t)freqS2;
+		
+		if((V1_A > UnderValue) && (V1_A < OverValue) && 
+		(F_S1 > freqUnderValue) && (F_S1 < freqOverValue))
+		{
+			source1OK = 1;
+			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
+		}
+		else
+		{
+			source1OK = 0;
+			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
+		}
+		
+		if((V2_A > UnderValue) && (V2_A < OverValue) && 
+		(F_S2 > freqUnderValue) && (F_S2 < freqOverValue))
+		{
+			source2OK = 1;
+			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+		}
+		else
+		{
+			source2OK = 0;
+			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+		}
+		
+	}
+	
 	
 	source2_A = GetLineVoltageA(SOURCE2);
 	if(NetworkSelectValue == sys3P4W)
@@ -2721,7 +2824,10 @@ void readvolt(void)
 		if(V2_C <10)
 			V2_C = 0;
 	}
-	
+
+	ats_process();
+
+/*	
 	if(NetworkSelectValue == sys3P4W)
 	{
 		if(((V1_A >= UnderValue) && (V1_A <= OverValue)) && 
@@ -2776,6 +2882,9 @@ void readvolt(void)
 			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
 		}
 	}
+*/
+	
+	
 }
 
 void ReadSetting(void)

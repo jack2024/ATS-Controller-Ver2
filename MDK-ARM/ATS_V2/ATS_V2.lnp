@@ -10,6 +10,7 @@
 "ats_v2\usart.o"
 "ats_v2\stm32f0xx_it.o"
 "ats_v2\stm32f0xx_hal_msp.o"
+"ats_v2\ats_process.o"
 "ats_v2\usb_device.o"
 "ats_v2\usbd_desc.o"
 "ats_v2\usbd_cdc_if.o"
