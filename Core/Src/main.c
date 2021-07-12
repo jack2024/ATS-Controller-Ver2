@@ -1549,7 +1549,7 @@ void buttonRead(void)
                 	case ScheduleEnable_T: //0
 										setvalueselect = 	GenScheduleEnableSet;
                 		break;
-                	case SchedulePeriod_T:  //1
+                	case SchedulePeriod_T: //1
 										setvalueselect = 	SchedulePeriodSet;
                 		break;
 									case ScheduleSetDateTime_T: //2
@@ -1568,6 +1568,7 @@ void buttonRead(void)
 										EEPROMWriteInt(GesScheduleMinute_addr , genschedulestart.genschedule_minute);
 										EEPROMWriteInt(GesScheduleTime_addr , genschedulestart.genschedule_time);									
 										
+										PageMenuCount = Pagemenu1_T;
 //										if (Submenu2Count == ScheduleGoback_T)
 //                    {
 //											PageMenuCount = 0;
@@ -1579,8 +1580,8 @@ void buttonRead(void)
 										//PageMenuCount = 0;
 										
 										
-										PageMenuCount = mainpage_T;
-										//PageMenuCount--;
+										//PageMenuCount = mainpage_T;
+										PageMenuCount--;
 										setvalueselect = NONselect;
                 		break;
                 	default:
@@ -1631,7 +1632,7 @@ void buttonRead(void)
 								else{
 									genschedulestart.genschedule_enable = 0;
 								}
-							break;
+								break;
 							case SchedulePeriodSet:
 								switch(Submenu3Count)
                 {
@@ -1664,19 +1665,22 @@ void buttonRead(void)
 										
                 		break;
 									case Schedulegoback_T:
-										Submenu2Count = 0;
+										//Submenu2Count = 0;
 										PageMenuCount--;
-										setvalueselect = NONselect;
+										//setvalueselect = NONselect;
                 		break;
                 	default :
                 		break;
                 }
-								PageMenuCount = Pagemenu4_T;
-							
+								if (Submenu3Count < Schedulegoback_T)
+                {
+									PageMenuCount = Pagemenu4_T;
+                }
+//                else
+//                {
+//									PageMenuCount--;
+//                }
 								break;
-							
-							
-								
 
             	default:
             		break;
