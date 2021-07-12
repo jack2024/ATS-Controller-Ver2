@@ -935,12 +935,14 @@ void buttonRead(void)
 									{
 										Submenu2Count = main_gens;
 									}
+									break;
 								break;
 								case FreqSet_T:
 									if(++Submenu2Count > 6)
 									{
 										Submenu2Count =0;
 									}
+									break;
 								case Schedule_T:
 									if(++Submenu2Count > 4)
 									{
@@ -1065,7 +1067,10 @@ void buttonRead(void)
 									}
 								break;
 								case ScheduleStartTimeSet:
-									
+									if(++genschedulestart.genschedule_time  > 360)
+									{
+										genschedulestart.genschedule_time  =360;
+									}
 								break;
 										
 								default:
@@ -1335,10 +1340,41 @@ void buttonRead(void)
 									}
 								break;
 								case ScheduleStartTimeSet:
-									
+									if(--genschedulestart.genschedule_time < 1)
+									{
+										genschedulestart.genschedule_time =1;
+									}
 								break;
 							}
-
+							break;
+							
+							case Pagemenu4_T:
+								switch (Submenu3Count)
+								{
+									case ScheduleDate_T:
+										if(--genschedulestart.genschedule_date < 1){
+											genschedulestart.genschedule_date = 31;
+										}
+										break;
+									case ScheduleDayofweek_T:
+										if(--genschedulestart.genschedule_dayofweek < 1){
+												genschedulestart.genschedule_dayofweek = 7;
+										}
+										break;
+									case ScheduleSetHours_T:
+										if(--genschedulestart.genschedule_hour < 1){
+												genschedulestart.genschedule_hour = 23;
+										}
+										break;
+									case ScheduleMinute_T:
+										if(--genschedulestart.genschedule_minute < 1){
+												genschedulestart.genschedule_minute = 59;
+										}
+										break;
+									
+									default:
+										break;
+								}
 							break;
 						
 							
@@ -2560,7 +2596,13 @@ void lcdupdate(void)
 							}	
 							break;
 						case ScheduleStartTimeSet:
-							
+							ssd1306_SetCursor(5, 3);
+							ssd1306_WriteString("GenStartTime(Min)", Font_7x10, White);	
+						
+							ssd1306_SetCursor(47, 3+15);
+							snprintf(buff, 4, "%d  ", genschedulestart.genschedule_time);
+							ssd1306_WriteString(buff, Font_11x18, White);		
+						
 							break;
 						default:
 							break;
