@@ -419,7 +419,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	if((exit1_flag==0)&&(GPIO_Pin == GPIO_PIN_1))
 	{
 		exit1_flag = 255;
-		//exticount++;
 	}
 	if((exit2_flag==0)&&(GPIO_Pin == GPIO_PIN_0))
 	{
