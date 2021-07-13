@@ -510,12 +510,14 @@ void ats_process(void)
 			{
 				if ((!source1OK)&&(source2OK) )
         {
-					if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin)){
+					if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+					{
 						ctrlATScount = CTRL_ATS_TIMEOUT;
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 					}
-					else{
+					else
+					{
 						ctrlATScount = CTRL_ATS_TIMEOUT;
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
@@ -1002,7 +1004,8 @@ void buttonRead(void)
 					switch (PageMenuCount)
           {
           	case mainpage_T:
-							if(NetworkSelectValue == sys3P4W){
+							if(NetworkSelectValue == sys3P4W)
+							{
 								if(++DisplayMain >Display2_T)
 									DisplayMain = Display1_T;
 							}
@@ -1068,14 +1071,10 @@ void buttonRead(void)
 									break;
 								
 								break;
-							
-										
-									
-								
+
               	default:
               		break;
               }
-
           		break;
 							
 						case Pagemenu3_T:
