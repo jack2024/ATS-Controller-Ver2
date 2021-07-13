@@ -321,16 +321,6 @@
         <Ww>
           <count>34</count>
           <WinNumber>1</WinNumber>
-          <ItemText>source1OK</ItemText>
-        </Ww>
-        <Ww>
-          <count>35</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>source2OK</ItemText>
-        </Ww>
-        <Ww>
-          <count>36</count>
-          <WinNumber>1</WinNumber>
           <ItemText>initstartdelaycount</ItemText>
         </Ww>
       </WatchWindow1>
@@ -338,32 +328,47 @@
         <Ww>
           <count>0</count>
           <WinNumber>2</WinNumber>
-          <ItemText>PageMenuCount</ItemText>
+          <ItemText>Timer_flag,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>2</WinNumber>
-          <ItemText>Submenu1Count</ItemText>
+          <ItemText>start_ats,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>2</WinNumber>
-          <ItemText>setvalueselect</ItemText>
+          <ItemText>UnderTimeCount,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>2</WinNumber>
-          <ItemText>Submenu2Count</ItemText>
+          <ItemText>UnderResTimeCount,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>2</WinNumber>
-          <ItemText>mainmenu[i]</ItemText>
+          <ItemText>source1OK,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>2</WinNumber>
-          <ItemText>source2OK</ItemText>
+          <ItemText>source2OK,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>SourceSelectValue,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>source_out,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>systemValue,0x0A</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>

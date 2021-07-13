@@ -291,13 +291,9 @@ enum{State_nor,State_PreUnder,State_Under,State_PreUnderRes,State_UnderRes,State
 enum{nor, UnderSet, OverSet,UnderResSet,OverResSet,UnderTimSet,OverTimSet,UnderResTimSet,OverResTimSet};
 enum{normal, SetUnder, SetUnderRes,SetUnderTim,SetUnderResTim,SetSource};
 
-
-
 volatile int8_t State = State_nor;
 volatile int16_t selecsource = selecsource1;
 volatile int8_t lcdflag ;
-
-
 
 
 //volatile signed char SubMenu1=0,SubMenu2=0,SubMenu3=0,SubMenu4=0;
@@ -339,6 +335,8 @@ volatile int16_t   freqABnormalTimeCount =0 , freqNormalTime =0;
 volatile int16_t   genstarttimeValue, genstarttimeValue_compare ;
 
 volatile int16_t   OverTimeCount =0 , OverResTimeCount =0;
+
+volatile signed char Timer_flag =0;
 
 //volatile int16_t StartMeasureCount = 5000;
 
@@ -415,6 +413,106 @@ void HAL_SYSTICK_Callback()
 			HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 		}
 	}
+	
+	/*     Timer Count      */
+	if(Timer_flag)
+	{
+		/////////////// Under //////////////////////
+		//if((UnderTimeCount)&&(State == State_PreUnder))
+		if(UnderTimeCount)
+		{	
+			if(--UnderTimeCount <=0)
+			{
+				UnderTimeCount = 0;
+				if(SourceSelectValue == SELECTSOURCE1)
+				{
+					source1OK = 0;
+				}
+				else // (SourceSelectValue == SELECTSOURCE2)
+				{
+					source2OK = 0;
+				}		
+				State = State_Under;
+				if((UnderResTimeCount ==0) && (OverTimeCount ==0)&& (OverResTimeCount ==0))
+				{
+					Timer_flag = 0; // stop timer
+				}
+			}
+		}
+		//if((UnderResTimeCount)&&(State == State_PreUnderRes))
+		if(UnderResTimeCount)
+		{
+			if(--UnderResTimeCount <=0)
+			{
+				UnderResTimeCount = 0;
+				
+				if(SourceSelectValue == SELECTSOURCE1)
+				{
+					source1OK = 1;
+				}
+				else // (SourceSelectValue == SELECTSOURCE2)
+				{
+					source2OK = 1;
+				}
+				
+				if(State == State_PreUnderRes)/**/
+				{
+					State = State_nor;
+				}
+				if((UnderTimeCount ==0) && (OverTimeCount ==0)&& (OverResTimeCount ==0))
+				{
+					Timer_flag = 0; // stop timer
+				}
+			}
+		}
+		/////////////// Over //////////////////////
+		//if((OverTimeCount)&&(State == State_PreOver))
+		if(OverTimeCount)
+		{		
+			if(--OverTimeCount <=0)
+			{
+				OverTimeCount = 0;
+				if(SourceSelectValue == SELECTSOURCE1)
+				{
+					source1OK = 0;
+				}
+				else // (SourceSelectValue == SELECTSOURCE2)
+				{
+					source2OK = 0;
+				}
+				State = State_Over;		
+				if((UnderTimeCount ==0) && (UnderResTimeCount ==0)&& (OverResTimeCount ==0))
+				{
+					Timer_flag = 0; // stop timer
+				}
+			}
+		}
+		//if((OverResTimeCount)&&(State == State_PreOverRes))
+		if(OverResTimeCount)
+		{
+			if(--OverResTimeCount <=0)
+			{
+				OverResTimeCount = 0;
+				if(SourceSelectValue == SELECTSOURCE1)
+				{
+					source1OK = 1;
+				}
+				else // (SourceSelectValue == SELECTSOURCE2)
+				{
+					source2OK = 1;
+				}
+				if(State == State_PreOverRes)/**/
+				{
+					State = State_nor;
+				}
+				if((UnderTimeCount ==0) && (UnderResTimeCount ==0)&& (OverTimeCount ==0))
+				{
+					Timer_flag = 0; // stop timer
+				}
+			}
+		}
+	}
+	//////////////////////////////
 }
 
 volatile int16_t exticount =0;
@@ -508,7 +606,7 @@ void ats_process(void)
     {
 			if(systemValue == main_main)
 			{
-				if ((!source1OK)&&(source2OK) )
+				if((!source1OK)&&(source2OK))
         {
 					if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
 					{
@@ -527,7 +625,7 @@ void ats_process(void)
 					}
 					
         }
-        else if ((source1OK)) // Return to normal
+        else if (source1OK) // Return to normal
         {
 					if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin)){
 						ctrlATScount = CTRL_ATS_TIMEOUT;
@@ -597,6 +695,684 @@ void ats_process(void)
 	}
 }
 
+uint16_t EMMInt1 ,EMMInt2 ,EMMInt3,EMMInt4;
+void readvolt(void)
+{
+	
+	if(NetworkSelectValue == sys3P4W)
+	{
+		source1_A = GetLineVoltageA(SOURCE1);
+		source1_B = GetLineVoltageB(SOURCE1); 
+		source1_C = GetLineVoltageC(SOURCE1);
+		freqS1 = GetFrequency(SOURCE1);
+		
+		V1_A = (uint16_t)source1_A;
+		V1_B = (uint16_t)source1_B;
+		V1_C = (uint16_t)source1_C;
+		F_S1 = (uint16_t)freqS1;
+		
+		if(V1_A <10)
+			V1_A = 0;
+		if(V1_B <10)
+			V1_B = 0;
+		if(V1_C <10)
+			V1_C = 0;
+
+		
+		source2_A = GetLineVoltageA(SOURCE2);
+		source2_B = GetLineVoltageB(SOURCE2); 
+		source2_C = GetLineVoltageC(SOURCE2);
+		freqS2 = GetFrequency(SOURCE2);
+			
+		V2_A = (uint16_t)source2_A;
+		V2_B = (uint16_t)source2_B;
+		V2_C = (uint16_t)source2_C;
+		F_S2 = (uint16_t)freqS2;
+		
+		if(V2_A <10)
+			V2_A = 0;
+		if(V2_B <10)
+			V2_B = 0;
+		if(V2_C <10)
+			V2_C = 0;
+		
+		if(start_ats)
+		{
+			if(SourceSelectValue == SELECTSOURCE1)
+			{
+				/*****************UNDER**********************/
+				if( ((V1_A <= UnderValue ) || (V1_B <= UnderValue ) || (V1_C <= UnderValue ))&&
+				((State == State_nor)||(State == State_PreOverRes)))
+				{
+					UnderTimeCount = UnderTimSetValue*1000;
+					State = State_PreUnder;
+					if(UnderTimeCount ==0)
+					{
+						source1OK = 0;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag = 1; // start timer
+						}
+					}
+					
+				}
+				
+				if( ((V1_A > UnderValue ) && (V1_B > UnderValue ) && (V1_C > UnderValue )) && (State == State_PreUnder))
+				{
+					UnderTimeCount = 0;
+					State = State_nor;
+					Timer_flag = 0; // stop timer
+				}
+				
+				if( ((V1_A >= UnderResValue ) && (V1_B >= UnderResValue ) && (V1_C >= UnderResValue )) && (State == State_Under) )
+				{
+					UnderResTimeCount = UnderResTimSetValue*1000; //1000*1ms = 1 Sec
+					State = State_PreUnderRes;
+					if(UnderResTimeCount == 0)
+					{
+						source1OK = 1; 
+						if(State == State_PreUnderRes)/**/
+						{
+							
+							State = State_nor;
+						}		
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}		
+				}
+				if( ((V1_A <= UnderResValue) || (V1_B <= UnderResValue) || (V1_C <= UnderResValue)) && (State == State_PreUnderRes) )
+				{
+					State = State_Under;
+					UnderResTimeCount = 0;
+					Timer_flag = 0; // stop timer
+				}
+				
+				/*****************OVER**********************/
+				if( ((V1_A >= OverValue )||(V1_B >= OverValue )||(V1_C >= OverValue )) && ((State == State_nor)||(State == State_PreUnderRes)) )
+				{
+					OverTimeCount = OverTimSetValue*1000;
+					State = State_PreOver;
+					if(OverTimeCount ==0)
+					{
+						source1OK = 0;
+						State = State_Over;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}
+				}
+				
+				if( ((V1_A <= OverValue) && (V1_B <= OverValue) && (V1_C <= OverValue)) && (State == State_PreOver) )
+				{
+					State = State_nor;
+					Timer_flag = 0; // stop timer
+				}
+				//over return
+				if( ((V1_A <= OverResValue) && (V1_B <= OverResValue) && (V1_C <= OverResValue)) && (State == State_Over) )
+				{
+					OverResTimeCount = OverResTimSetValue*1000; //1000*1ms = 1 Sec
+					State = State_PreOverRes;
+					if(OverResTimeCount == 0)
+					{
+						//if(State == State_PreOverRes)
+							source1OK = 1;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}
+					
+				}
+				if( ((V1_A >= OverResValue)||(V1_B >= OverResValue)||(V1_C >= OverResValue)) && ((State == State_nor)&&(State == State_PreOverRes)) )
+				{
+					State = State_Over;
+					Timer_flag = 0; // stop timer
+				}
+				
+				if((V2_A > UnderValue) && (V2_B > UnderValue) && (V2_C > UnderValue)&&
+					(V2_A < OverValue) && (V2_B < OverValue) && (V2_C < OverValue) &&
+					(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) )
+				{
+					source2OK = 1;
+					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+				}
+				else
+				{
+					source2OK = 0;
+					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+				}
+			
+			}
+			else //*****(SourceSelectValue == SELECTSOURCE2)
+			{
+				/*****************UNDER**********************/
+				if( ((V2_A <= UnderValue ) || (V2_B <= UnderValue ) || (V2_C <= UnderValue ))&&
+				((State == State_nor)||(State == State_PreOverRes)))
+				{
+					UnderTimeCount = UnderTimSetValue*1000;
+					State = State_PreUnder;
+					if(UnderTimeCount ==0)
+					{
+						source2OK = 0;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag = 1; // start timer
+						}
+					}
+					
+				}
+				
+				if( ((V2_A > UnderValue ) && (V2_B > UnderValue ) && (V2_C > UnderValue )) && (State == State_PreUnder))
+				{
+					UnderTimeCount = 0;
+					State = State_nor;
+					Timer_flag = 0; // stop timer
+				}
+				
+				if( ((V2_A >= UnderResValue ) && (V2_B >= UnderResValue ) && (V2_C >= UnderResValue )) && (State == State_Under) )
+				{
+					UnderResTimeCount = UnderResTimSetValue*1000; //1000*1ms = 1 Sec
+					State = State_PreUnderRes;
+					if(UnderResTimeCount == 0)
+					{
+						source2OK = 1; 
+						if(State == State_PreUnderRes)/**/
+						{
+							
+							State = State_nor;
+						}		
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}		
+				}
+				if( ((V2_A <= UnderResValue) || (V2_B <= UnderResValue) || (V2_C <= UnderResValue)) && (State == State_PreUnderRes) )
+				{
+					State = State_Under;
+					UnderResTimeCount = 0;
+					Timer_flag = 0; // stop timer
+				}
+				
+				/*****************OVER**********************/
+				if( ((V2_A >= OverValue )||(V2_B >= OverValue )||(V2_C >= OverValue )) && ((State == State_nor)||(State == State_PreUnderRes)) )
+				{
+					OverTimeCount = OverTimSetValue*1000;
+					State = State_PreOver;
+					if(OverTimeCount ==0)
+					{
+						source2OK = 0;
+						State = State_Over;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}
+				}
+				
+				if( ((V2_A <= OverValue) && (V2_B <= OverValue) && (V2_C <= OverValue)) && (State == State_PreOver) )
+				{
+					State = State_nor;
+					Timer_flag = 0; // stop timer
+				}
+				//over return
+				if( ((V2_A <= OverResValue) && (V2_B <= OverResValue) && (V2_C <= OverResValue)) && (State == State_Over) )
+				{
+					OverResTimeCount = OverResTimSetValue*1000; //1000*1ms = 1 Sec
+					State = State_PreOverRes;
+					if(OverResTimeCount == 0)
+					{
+						//if(State == State_PreOverRes)
+							source2OK = 1;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}
+					
+				}
+				if( ((V2_A >= OverResValue)||(V2_B >= OverResValue)||(V2_C >= OverResValue)) && ((State == State_nor)&&(State == State_PreOverRes)) )
+				{
+					State = State_Over;
+					Timer_flag = 0; // stop timer
+				}
+				
+				if((V1_A > UnderValue) && (V1_B > UnderValue) && (V1_C > UnderValue)&&
+					(V1_A < OverValue) && (V1_B < OverValue) && (V1_C < OverValue) &&
+					(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) ){
+					source1OK = 1;
+					HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
+				}
+				else
+				{
+					source1OK = 0;
+					HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
+				}
+
+			}
+			
+		}//
+	}
+	else if(NetworkSelectValue == sys1P2W)
+	{
+		source1_A = GetLineVoltageA(SOURCE1);
+		freqS1 = GetFrequency(SOURCE1);
+		V1_A = (uint16_t)source1_A;
+		F_S1 = (uint16_t)freqS1;
+		
+		if(V1_A <10)
+			V1_A = 0;
+		
+		source2_A = GetLineVoltageA(SOURCE2);
+		freqS2 = GetFrequency(SOURCE2);
+		V2_A = (uint16_t)source2_A;
+		F_S2 = (uint16_t)freqS2;
+		
+		if(V2_A <10)
+			V2_A = 0;
+		
+		if(start_ats)
+		{
+			if(SourceSelectValue == SELECTSOURCE1)
+			{
+				/*****************UNDER**********************/
+				if( (V1_A <= UnderValue )&&((State == State_nor)||(State == State_PreOverRes)))
+				{
+					UnderTimeCount = UnderTimSetValue*1000;
+					State = State_PreUnder;
+					if(UnderTimeCount ==0)
+					{
+						source1OK = 0;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag = 1; // start timer
+						}
+					}	
+				}
+				
+				if( (V1_A > UnderValue ) && (State == State_PreUnder))
+				{
+					UnderTimeCount = 0;
+					State = State_nor;
+					Timer_flag = 0; // stop timer
+				}
+				
+				if( (V1_A >= UnderResValue ) && (State == State_Under) )
+				{
+					UnderResTimeCount = UnderResTimSetValue*1000; //1000*1ms = 1 Sec
+					State = State_PreUnderRes;
+					if(UnderResTimeCount == 0)
+					{
+						source1OK = 1; 
+						if(State == State_PreUnderRes)/**/
+						{
+							
+							State = State_nor;
+						}		
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}		
+				}
+				if( (V1_A <= UnderResValue) && (State == State_PreUnderRes) )
+				{
+					State = State_Under;
+					UnderResTimeCount = 0;
+					Timer_flag = 0; // stop timer
+				}
+				
+				/*****************OVER**********************/
+				if( (V1_A >= OverValue ) && ((State == State_nor)||(State == State_PreUnderRes)) )
+				{
+					OverTimeCount = OverTimSetValue*1000;
+					State = State_PreOver;
+					if(OverTimeCount ==0)
+					{
+						source1OK = 0;
+						State = State_Over;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}
+				}
+				
+				if( (V1_A <= OverValue) && (State == State_PreOver) )
+				{
+					State = State_nor;
+					Timer_flag = 0; // stop timer
+				}
+				//over return
+				if( (V1_A <= OverResValue) && (State == State_Over) )
+				{
+					OverResTimeCount = OverResTimSetValue*1000; //1000*1ms = 1 Sec
+					State = State_PreOverRes;
+					if(OverResTimeCount == 0)
+					{
+						//if(State == State_PreOverRes)
+							source1OK = 1;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}
+					
+				}
+				if( (V1_A >= OverResValue) && ((State == State_nor)&&(State == State_PreOverRes)) )
+				{
+					State = State_Over;
+					Timer_flag = 0; // stop timer
+				}
+				
+				if((V1_A > UnderValue) && (V1_A < OverValue) &&
+					(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) && (UnderResTimeCount <=0)){
+
+					source1OK = 1;
+					HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
+				}
+				else
+				{
+
+					source1OK = 0;
+					HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
+				}
+				if((V2_A > UnderValue)&&(V2_A < OverValue) &&
+				(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) &&(UnderResTimeCount <=0) )
+				{
+					source2OK = 1;
+					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+				}
+				else
+				{
+					source2OK = 0;
+					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+				}
+			
+			}
+			else //*****(SourceSelectValue == SELECTSOURCE2)
+			{
+				/*****************UNDER**********************/
+				if( (V2_A <= UnderValue )&&((State == State_nor)||(State == State_PreOverRes)))
+				{
+					UnderTimeCount = UnderTimSetValue*1000;
+					State = State_PreUnder;
+					if(UnderTimeCount ==0)
+					{
+						source2OK = 0;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag = 1; // start timer
+						}
+					}
+					
+				}
+				
+				if( ((V2_A > UnderValue ) ) && (State == State_PreUnder))
+				{
+					UnderTimeCount = 0;
+					State = State_nor;
+					Timer_flag = 0; // stop timer
+				}
+				
+				if( (V2_A >= UnderResValue ) && (State == State_Under) )
+				{
+					UnderResTimeCount = UnderResTimSetValue*1000; //1000*1ms = 1 Sec
+					State = State_PreUnderRes;
+					if(UnderResTimeCount == 0)
+					{
+						source2OK = 1; 
+						if(State == State_PreUnderRes)/**/
+						{
+							
+							State = State_nor;
+						}		
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}		
+				}
+				if( (V2_A <= UnderResValue) && (State == State_PreUnderRes) )
+				{
+					State = State_Under;
+					UnderResTimeCount = 0;
+					Timer_flag = 0; // stop timer
+				}
+				
+				/*****************OVER**********************/
+				if( (V2_A >= OverValue ) && ((State == State_nor)||(State == State_PreUnderRes)) )
+				{
+					OverTimeCount = OverTimSetValue*1000;
+					State = State_PreOver;
+					if(OverTimeCount ==0)
+					{
+						source2OK = 0;
+						State = State_Over;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}
+				}
+				
+				if( (V2_A <= OverValue) && (State == State_PreOver) )
+				{
+					State = State_nor;
+					Timer_flag = 0; // stop timer
+				}
+				//over return
+				if( (V2_A <= OverResValue) && (State == State_Over) )
+				{
+					OverResTimeCount = OverResTimSetValue*1000; //1000*1ms = 1 Sec
+					State = State_PreOverRes;
+					if(OverResTimeCount == 0)
+					{
+						//if(State == State_PreOverRes)
+							source2OK = 1;
+					}
+					else
+					{
+						if(Timer_flag ==0)
+						{
+							Timer_flag =1; // start timer
+						}
+					}
+					
+				}
+				if( (V2_A >= OverResValue) && ((State == State_nor)&&(State == State_PreOverRes)) )
+				{
+					State = State_Over;
+					Timer_flag = 0; // stop timer
+				}
+				
+				if((V1_A > UnderValue) && (V1_A < OverValue) &&
+					(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) ){
+					source1OK = 1;
+					HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
+				}
+				else
+				{
+					source1OK = 0;
+					HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
+				}
+				if((V2_A > UnderValue)&&(V2_A < OverValue) &&
+				(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) )
+				{
+					source2OK = 1;
+					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+				}
+				else
+				{
+					//source2OK = 0;
+					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+				}
+
+			}
+		}// start_ats
+		
+	}
+	
+/*	
+	source2_A = GetLineVoltageA(SOURCE2);
+	if(NetworkSelectValue == sys3P4W)
+	{
+		source2_B = GetLineVoltageB(SOURCE2);
+		source2_C = GetLineVoltageC(SOURCE2);
+	}
+	
+	freqS2 = GetFrequency(SOURCE2);
+	
+	EMMInt1 = CommEnergyIC(SOURCE2, 1, EMMIntState1, 0xFFFF);
+	EMMInt2 = CommEnergyIC(SOURCE2, 1, EMMState1, 0xFFFF);
+	EMMInt3 = CommEnergyIC(SOURCE2, 1, PhaseLossTh, 0xFFFF);
+	EMMInt4 = CommEnergyIC(SOURCE2, 1, SagTh, 0xFFFF);
+	
+	V1_A = (uint16_t)source1_A;
+	if(NetworkSelectValue == sys3P4W)
+	{
+		V1_B = (uint16_t)source1_B;
+		V1_C = (uint16_t)source1_C;
+	}
+	
+	if(V1_A <10)
+		V1_A = 0;
+	if(NetworkSelectValue == sys3P4W)
+	{
+		if(V1_B <10)
+			V1_B = 0;
+		if(V1_C <10)
+			V1_C = 0;
+	}
+	
+	
+	V2_A = (uint16_t)source2_A;
+	if(NetworkSelectValue == sys3P4W)
+	{
+		V2_B = (uint16_t)source2_B;
+		V2_C = (uint16_t)source2_C;
+	}
+	
+	if(V2_A <10)
+		V2_A = 0;
+	if(NetworkSelectValue == sys3P4W)
+	{
+		if(V2_B <10)
+			V2_B = 0;
+		if(V2_C <10)
+			V2_C = 0;
+	}
+*/
+
+	ats_process();
+
+/*	
+	if(NetworkSelectValue == sys3P4W)
+	{
+		if(((V1_A >= UnderValue) && (V1_A <= OverValue)) && 
+			((V1_B >= UnderValue) && (V1_B <= OverValue)) && 
+			((V1_C >= UnderValue) && (V1_C <= OverValue)) )
+		{
+			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
+			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
+	//		exit1_flag = 0;
+		}
+		else{
+			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
+		}
+	}
+	else // sys1P2W
+	{
+		if(V1_A >= UnderValue)
+		{
+			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
+			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
+		}
+		else{
+			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
+		}
+		
+	}
+	
+	if(NetworkSelectValue == sys3P4W)
+	{
+		if(((V2_A >= UnderValue) && (V2_A <= OverValue)) && 
+			((V2_B >= UnderValue) && (V2_B <= OverValue)) && 
+			((V2_C >= UnderValue) && (V2_C <= OverValue)) )
+		{
+			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
+			exit1_flag = 0;
+		}
+		else
+		{
+			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+		}
+	}
+	else//sys1P2WS
+	{
+		if(V2_A >= UnderValue)
+		{
+			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
+			exit1_flag = 0;
+		}
+		else{
+			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+		}
+	}
+*/
+	
+	
+}
 
 
 /* USER CODE END 0 */
@@ -2777,205 +3553,7 @@ void lcdupdate(void)
 	//pageold = PageMenuCount;
 	
 }
-uint16_t EMMInt1 ,EMMInt2 ,EMMInt3,EMMInt4;
-void readvolt(void)
-{
-	
-	if(NetworkSelectValue == sys3P4W)
-	{
-		source1_A = GetLineVoltageA(SOURCE1);
-		source1_B = GetLineVoltageB(SOURCE1); 
-		source1_C = GetLineVoltageC(SOURCE1);
-		freqS1 = GetFrequency(SOURCE1);
-		
-		V1_A = (uint16_t)source1_A;
-		V1_B = (uint16_t)source1_B;
-		V1_C = (uint16_t)source1_C;
-		F_S1 = (uint16_t)freqS1;
-		
-		source2_A = GetLineVoltageA(SOURCE2);
-		source2_B = GetLineVoltageB(SOURCE2); 
-		source2_C = GetLineVoltageC(SOURCE2);
-		freqS2 = GetFrequency(SOURCE2);
-		
-		V2_A = (uint16_t)source2_A;
-		V2_B = (uint16_t)source2_B;
-		V2_C = (uint16_t)source2_C;
-		F_S2 = (uint16_t)freqS2;
-		
-		if((V1_A > UnderValue) && (V1_B > UnderValue) && (V1_C > UnderValue)&&
-			(V1_A < OverValue) && (V1_B < OverValue) && (V1_C < OverValue) &&
-			(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) )
-		{
-			source1OK = 1;
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
-		}
-		else{
-			source1OK = 0;
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
-		}
-		
-		if((V2_A > UnderValue) && (V2_B > UnderValue) && (V2_C > UnderValue)&&
-			(V2_A < OverValue) && (V2_B < OverValue) && (V2_C < OverValue) &&
-			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) )
-		{
-			source2OK = 1;
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
-		}
-		else{
-			source2OK = 0;
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
-		}
-	}
-	else if(NetworkSelectValue == sys1P2W)
-	{
-		source1_A = GetLineVoltageA(SOURCE1);
-		freqS1 = GetFrequency(SOURCE1);
-		V1_A = (uint16_t)source1_A;
-		F_S1 = (uint16_t)freqS1;
-		
-		source2_A = GetLineVoltageA(SOURCE2);
-		freqS2 = GetFrequency(SOURCE2);
-		V2_A = (uint16_t)source2_A;
-		F_S2 = (uint16_t)freqS2;
-		
-		if((V1_A > UnderValue) && (V1_A < OverValue) && 
-		(F_S1 > freqUnderValue) && (F_S1 < freqOverValue))
-		{
-			source1OK = 1;
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
-		}
-		else
-		{
-			source1OK = 0;
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
-		}
-		
-		if((V2_A > UnderValue) && (V2_A < OverValue) && 
-		(F_S2 > freqUnderValue) && (F_S2 < freqOverValue))
-		{
-			source2OK = 1;
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
-		}
-		else
-		{
-			source2OK = 0;
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
-		}
-		
-	}
-	
-	
-	source2_A = GetLineVoltageA(SOURCE2);
-	if(NetworkSelectValue == sys3P4W)
-	{
-		source2_B = GetLineVoltageB(SOURCE2);
-		source2_C = GetLineVoltageC(SOURCE2);
-	}
-	
-	freqS2 = GetFrequency(SOURCE2);
-	
-	EMMInt1 = CommEnergyIC(SOURCE2, 1, EMMIntState1, 0xFFFF);
-	EMMInt2 = CommEnergyIC(SOURCE2, 1, EMMState1, 0xFFFF);
-	EMMInt3 = CommEnergyIC(SOURCE2, 1, PhaseLossTh, 0xFFFF);
-	EMMInt4 = CommEnergyIC(SOURCE2, 1, SagTh, 0xFFFF);
-	
-	V1_A = (uint16_t)source1_A;
-	if(NetworkSelectValue == sys3P4W)
-	{
-		V1_B = (uint16_t)source1_B;
-		V1_C = (uint16_t)source1_C;
-	}
-	
-	if(V1_A <10)
-		V1_A = 0;
-	if(NetworkSelectValue == sys3P4W)
-	{
-		if(V1_B <10)
-			V1_B = 0;
-		if(V1_C <10)
-			V1_C = 0;
-	}
-	
-	
-	V2_A = (uint16_t)source2_A;
-	if(NetworkSelectValue == sys3P4W)
-	{
-		V2_B = (uint16_t)source2_B;
-		V2_C = (uint16_t)source2_C;
-	}
-	
-	if(V2_A <10)
-		V2_A = 0;
-	if(NetworkSelectValue == sys3P4W)
-	{
-		if(V2_B <10)
-			V2_B = 0;
-		if(V2_C <10)
-			V2_C = 0;
-	}
 
-	ats_process();
-
-/*	
-	if(NetworkSelectValue == sys3P4W)
-	{
-		if(((V1_A >= UnderValue) && (V1_A <= OverValue)) && 
-			((V1_B >= UnderValue) && (V1_B <= OverValue)) && 
-			((V1_C >= UnderValue) && (V1_C <= OverValue)) )
-		{
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
-			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
-	//		exit1_flag = 0;
-		}
-		else{
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
-		}
-	}
-	else // sys1P2W
-	{
-		if(V1_A >= UnderValue)
-		{
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
-			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
-		}
-		else{
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
-		}
-		
-	}
-	
-	if(NetworkSelectValue == sys3P4W)
-	{
-		if(((V2_A >= UnderValue) && (V2_A <= OverValue)) && 
-			((V2_B >= UnderValue) && (V2_B <= OverValue)) && 
-			((V2_C >= UnderValue) && (V2_C <= OverValue)) )
-		{
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
-			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
-			exit1_flag = 0;
-		}
-		else
-		{
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
-		}
-	}
-	else//sys1P2WS
-	{
-		if(V2_A >= UnderValue)
-		{
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
-			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
-			exit1_flag = 0;
-		}
-		else{
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
-		}
-	}
-*/
-	
-	
-}
 
 void ReadSetting(void)
 {
