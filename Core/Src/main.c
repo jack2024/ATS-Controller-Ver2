@@ -179,6 +179,7 @@ const char sourceselectmenu3[] 	= 	"";
 const char sourceselectmenu4[] 	= 	"";
 const char sourceselectmenu5[] 	= 	"*ENT Save&Exit";
 const char* const sourceselectmenu[] = { sourceselectmenu1, sourceselectmenu2, sourceselectmenu3, sourceselectmenu4, sourceselectmenu5};
+enum{selecsourceNON,selecsource1,selecsource2};
 
 const char networksystemmenu1[] 	= 	"1.3P4W";
 const char networksystemmenu2[] 	= 	"2.1P2P";
@@ -285,7 +286,7 @@ enum{UnderSet_T, OvererSet_T, MainselectSet_T, ConfigSet_T, TimeSet_T, SystemSet
 enum{VoltCut_T,VoltReturn_T,TimeCut_T,TimeReturn_T,Goback_T};
 
 enum{modeauto,modemanual};
-enum{selecsourceNON,selecsource1,selecsource2};
+
 enum{State_nor,State_PreUnder,State_Under,State_PreUnderRes,State_UnderRes,State_PreOver,State_Over,State_PreOverRes,State_OverRes};
 enum{nor, UnderSet, OverSet,UnderResSet,OverResSet,UnderTimSet,OverTimSet,UnderResTimSet,OverResTimSet};
 enum{normal, SetUnder, SetUnderRes,SetUnderTim,SetUnderResTim,SetSource};
@@ -367,6 +368,8 @@ typedef struct gen{
 genschedulestart_t genschedulestart ,genschedulestart_compare ;
 	
 uint8_t source1OK , source2OK;
+
+volatile uint8_t source_out;
 
 /* USER CODE END PV */
 
@@ -516,9 +519,11 @@ void ats_process(void)
 						ctrlATScount = CTRL_ATS_TIMEOUT;
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+						HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
+						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
+						source_out = selecsource2;
 					}
 					
-
         }
         else if ((source1OK)) // Return to normal
         {
@@ -531,6 +536,9 @@ void ats_process(void)
 						ctrlATScount = CTRL_ATS_TIMEOUT;
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+						HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
+						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
+						source_out = selecsource1;
 					}
         }
 			}
@@ -554,6 +562,9 @@ void ats_process(void)
 						ctrlATScount = CTRL_ATS_TIMEOUT;
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+						HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
+						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
+						source_out = selecsource1;
 					}
 					
 
@@ -569,6 +580,9 @@ void ats_process(void)
 						ctrlATScount = CTRL_ATS_TIMEOUT;
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+						HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
+						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
+						source_out = selecsource2;
 					}
         }
 			}
@@ -984,8 +998,7 @@ void buttonRead(void)
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 				}
 				else //Mode Auto
-				{
-					
+				{	
 					switch (PageMenuCount)
           {
           	case mainpage_T:
@@ -2277,7 +2290,7 @@ void lcdupdate(void)
 				
 				//ssd1306_SetCursor(3+(9*8), 17+12+12);
 				ssd1306_SetCursor(75, 41);
-				switch (SourceSelectValue)
+				switch (source_out)
 				{
 					case SELECT_NON:
 						ssd1306_WriteString("OUT:NON", Font_7x10, White);
@@ -3088,6 +3101,7 @@ void ReadSetting(void)
 		OverResTimSetValue = 5;
 	if(SourceSelectValue > SELECTSOURCE2){
 		SourceSelectValue = SELECTSOURCE1;
+		source_out = selecsource1;
 	}
 	if(NetworkSelectValue > NETWORK1P2W){
 		NetworkSelectValue = NETWORK3P4W;
