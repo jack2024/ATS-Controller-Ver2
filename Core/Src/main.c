@@ -480,6 +480,7 @@ void HAL_SYSTICK_Callback()
 				if(SourceSelectValue == SELECTSOURCE1)
 				{
 					source1OK = 1;
+					State = State_nor;
 					if(systemValue == main_main)
 					{
 						if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
@@ -3193,18 +3194,30 @@ void lcdupdate(void)
 				}
 				
 				uint8_t timecountdisplay;
-				if(State){
-					if(UnderTimeCount)
-					{
-						timecountdisplay = (UnderTimeCount/1000);
+				if(State){ // stste = ab normal
+					if(State <= State_Under){
+						if(UnderTimeCount)
+						{
+							timecountdisplay = (UnderTimeCount/1000)+1;
+							sprintf(buff,"%s: %d",statusmenu[State],timecountdisplay );
+						}
+						else{
+							sprintf(buff,"%s",statusmenu[State]);
+						}
 					}
-					else if(UnderResTimeCount){
-						timecountdisplay = (UnderTimeCount/1000);
+					if((State > State_Under) && (State <= State_UnderRes))
+					{
+						if(UnderResTimeCount)
+						{
+							timecountdisplay = (UnderResTimeCount/1000)+1;
+							sprintf(buff,"%s: %d",statusmenu[State],timecountdisplay );
+						}else{
+							sprintf(buff,"%s",statusmenu[State]);
+						}
 					}
 					
-					sprintf(buff,"State:%s :%d",statusmenu[State],timecountdisplay );
 				}
-				else {
+				else { // state = normal
 					if(++toggletime % 2)
 					{
 						sprintf(buff,"%d/%s/%d %d %d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
