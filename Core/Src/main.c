@@ -382,6 +382,10 @@ volatile uint8_t source_out;
 
 volatile uint8_t releaserelay =0;
 
+enum{GENSTOP,GENSTART};
+volatile uint8_t genstart =GENSTOP;
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -403,6 +407,7 @@ void system_init(void);
 uint8_t checkauxinput(void);
 void ats_process(void);
 void check_releaserelay(void);
+void checkgenpromp(void);
 
 volatile int16_t systickcount =0;
 volatile signed char beepcount = 0;
@@ -456,6 +461,7 @@ void HAL_SYSTICK_Callback()
 					else //(main_gens)
 					{
 						HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+						genstart = GENSTART;
 					}	
 					
 				}
@@ -511,6 +517,7 @@ void HAL_SYSTICK_Callback()
 					else //(main_gens)
 					{
 						HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
+						genstart = GENSTOP;
 					}	
 					
 				}
@@ -1135,6 +1142,7 @@ void readvolt(void)
 						else //(main_gens)
 						{
 							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+							genstart = GENSTART;
 						}	
 						
 					}
@@ -1179,6 +1187,7 @@ void readvolt(void)
 							else //(main_gens)
 							{
 								HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
+								genstart = GENSTOP;
 							}	
 							
 						}		
@@ -1550,6 +1559,23 @@ void readvolt(void)
 	
 }
 
+void checkgenpromp(void)
+{
+	if(source_out == selecsource1){
+		if((V2_A > UnderValue)&&(V2_A < OverValue) &&
+		(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
+		{
+			source2OK = 1;
+			//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+			ctrlATScount = CTRL_ATS_TIMEOUT;
+			HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+			HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+			source_out = selecsource2;
+			releaserelay =1;
+		}
+	}
+}
+
 
 /* USER CODE END 0 */
 
@@ -1633,6 +1659,10 @@ int main(void)
 			
 		buttonRead();
 		check_releaserelay();
+		if(genstart == GENSTART)
+		{
+			checkgenpromp();
+		}
 		if(workmodeValue == modemanual)
 		{
 			checkauxinput();
