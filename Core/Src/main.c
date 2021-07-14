@@ -247,6 +247,17 @@ const char GenStartDateTimemenu5[] 	= 	"5.Exit";
 const char* const GenStartDateTimemenu[] = { GenStartDateTimemenu1, GenStartDateTimemenu2, GenStartDateTimemenu3, GenStartDateTimemenu4, GenStartDateTimemenu5};
 enum{ScheduleDate_T,ScheduleDayofweek_T,ScheduleSetHours_T,ScheduleMinute_T,Schedulegoback_T};
 
+const char statusmenu0[] 	= 	"Normal";
+const char statusmenu1[] 	= 	"Under";
+const char statusmenu2[] 	= 	"Under";
+const char statusmenu3[] 	= 	"UnderReturn";
+const char statusmenu4[] 	= 	"";
+const char statusmenu5[] 	= 	"Over";
+const char statusmenu6[] 	= 	"Over";
+const char statusmenu7[] 	= 	"OverReturn";
+const char statusmenu8[] 	= 	"";
+const char* const statusmenu[] = { statusmenu0, statusmenu1, statusmenu2, statusmenu3, statusmenu4, statusmenu5, statusmenu6, statusmenu7, statusmenu8};
+
 #define MAXLENGHT 17   //Font_7x10
 																	
 /* USER CODE END PD */
@@ -369,6 +380,8 @@ uint8_t source1OK , source2OK;
 
 volatile uint8_t source_out;
 
+volatile uint8_t releaserelay =0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -389,6 +402,7 @@ void restorevalue(void);
 void system_init(void);
 uint8_t checkauxinput(void);
 void ats_process(void);
+void check_releaserelay(void);
 
 volatile int16_t systickcount =0;
 volatile signed char beepcount = 0;
@@ -427,6 +441,23 @@ void HAL_SYSTICK_Callback()
 				if(SourceSelectValue == SELECTSOURCE1)
 				{
 					source1OK = 0;
+					if(systemValue == main_main)
+					{
+						if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+						{
+							ctrlATScount = CTRL_ATS_TIMEOUT;
+							HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+							source_out = selecsource2;
+							releaserelay =1;
+						}
+
+					}
+					else //(main_gens)
+					{
+
+					}	
+					
 				}
 				else // (SourceSelectValue == SELECTSOURCE2)
 				{
@@ -449,6 +480,22 @@ void HAL_SYSTICK_Callback()
 				if(SourceSelectValue == SELECTSOURCE1)
 				{
 					source1OK = 1;
+					if(systemValue == main_main)
+					{
+						if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+						{
+							ctrlATScount = CTRL_ATS_TIMEOUT;
+							HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+							source_out = selecsource1;
+							releaserelay =1;
+						}
+					}
+					else //(main_gens)
+					{
+
+					}	
+					
 				}
 				else // (SourceSelectValue == SELECTSOURCE2)
 				{
@@ -597,6 +644,35 @@ void Beep(void)
 	//HAL_GPIO_WritePin(Buzzer_GPIO_Port, Buzzer_Pin,OFF_BUZZER);
 }
 
+void check_releaserelay(void)
+{
+	if(releaserelay)
+	{
+		if(source_out == selecsource1)
+		{
+			if(!HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
+			{
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+				HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
+				HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
+				releaserelay =0;
+			}
+		}
+		else if(source_out == selecsource2)
+		{
+			if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+			{
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+				HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
+				releaserelay =0;
+			}
+		}
+	}
+}
+
 // ATS Process Function
 void ats_process(void)
 {
@@ -606,13 +682,14 @@ void ats_process(void)
     {
 			if(systemValue == main_main)
 			{
-				if((!source1OK)&&(source2OK))
+				if((!source1OK)&&(source2OK) && (!UnderTimeCount))
         {
 					if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
 					{
 						ctrlATScount = CTRL_ATS_TIMEOUT;
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+						source_out = selecsource2;
 					}
 					else
 					{
@@ -621,16 +698,16 @@ void ats_process(void)
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 						HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
 						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
-						source_out = selecsource2;
-					}
-					
+						
+					}	
         }
-        else if (source1OK) // Return to normal
+        else if ((source1OK) && (!UnderResTimeCount))// Return to normal
         {
 					if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin)){
 						ctrlATScount = CTRL_ATS_TIMEOUT;
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+						source_out = selecsource1;
 					}
 					else{
 						ctrlATScount = CTRL_ATS_TIMEOUT;
@@ -638,7 +715,7 @@ void ats_process(void)
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 						HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
 						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
-						source_out = selecsource1;
+						
 					}
         }
 			}
@@ -1010,6 +1087,24 @@ void readvolt(void)
 					if(UnderTimeCount ==0)
 					{
 						source1OK = 0;
+						State = State_Under;
+						if(systemValue == main_main)
+						{
+							if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+							{
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
+							}
+
+						}
+						else //(main_gens)
+						{
+
+						}	
+						
 					}
 					else
 					{
@@ -1038,6 +1133,22 @@ void readvolt(void)
 						{
 							
 							State = State_nor;
+							if(systemValue == main_main)
+							{
+								if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+								{
+									ctrlATScount = CTRL_ATS_TIMEOUT;
+									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+									source_out = selecsource1;
+									releaserelay =1;
+								}
+							}
+							else //(main_gens)
+							{
+
+							}	
+							
 						}		
 					}
 					else
@@ -1105,7 +1216,7 @@ void readvolt(void)
 				}
 				
 				if((V1_A > UnderValue) && (V1_A < OverValue) &&
-					(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) && (UnderResTimeCount <=0)){
+					(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) ){
 
 					source1OK = 1;
 					HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
@@ -1117,7 +1228,7 @@ void readvolt(void)
 					HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
 				}
 				if((V2_A > UnderValue)&&(V2_A < OverValue) &&
-				(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) &&(UnderResTimeCount <=0) )
+				(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
 				{
 					source2OK = 1;
 					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
@@ -1312,7 +1423,7 @@ void readvolt(void)
 	}
 */
 
-	ats_process();
+	//ats_process();
 
 /*	
 	if(NetworkSelectValue == sys3P4W)
@@ -1456,6 +1567,7 @@ int main(void)
 		loopcount++;
 			
 		buttonRead();
+		check_releaserelay();
 		if(workmodeValue == modemanual)
 		{
 			checkauxinput();
@@ -3080,15 +3192,30 @@ void lcdupdate(void)
 						break;
 				}
 				
+				uint8_t timecountdisplay;
+				if(State){
+					if(UnderTimeCount)
+					{
+						timecountdisplay = (UnderTimeCount/1000);
+					}
+					else if(UnderResTimeCount){
+						timecountdisplay = (UnderTimeCount/1000);
+					}
+					
+					sprintf(buff,"State:%s :%d",statusmenu[State],timecountdisplay );
+				}
+				else {
+					if(++toggletime % 2)
+					{
+						sprintf(buff,"%d/%s/%d %d %d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
+					}
+					else
+					{
+						sprintf(buff,"%d/%s/%d %d:%d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
+					}
+
+				}
 				
-				if(++toggletime % 2)
-				{
-					sprintf(buff,"%d/%s/%d %d %d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
-				}
-				else
-				{
-					sprintf(buff,"%d/%s/%d %d:%d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
-				}
 				numofstring = 64 - (((strlen(buff)/2)*7)+3);
 				//ssd1306_SetCursor(3+(14), 17+12+12+12);
 				//ssd1306_SetCursor(17, 53);
@@ -3679,6 +3806,22 @@ void ReadSetting(void)
 	if(SourceSelectValue > SELECTSOURCE2){
 		SourceSelectValue = SELECTSOURCE1;
 		source_out = selecsource1;
+		
+	}
+	else
+	{
+		if(SourceSelectValue == SELECTSOURCE1){
+			source_out = selecsource1;
+		}
+		else if(SourceSelectValue == SELECTSOURCE2){
+			source_out = selecsource2;
+		}
+		else if(SourceSelectValue == SELECT_NON){
+			source_out = selecsourceNON;
+		}
+		
+		
+	
 	}
 	if(NetworkSelectValue > NETWORK1P2W){
 		NetworkSelectValue = NETWORK3P4W;
