@@ -349,6 +349,7 @@ volatile int16_t   OverTimeCount =0 , OverResTimeCount =0;
 
 volatile signed char Timer_flag =0;
 
+volatile int16_t PhaseSequenceerror , Status0;
 //volatile int16_t StartMeasureCount = 5000;
 
 volatile signed char initstartdelaycount = INIT_STARTDELAY, start_ats = 0;
@@ -1798,6 +1799,14 @@ int main(void)
 			{
 				Error_Handler();
 			}
+			
+//			Status0 = GetSysStatus0(SOURCE1);
+//			if(Status0 & 0x200)// PhaseSequenceError 0 = correct 1 = Error
+//				PhaseSequenceerror = 1;
+//			else
+//				PhaseSequenceerror = 0;
+			
+			
 			//HAL_GPIO_WritePin(LCD_D2_GPIO_Port,LCD_D2_Pin,GPIO_PIN_RESET);
 		}
 		
@@ -2046,10 +2055,7 @@ void buttonRead(void)
   static uint32_t state ,deb;  //deb == Debount
   uint16_t tempValue;
 	char datalcd[10];
-	
-//	char va[15];
-//	char vb[15];
-	
+
   if(rd(btn_UP_GPIO_Port,btn_UP_Pin)&&rd(btn_DW_GPIO_Port,btn_DW_Pin)&&rd(btn_EN_GPIO_Port,btn_EN_Pin)&&rd(btn_MODE_GPIO_Port,btn_MODE_Pin))
   {    
     state = st1;  
