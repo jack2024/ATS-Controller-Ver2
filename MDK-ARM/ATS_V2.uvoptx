@@ -251,77 +251,77 @@
         <Ww>
           <count>20</count>
           <WinNumber>1</WinNumber>
-          <ItemText>SourceSelectValue</ItemText>
+          <ItemText>setvalueselect,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>21</count>
           <WinNumber>1</WinNumber>
-          <ItemText>setvalueselect,0x0A</ItemText>
+          <ItemText>numofstring,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>22</count>
           <WinNumber>1</WinNumber>
-          <ItemText>numofstring,0x0A</ItemText>
+          <ItemText>exticount,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>23</count>
           <WinNumber>1</WinNumber>
-          <ItemText>exticount,0x0A</ItemText>
+          <ItemText>systickcount,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>24</count>
           <WinNumber>1</WinNumber>
-          <ItemText>systickcount,0x0A</ItemText>
+          <ItemText>s1_input</ItemText>
         </Ww>
         <Ww>
           <count>25</count>
           <WinNumber>1</WinNumber>
-          <ItemText>s1_input</ItemText>
+          <ItemText>s2_input</ItemText>
         </Ww>
         <Ww>
           <count>26</count>
           <WinNumber>1</WinNumber>
-          <ItemText>s2_input</ItemText>
+          <ItemText>selecsource</ItemText>
         </Ww>
         <Ww>
           <count>27</count>
           <WinNumber>1</WinNumber>
-          <ItemText>selecsource</ItemText>
+          <ItemText>PageMenuCount</ItemText>
         </Ww>
         <Ww>
           <count>28</count>
           <WinNumber>1</WinNumber>
-          <ItemText>PageMenuCount</ItemText>
+          <ItemText>Submenu1Count</ItemText>
         </Ww>
         <Ww>
           <count>29</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Submenu1Count</ItemText>
+          <ItemText>Submenu2Count</ItemText>
         </Ww>
         <Ww>
           <count>30</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Submenu2Count</ItemText>
+          <ItemText>setvalueselect</ItemText>
         </Ww>
         <Ww>
           <count>31</count>
           <WinNumber>1</WinNumber>
-          <ItemText>setvalueselect</ItemText>
+          <ItemText>systemValue</ItemText>
         </Ww>
         <Ww>
           <count>32</count>
           <WinNumber>1</WinNumber>
-          <ItemText>systemValue</ItemText>
+          <ItemText>Submenu3Count</ItemText>
         </Ww>
         <Ww>
           <count>33</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Submenu3Count</ItemText>
+          <ItemText>initstartdelaycount</ItemText>
         </Ww>
         <Ww>
           <count>34</count>
           <WinNumber>1</WinNumber>
-          <ItemText>initstartdelaycount</ItemText>
+          <ItemText>SourceSelectValue</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

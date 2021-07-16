@@ -482,7 +482,7 @@ void HAL_SYSTICK_Callback()
 					}
 					else //(main_gens)
 					{
-
+							
 					}	
 				}		
 				State = State_Under;
@@ -516,6 +516,15 @@ void HAL_SYSTICK_Callback()
 					}
 					else //(main_gens)
 					{
+						if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+						{
+							ctrlATScount = CTRL_ATS_TIMEOUT;
+							HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+							source_out = selecsource1;
+							releaserelay =1;
+						}
+						
 						HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
 						genstart = GENSTOP;
 					}	
@@ -542,7 +551,7 @@ void HAL_SYSTICK_Callback()
 					}
 					else //(main_gens)
 					{
-
+						// impossible
 					}	
 				}
 				if((UnderTimeCount ==0) && (OverTimeCount ==0)&& (OverResTimeCount ==0))
@@ -814,7 +823,6 @@ void ats_process(void)
 uint16_t EMMInt1 ,EMMInt2 ,EMMInt3,EMMInt4;
 void readvolt(void)
 {
-	
 	if(NetworkSelectValue == sys3P4W)
 	{
 		source1_A = GetLineVoltageA(SOURCE1);
@@ -2859,7 +2867,19 @@ void buttonRead(void)
 						}
 						else if(PageMenuCount == Pagemenu1_T)
 						{
-							Submenu2Count = 0;
+							if(Submenu1Count == SystemSet_T){
+								Submenu2Count = systemValue;
+							}
+							else if(Submenu1Count == MainselectSet_T){
+								Submenu2Count = SourceSelectValue -1; // -1 for eject non_select to menu setup
+							}
+							else if(Submenu1Count == ConfigSet_T){
+								Submenu2Count = NetworkSelectValue;
+							}
+							else{
+								Submenu2Count = 0;
+							}
+							
 						}
 						if(++PageMenuCount >Pagemenu3_T)
 						{
