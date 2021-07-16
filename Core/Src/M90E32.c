@@ -102,27 +102,18 @@ uint16_t CommEnergyIC(uint8_t selectsource,unsigned char RW, uint16_t address, u
 }
 float  GetLineVoltageA(unsigned char selectsource) {
   unsigned short voltage = CommEnergyIC(selectsource, 1, UrmsA, 0xFFFF);
-//	if(selectsource == SOURCE2){
-//		voltage = ~voltage;
-//	}
 	return (float)voltage / 238.5;
 	
 }
 
 float  GetLineVoltageB(unsigned char selectsource) {
   unsigned short voltage = CommEnergyIC(selectsource, 1, UrmsB, 0xFFFF);
-//	if(selectsource == SOURCE2){
-//		voltage = ~voltage;
-//	}
 	return (float)voltage / 238.5;
 	
 }
 
 float  GetLineVoltageC(unsigned char selectsource) {
   unsigned short voltage = CommEnergyIC(selectsource, 1, UrmsC, 0xFFFF);
-//	if(selectsource == SOURCE2){
-//		voltage = ~voltage;
-//	}
 	return (float)voltage / 238.5;
 	
 }
