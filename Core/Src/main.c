@@ -825,7 +825,6 @@ void readvolt(void)
 		V1_A = (uint16_t)source1_A;
 		V1_B = (uint16_t)source1_B;
 		V1_C = (uint16_t)source1_C;
-		F_S1 = (uint16_t)freqS1;
 		
 		if(V1_A <10)
 			V1_A = 0;
@@ -833,6 +832,12 @@ void readvolt(void)
 			V1_B = 0;
 		if(V1_C <10)
 			V1_C = 0;
+		
+		if((V1_A <10) && (V1_B <10) && (V1_C <10)){
+			freqS1 = 0;
+		}
+		
+		F_S1 = (uint16_t)freqS1;
 
 		
 		source2_A = GetLineVoltageA(SOURCE2);
@@ -843,7 +848,6 @@ void readvolt(void)
 		V2_A = (uint16_t)source2_A;
 		V2_B = (uint16_t)source2_B;
 		V2_C = (uint16_t)source2_C;
-		F_S2 = (uint16_t)freqS2;
 		
 		if(V2_A <10)
 			V2_A = 0;
@@ -851,6 +855,12 @@ void readvolt(void)
 			V2_B = 0;
 		if(V2_C <10)
 			V2_C = 0;
+		
+		if((V2_A <10) && (V2_B <10) && (V2_C <10)){
+			freqS2 = 0;
+		}
+		
+		F_S2 = (uint16_t)freqS2;
 		
 		if(start_ats)
 		{
@@ -1101,18 +1111,24 @@ void readvolt(void)
 		source1_A = GetLineVoltageA(SOURCE1);
 		freqS1 = GetFrequency(SOURCE1);
 		V1_A = (uint16_t)source1_A;
-		F_S1 = (uint16_t)freqS1;
-		
-		if(V1_A <10)
+			
+		if(V1_A <10){
 			V1_A = 0;
+			if(freqS1 >0)
+				freqS1 =0;
+		}
+		F_S1 = (uint16_t)freqS1;
 		
 		source2_A = GetLineVoltageA(SOURCE2);
 		freqS2 = GetFrequency(SOURCE2);
 		V2_A = (uint16_t)source2_A;
-		F_S2 = (uint16_t)freqS2;
 		
-		if(V2_A <10)
+		if(V2_A <10){
 			V2_A = 0;
+			if(freqS2 >0)
+				freqS2 =0;
+		}
+		F_S2 = (uint16_t)freqS2;
 		
 		if(start_ats)
 		{
@@ -3239,7 +3255,7 @@ void lcdupdate(void)
 				ssd1306_SetCursor(3, 29);
 				ssd1306_WriteString("F1", Font_7x10, White);	
 				
-				snprintf(buff, 5, "%f", freqS1);
+				snprintf(buff, 5, "%.1f", freqS1);
 				//ssd1306_SetCursor(3+((7*2)+5), 17+12);
 				ssd1306_SetCursor(22, 29);
 				ssd1306_WriteString(buff, Font_7x10, White);
@@ -3248,7 +3264,7 @@ void lcdupdate(void)
 				ssd1306_SetCursor(62, 17+12);
 				ssd1306_WriteString("F2", Font_7x10, White);
 				
-				snprintf(buff, 5, "%f", freqS2);
+				snprintf(buff, 5, "%.1f", freqS2);
 				//ssd1306_SetCursor(3+((7*10)+6+2), 17+12);
 				ssd1306_SetCursor(81, 29);
 				ssd1306_WriteString(buff, Font_7x10, White);
