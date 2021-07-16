@@ -323,6 +323,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>SourceSelectValue</ItemText>
         </Ww>
+        <Ww>
+          <count>35</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>genschedulestart,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

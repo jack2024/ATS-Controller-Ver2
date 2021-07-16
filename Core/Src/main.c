@@ -883,6 +883,25 @@ void readvolt(void)
 					if(UnderTimeCount ==0)
 					{
 						source1OK = 0;
+						State = State_Under;
+						if(systemValue == main_main)
+						{
+							if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+							{
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
+							}
+
+						}
+						else //(main_gens)
+						{
+							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+							genstart = GENSTART;
+						}	
+						
 					}
 					else
 					{
@@ -900,7 +919,7 @@ void readvolt(void)
 					State = State_nor;
 					Timer_flag = 0; // stop timer
 				}
-				
+				// UNDER RETURN
 				if( ((V1_A >= UnderResValue ) && (V1_B >= UnderResValue ) && (V1_C >= UnderResValue )) && (State == State_Under) )
 				{
 					UnderResTimeCount = UnderResTimSetValue*1000; //1000*1ms = 1 Sec
@@ -912,6 +931,23 @@ void readvolt(void)
 						{
 							
 							State = State_nor;
+							if(systemValue == main_main)
+							{
+								if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+								{
+									ctrlATScount = CTRL_ATS_TIMEOUT;
+									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+									source_out = selecsource1;
+									releaserelay =1;
+								}
+							}
+							else //(main_gens)
+							{
+								HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
+								genstart = GENSTOP;
+							}	
+							
 						}		
 					}
 					else
@@ -920,7 +956,7 @@ void readvolt(void)
 						{
 							Timer_flag =1; // start timer
 						}
-					}		
+					}	
 				}
 				if( ((V1_A <= UnderResValue) || (V1_B <= UnderResValue) || (V1_C <= UnderResValue)) && (State == State_PreUnderRes) )
 				{
@@ -938,6 +974,23 @@ void readvolt(void)
 					{
 						source1OK = 0;
 						State = State_Over;
+						if(systemValue == main_main)
+						{
+							if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+							{
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
+							}
+
+						}
+						else //(main_gens)
+						{
+							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+							genstart = GENSTART;
+						}
 					}
 					else
 					{
@@ -1127,6 +1180,11 @@ void readvolt(void)
 		}
 		F_S1 = (uint16_t)freqS1;
 		
+		if((V1_A > UnderValue)&&(V1_A < OverValue) && (F_S1 > freqUnderValue) && (F_S1 < freqOverValue)  )
+		{
+			source1OK = 1;
+		}
+		
 		source2_A = GetLineVoltageA(SOURCE2);
 		freqS2 = GetFrequency(SOURCE2);
 		V2_A = (uint16_t)source2_A;
@@ -1137,6 +1195,10 @@ void readvolt(void)
 				freqS2 =0;
 		}
 		F_S2 = (uint16_t)freqS2;
+		if((V2_A > UnderValue)&&(V2_A < OverValue) && (F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
+		{
+			source2OK = 1;
+		}
 		
 		if(start_ats)
 		{
@@ -1585,17 +1647,36 @@ void readvolt(void)
 
 void checkgenpromp(void)
 {
-	if(source_out == selecsource1){
-		if((V2_A > UnderValue)&&(V2_A < OverValue) &&
-		(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
-		{
-			source2OK = 1;
-			//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
-			ctrlATScount = CTRL_ATS_TIMEOUT;
-			HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-			HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-			source_out = selecsource2;
-			releaserelay =1;
+	if(NetworkSelectValue == sys3P4W)
+	{
+		if(source_out == selecsource1){
+			if(((V2_A > UnderValue)&&(V2_A < OverValue)) && ((V2_B > UnderValue)&&(V2_B < OverValue)) && ((V2_C > UnderValue)&&(V2_C < OverValue))&& 
+			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
+			{
+				source2OK = 1;
+				//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+				ctrlATScount = CTRL_ATS_TIMEOUT;
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+				source_out = selecsource2;
+				releaserelay =1;
+			}
+		}
+	}
+	else// if(NetworkSelectValue == sys1P2W)
+	{
+		if(source_out == selecsource1){
+			if((V2_A > UnderValue)&&(V2_A < OverValue) &&
+			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
+			{
+				source2OK = 1;
+				//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+				ctrlATScount = CTRL_ATS_TIMEOUT;
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+				source_out = selecsource2;
+				releaserelay =1;
+			}
 		}
 	}
 }
