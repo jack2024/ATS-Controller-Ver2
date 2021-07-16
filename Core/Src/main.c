@@ -1759,6 +1759,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	
+	//  ATS_process // jj
   while (1)
   {
 		loopcount++;
