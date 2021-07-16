@@ -328,6 +328,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>genschedulestart,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>36</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>PhaseSequenceerror</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

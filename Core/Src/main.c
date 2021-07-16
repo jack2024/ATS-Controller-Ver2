@@ -3077,18 +3077,28 @@ void lcdupdate(void)
 				ssd1306_SetCursor(36, 3);
 				ssd1306_WriteString("TimeUnder", Font_7x10, White);		
 				
-				ssd1306_SetCursor(47, 3+15);
 				snprintf(buff, 4, "%d  ", UnderTimSetValue);
-				ssd1306_WriteString(buff, Font_11x18, White);	
+				numofstring = 64 - (((strlen(buff)/2)*7)+3);
+				ssd1306_SetCursor(numofstring , 3+15);
+				ssd1306_WriteString(buff, Font_11x18, White);
+				
+				//ssd1306_SetCursor(47, 3+15);
+				//snprintf(buff, 4, "%d  ", UnderTimSetValue);
+				//ssd1306_WriteString(buff, Font_11x18, White);	
 			
     		break;
     	case TimeUnderReturnSet:
 				ssd1306_SetCursor(15, 3);
 				ssd1306_WriteString("TimeUnderReturn", Font_7x10, White);	
-				
-				ssd1306_SetCursor(47, 3+15);
+			
 				snprintf(buff, 4, "%d  ", UnderResTimSetValue);
-				ssd1306_WriteString(buff, Font_11x18, White);		
+				numofstring = 64 - (((strlen(buff)/2)*7)+3);
+				ssd1306_SetCursor(numofstring , 3+15);
+				ssd1306_WriteString(buff, Font_11x18, White);
+				
+//				ssd1306_SetCursor(47, 3+15);
+//				snprintf(buff, 4, "%d  ", UnderResTimSetValue);
+//				ssd1306_WriteString(buff, Font_11x18, White);		
 			
     		break;
 			case VoltOverSet:
@@ -3111,20 +3121,30 @@ void lcdupdate(void)
     		break;
 			case TimeOverSet:
 				ssd1306_SetCursor(36, 3);
-				ssd1306_WriteString("TimeOver", Font_7x10, White);		
-				
-				ssd1306_SetCursor(47, 3+15);
+				ssd1306_WriteString("TimeOver", Font_7x10, White);	
+
 				snprintf(buff, 4, "%d  ", OverTimSetValue);
-				ssd1306_WriteString(buff, Font_11x18, White);	
+				numofstring = 64 - (((strlen(buff)/2)*7)+3);
+				ssd1306_SetCursor(numofstring , 3+15);
+				ssd1306_WriteString(buff, Font_11x18, White);
+				
+//				ssd1306_SetCursor(47, 3+15);
+//				snprintf(buff, 4, "%d  ", OverTimSetValue);
+//				ssd1306_WriteString(buff, Font_11x18, White);	
 			
     		break;
     	case TimeOverReturnSet:
 				ssd1306_SetCursor(15, 3);
-				ssd1306_WriteString("TimeOverReturn", Font_7x10, White);	
-				
-				ssd1306_SetCursor(47, 3+15);
+				ssd1306_WriteString("TimeOverReturn", Font_7x10, White);
+
 				snprintf(buff, 4, "%d  ", OverResTimSetValue);
-				ssd1306_WriteString(buff, Font_11x18, White);		
+				numofstring = 64 - (((strlen(buff)/2)*7)+3);
+				ssd1306_SetCursor(numofstring , 3+15);
+				ssd1306_WriteString(buff, Font_11x18, White);
+				
+//				ssd1306_SetCursor(47, 3+15);
+//				snprintf(buff, 4, "%d  ", OverResTimSetValue);
+//				ssd1306_WriteString(buff, Font_11x18, White);		
 			
     		break;
 			case DateSet:
