@@ -349,6 +349,7 @@ volatile int16_t   OverTimeCount =0 , OverResTimeCount =0;
 
 volatile signed char Timer_flag =0;
 
+volatile int16_t PhaseSequenceerror , Status0;
 //volatile int16_t StartMeasureCount = 5000;
 
 volatile signed char initstartdelaycount = INIT_STARTDELAY, start_ats = 0;
@@ -482,7 +483,7 @@ void HAL_SYSTICK_Callback()
 					}
 					else //(main_gens)
 					{
-
+							
 					}	
 				}		
 				State = State_Under;
@@ -516,6 +517,15 @@ void HAL_SYSTICK_Callback()
 					}
 					else //(main_gens)
 					{
+						if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+						{
+							ctrlATScount = CTRL_ATS_TIMEOUT;
+							HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+							source_out = selecsource1;
+							releaserelay =1;
+						}
+						
 						HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
 						genstart = GENSTOP;
 					}	
@@ -542,7 +552,7 @@ void HAL_SYSTICK_Callback()
 					}
 					else //(main_gens)
 					{
-
+						// impossible
 					}	
 				}
 				if((UnderTimeCount ==0) && (OverTimeCount ==0)&& (OverResTimeCount ==0))
@@ -814,7 +824,6 @@ void ats_process(void)
 uint16_t EMMInt1 ,EMMInt2 ,EMMInt3,EMMInt4;
 void readvolt(void)
 {
-	
 	if(NetworkSelectValue == sys3P4W)
 	{
 		source1_A = GetLineVoltageA(SOURCE1);
@@ -825,7 +834,6 @@ void readvolt(void)
 		V1_A = (uint16_t)source1_A;
 		V1_B = (uint16_t)source1_B;
 		V1_C = (uint16_t)source1_C;
-		F_S1 = (uint16_t)freqS1;
 		
 		if(V1_A <10)
 			V1_A = 0;
@@ -833,6 +841,12 @@ void readvolt(void)
 			V1_B = 0;
 		if(V1_C <10)
 			V1_C = 0;
+		
+		if((V1_A <10) && (V1_B <10) && (V1_C <10)){
+			freqS1 = 0;
+		}
+		
+		F_S1 = (uint16_t)freqS1;
 
 		
 		source2_A = GetLineVoltageA(SOURCE2);
@@ -843,7 +857,6 @@ void readvolt(void)
 		V2_A = (uint16_t)source2_A;
 		V2_B = (uint16_t)source2_B;
 		V2_C = (uint16_t)source2_C;
-		F_S2 = (uint16_t)freqS2;
 		
 		if(V2_A <10)
 			V2_A = 0;
@@ -851,6 +864,12 @@ void readvolt(void)
 			V2_B = 0;
 		if(V2_C <10)
 			V2_C = 0;
+		
+		if((V2_A <10) && (V2_B <10) && (V2_C <10)){
+			freqS2 = 0;
+		}
+		
+		F_S2 = (uint16_t)freqS2;
 		
 		if(start_ats)
 		{
@@ -865,6 +884,25 @@ void readvolt(void)
 					if(UnderTimeCount ==0)
 					{
 						source1OK = 0;
+						State = State_Under;
+						if(systemValue == main_main)
+						{
+							if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+							{
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
+							}
+
+						}
+						else //(main_gens)
+						{
+							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+							genstart = GENSTART;
+						}	
+						
 					}
 					else
 					{
@@ -882,7 +920,7 @@ void readvolt(void)
 					State = State_nor;
 					Timer_flag = 0; // stop timer
 				}
-				
+				// UNDER RETURN
 				if( ((V1_A >= UnderResValue ) && (V1_B >= UnderResValue ) && (V1_C >= UnderResValue )) && (State == State_Under) )
 				{
 					UnderResTimeCount = UnderResTimSetValue*1000; //1000*1ms = 1 Sec
@@ -894,6 +932,23 @@ void readvolt(void)
 						{
 							
 							State = State_nor;
+							if(systemValue == main_main)
+							{
+								if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+								{
+									ctrlATScount = CTRL_ATS_TIMEOUT;
+									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+									source_out = selecsource1;
+									releaserelay =1;
+								}
+							}
+							else //(main_gens)
+							{
+								HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
+								genstart = GENSTOP;
+							}	
+							
 						}		
 					}
 					else
@@ -902,7 +957,7 @@ void readvolt(void)
 						{
 							Timer_flag =1; // start timer
 						}
-					}		
+					}	
 				}
 				if( ((V1_A <= UnderResValue) || (V1_B <= UnderResValue) || (V1_C <= UnderResValue)) && (State == State_PreUnderRes) )
 				{
@@ -920,6 +975,23 @@ void readvolt(void)
 					{
 						source1OK = 0;
 						State = State_Over;
+						if(systemValue == main_main)
+						{
+							if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+							{
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
+							}
+
+						}
+						else //(main_gens)
+						{
+							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+							genstart = GENSTART;
+						}
 					}
 					else
 					{
@@ -1101,18 +1173,33 @@ void readvolt(void)
 		source1_A = GetLineVoltageA(SOURCE1);
 		freqS1 = GetFrequency(SOURCE1);
 		V1_A = (uint16_t)source1_A;
+			
+		if(V1_A <10){
+			V1_A = 0;
+			if(freqS1 >0)
+				freqS1 =0;
+		}
 		F_S1 = (uint16_t)freqS1;
 		
-		if(V1_A <10)
-			V1_A = 0;
+		if((V1_A > UnderValue)&&(V1_A < OverValue) && (F_S1 > freqUnderValue) && (F_S1 < freqOverValue)  )
+		{
+			source1OK = 1;
+		}
 		
 		source2_A = GetLineVoltageA(SOURCE2);
 		freqS2 = GetFrequency(SOURCE2);
 		V2_A = (uint16_t)source2_A;
-		F_S2 = (uint16_t)freqS2;
 		
-		if(V2_A <10)
+		if(V2_A <10){
 			V2_A = 0;
+			if(freqS2 >0)
+				freqS2 =0;
+		}
+		F_S2 = (uint16_t)freqS2;
+		if((V2_A > UnderValue)&&(V2_A < OverValue) && (F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
+		{
+			source2OK = 1;
+		}
 		
 		if(start_ats)
 		{
@@ -1561,17 +1648,36 @@ void readvolt(void)
 
 void checkgenpromp(void)
 {
-	if(source_out == selecsource1){
-		if((V2_A > UnderValue)&&(V2_A < OverValue) &&
-		(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
-		{
-			source2OK = 1;
-			//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
-			ctrlATScount = CTRL_ATS_TIMEOUT;
-			HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-			HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-			source_out = selecsource2;
-			releaserelay =1;
+	if(NetworkSelectValue == sys3P4W)
+	{
+		if(source_out == selecsource1){
+			if(((V2_A > UnderValue)&&(V2_A < OverValue)) && ((V2_B > UnderValue)&&(V2_B < OverValue)) && ((V2_C > UnderValue)&&(V2_C < OverValue))&& 
+			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
+			{
+				source2OK = 1;
+				//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+				ctrlATScount = CTRL_ATS_TIMEOUT;
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+				source_out = selecsource2;
+				releaserelay =1;
+			}
+		}
+	}
+	else// if(NetworkSelectValue == sys1P2W)
+	{
+		if(source_out == selecsource1){
+			if((V2_A > UnderValue)&&(V2_A < OverValue) &&
+			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
+			{
+				source2OK = 1;
+				//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+				ctrlATScount = CTRL_ATS_TIMEOUT;
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+				source_out = selecsource2;
+				releaserelay =1;
+			}
 		}
 	}
 }
@@ -1653,6 +1759,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	
+	//  ATS_process // jj // jj
   while (1)
   {
 		loopcount++;
@@ -1693,6 +1801,14 @@ int main(void)
 			{
 				Error_Handler();
 			}
+			
+//			Status0 = GetSysStatus0(SOURCE1);
+//			if(Status0 & 0x200)// PhaseSequenceError 0 = correct 1 = Error
+//				PhaseSequenceerror = 1;
+//			else
+//				PhaseSequenceerror = 0;
+			
+			
 			//HAL_GPIO_WritePin(LCD_D2_GPIO_Port,LCD_D2_Pin,GPIO_PIN_RESET);
 		}
 		
@@ -1941,10 +2057,7 @@ void buttonRead(void)
   static uint32_t state ,deb;  //deb == Debount
   uint16_t tempValue;
 	char datalcd[10];
-	
-//	char va[15];
-//	char vb[15];
-	
+
   if(rd(btn_UP_GPIO_Port,btn_UP_Pin)&&rd(btn_DW_GPIO_Port,btn_DW_Pin)&&rd(btn_EN_GPIO_Port,btn_EN_Pin)&&rd(btn_MODE_GPIO_Port,btn_MODE_Pin))
   {    
     state = st1;  
@@ -2843,7 +2956,19 @@ void buttonRead(void)
 						}
 						else if(PageMenuCount == Pagemenu1_T)
 						{
-							Submenu2Count = 0;
+							if(Submenu1Count == SystemSet_T){
+								Submenu2Count = systemValue;
+							}
+							else if(Submenu1Count == MainselectSet_T){
+								Submenu2Count = SourceSelectValue -1; // -1 for eject non_select to menu setup
+							}
+							else if(Submenu1Count == ConfigSet_T){
+								Submenu2Count = NetworkSelectValue;
+							}
+							else{
+								Submenu2Count = 0;
+							}
+							
 						}
 						if(++PageMenuCount >Pagemenu3_T)
 						{
@@ -3239,7 +3364,7 @@ void lcdupdate(void)
 				ssd1306_SetCursor(3, 29);
 				ssd1306_WriteString("F1", Font_7x10, White);	
 				
-				snprintf(buff, 5, "%f", freqS1);
+				snprintf(buff, 5, "%.1f", freqS1);
 				//ssd1306_SetCursor(3+((7*2)+5), 17+12);
 				ssd1306_SetCursor(22, 29);
 				ssd1306_WriteString(buff, Font_7x10, White);
@@ -3248,7 +3373,7 @@ void lcdupdate(void)
 				ssd1306_SetCursor(62, 17+12);
 				ssd1306_WriteString("F2", Font_7x10, White);
 				
-				snprintf(buff, 5, "%f", freqS2);
+				snprintf(buff, 5, "%.1f", freqS2);
 				//ssd1306_SetCursor(3+((7*10)+6+2), 17+12);
 				ssd1306_SetCursor(81, 29);
 				ssd1306_WriteString(buff, Font_7x10, White);
