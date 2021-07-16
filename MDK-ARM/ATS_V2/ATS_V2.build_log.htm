@@ -27,7 +27,14 @@ Project File Date:  07/12/2021
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'ATS_V2'
-"ATS_V2\ATS_V2.axf" - 0 Error(s), 0 Warning(s).
+compiling M90E32.c...
+..\Core\Src\M90E32.c(193): warning:  #550-D: variable "systemstatus0"  was set but never used
+    unsigned short systemstatus0;
+..\Core\Src\M90E32.c: 1 warning, 0 errors
+linking...
+Program Size: Code=55388 RO-data=13352 RW-data=656 ZI-data=8200  
+FromELF: creating hex file...
+"ATS_V2\ATS_V2.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -50,7 +57,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.4.0
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

@@ -378,7 +378,7 @@
         <Ww>
           <count>10</count>
           <WinNumber>2</WinNumber>
-          <ItemText>buff</ItemText>
+          <ItemText>genstart,0x0A</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>

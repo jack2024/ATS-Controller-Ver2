@@ -1667,7 +1667,7 @@ int main(void)
 		{
 			checkauxinput();
 		}
-		if(((loopcount % 100) == 0) && (lcdflag ==0))// 10.4 ms.
+		if(((loopcount % 100) == 0) && (lcdflag ==0)&& (start_ats))// 10.4 ms.
 		{
 			HAL_GPIO_TogglePin(LCD_D2_GPIO_Port,LCD_D2_Pin);
 			//HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_SET);
@@ -1977,7 +1977,6 @@ void buttonRead(void)
 					HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
 					HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 					SourceSelectValue = selecsource1;
-					//SourceSelectValue = selecsource1;
 					EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 					FlashErase();
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
@@ -2040,7 +2039,7 @@ void buttonRead(void)
 										Submenu2Count = main_gens;
 									}
 									break;
-								break;
+								//break;
 								case FreqSet_T:
 									if(++Submenu2Count > 6)
 									{
@@ -2054,7 +2053,7 @@ void buttonRead(void)
 									}
 									break;
 								
-								break;
+								//break;
 
               	default:
               		break;
@@ -2223,7 +2222,6 @@ void buttonRead(void)
 					HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 					SourceSelectValue = selecsourceNON;
-					//SourceSelectValue = selecsourceNON;
 					EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 					FlashErase();
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
@@ -2289,7 +2287,7 @@ void buttonRead(void)
 									{
 										Submenu2Count = 6;
 									}
-								break;
+							break;
 								case Schedule_T:
 									if(--Submenu2Count < 0)
 									{
@@ -2496,7 +2494,6 @@ void buttonRead(void)
 					HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
 					SourceSelectValue = selecsource2;
-					//SourceSelectValue = selecsource2;
 					EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 					FlashErase();
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
@@ -2578,7 +2575,6 @@ void buttonRead(void)
 								setvalueselect = NONselect;
 								switch (SourceSelectValue)
 								{
-
 									case SELECTSOURCE1:
 										ctrlATScount = CTRL_ATS_TIMEOUT;
 										HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);

@@ -93,7 +93,7 @@ uint16_t CommEnergyIC(uint8_t selectsource,unsigned char RW, uint16_t address, u
 	}
 	else // Read V2
 	{
-		Result = ~Result;
+		//Result = ~Result;
 		return Result;
 	}
 	//delayUS(1);
