@@ -763,6 +763,15 @@ void readvolt(void)
 			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
 		}
 		
+		if((Checksource1OK) && (source1OK) && (source2OK))
+		{
+			Checksource1OK =0;
+		}
+		if((Checksource2OK) && (source2OK) && (source1OK))
+		{
+			Checksource2OK =0;
+		}
+		
 		
 		if(start_ats)
 		{
@@ -780,22 +789,27 @@ void readvolt(void)
 						State = State_Under;
 						if(systemValue == main_main)
 						{
-							if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+							if(source2OK)
 							{
-								ctrlATScount = CTRL_ATS_TIMEOUT;
-								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-								source_out = selecsource2;
-								releaserelay =1;
+								if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+								{
+									ctrlATScount = CTRL_ATS_TIMEOUT;
+									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+									source_out = selecsource2;
+									releaserelay =1;
+								}
 							}
-
+							else
+							{
+								Checksource2OK = 1;
+							}
 						}
 						else //(main_gens)
 						{
 							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
 							genstart = GENSTART;
-						}	
-						
+						}		
 					}
 					else
 					{
@@ -941,6 +955,29 @@ void readvolt(void)
 					if(UnderTimeCount ==0)
 					{
 						source2OK = 0;
+						State = State_Under;
+						if(systemValue == main_main)
+						{
+							if(source1OK)
+							{
+								if(HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
+								{
+									ctrlATScount = CTRL_ATS_TIMEOUT;
+									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+									source_out = selecsource1;
+									releaserelay =1;
+								}
+							}
+							else
+							{
+								Checksource1OK = 1;
+							}
+						}
+						else //(main_gens)
+						{
+							// impossible
+						}	
 					}
 					else
 					{
@@ -1035,8 +1072,7 @@ void readvolt(void)
 					State = State_Over;
 					Timer_flag = 0; // stop timer
 				}
-				
-				
+					
 			}
 			
 		}//
@@ -1118,7 +1154,6 @@ void readvolt(void)
 							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
 							genstart = GENSTART;
 						}	
-						
 					}
 					else
 					{
