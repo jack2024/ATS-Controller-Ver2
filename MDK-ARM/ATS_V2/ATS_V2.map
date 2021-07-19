@@ -4075,7 +4075,7 @@ Image component sizes
        100         16          0          0         36       1359   crc.o
        464         34          0          0          0       1063   gpio.o
       1168        112          0          0          0     531252   m90e32.o
-     21426       3116       1324        234        136      40200   main.o
+     21426       3116       1324        234        136      40196   main.o
        168         20          0          0         32       1423   rtc.o
        492         40          0          0        200       2194   spi.o
        944         66          0          8       1024       9406   ssd1306.o
@@ -4115,7 +4115,7 @@ Image component sizes
        188          0          0          0          0       4324   usbd_ioreq.o
 
     ----------------------------------------------------------------------
-     51842       4264      13352        664       8200     759026   Object Totals
+     51842       4264      13352        664       8200     759022   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         42          0          0         11          0          0   (incl. Padding)
 
@@ -4182,8 +4182,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     56376       4412      13352        664       8200     749590   Grand Totals
-     56376       4412      13352        228       8200     749590   ELF Image Totals (compressed)
+     56376       4412      13352        664       8200     749586   Grand Totals
+     56376       4412      13352        228       8200     749586   ELF Image Totals (compressed)
      56376       4412      13352        228          0          0   ROM Totals
 
 ==============================================================================
