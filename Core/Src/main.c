@@ -2669,22 +2669,78 @@ void buttonRead(void)
 								switch (SourceSelectValue)
 								{
 									case SELECTSOURCE1:
-										ctrlATScount = CTRL_ATS_TIMEOUT;
-										HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-										HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-										HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
-										HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
-										SourceSelectValue = selecsource1;
-										releaserelay =1;
+										if(NetworkSelectValue == sys3P4W)
+										{
+											if((V1_A > UnderValue) && (V1_B > UnderValue) && (V1_C > UnderValue)&&
+											(V1_A < OverValue) && (V1_B < OverValue) && (V1_C < OverValue) &&
+											(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) )
+											{
+												ctrlATScount = CTRL_ATS_TIMEOUT;
+												HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+												HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+												HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
+												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
+												SourceSelectValue = selecsource1;
+												releaserelay =1;
+											}
+											else{
+												Checksource1OK = 1;
+											}
+											
+										}
+										else{ //sys1P2W
+											if((V1_A > UnderValue) && (V1_A < OverValue) &&
+											(F_S1 > freqUnderValue) && (F_S1 < freqOverValue))
+											{
+												ctrlATScount = CTRL_ATS_TIMEOUT;
+												HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+												HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+												HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
+												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
+												SourceSelectValue = selecsource1;
+												releaserelay =1;
+											}
+											else{
+												Checksource1OK = 1;
+											}
+										}
 										break;
 									case SELECTSOURCE2:
-										ctrlATScount = CTRL_ATS_TIMEOUT;
-										HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-										HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);	
-										HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
-										HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
-										SourceSelectValue = selecsource2;
-										releaserelay =1;
+										if(NetworkSelectValue == sys3P4W)
+										{
+											if((V2_A > UnderValue) && (V2_B > UnderValue) && (V2_C > UnderValue)&&
+											(V2_A < OverValue) && (V2_B < OverValue) && (V2_C < OverValue) &&
+											(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) )
+											{
+												ctrlATScount = CTRL_ATS_TIMEOUT;
+												HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+												HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+												HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
+												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
+												SourceSelectValue = selecsource2;
+												releaserelay =1;
+											}
+											else{
+												Checksource2OK = 1;
+											}
+											
+										}
+										else{ //sys1P2W
+											if((V2_A > UnderValue) && (V2_A < OverValue) &&
+											(F_S2 > freqUnderValue) && (F_S2 < freqOverValue))
+											{
+												ctrlATScount = CTRL_ATS_TIMEOUT;
+												HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+												HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+												HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
+												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
+												SourceSelectValue = selecsource2;
+												releaserelay =1;
+											}
+											else{
+												Checksource2OK = 1;
+											}
+										}
 										break;
 									default:
 										break;
