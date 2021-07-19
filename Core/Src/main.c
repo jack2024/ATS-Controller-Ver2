@@ -230,6 +230,7 @@ const char GenStartEnablemenu3[] 	= 	"";
 const char GenStartEnablemenu4[] 	= 	"";
 const char GenStartEnablemenu5[] 	= 	"*ENT Save&Exit";
 const char* const GenStartEnablemenu[] = {GenStartEnablemenu1, GenStartEnablemenu2, GenStartEnablemenu3, GenStartEnablemenu4, GenStartEnablemenu5};
+enum{SCHEDULE_EN, SCHEDULE_DIS};
 
 const char Periodmenu1[] 	= 	"1.Daily";
 const char Periodmenu2[] 	= 	"2.Weekly";
@@ -237,7 +238,7 @@ const char Periodmenu3[] 	= 	"3.Monthly";
 const char Periodmenu4[] 	= 	"";
 const char Periodmenu5[] 	= 	"*ENT Save&Exit";
 const char* const Periodmenu[] = { Periodmenu1, Periodmenu2, Periodmenu3, Periodmenu4, Periodmenu5};
-enum{DAILY, WEEKLY, MONTLY};
+enum{DAILY, WEEKLY, MONTHLY};
 
 const char GenStartDateTimemenu1[] 	= 	"1.Date";
 const char GenStartDateTimemenu2[] 	= 	"2.Dayofweek";
@@ -345,6 +346,8 @@ volatile int16_t   freqABnormalTimeCount =0 , freqNormalTime =0;
 volatile int16_t   genstarttimeValue, genstarttimeValue_compare ;
 
 volatile int16_t   OverTimeCount =0 , OverResTimeCount =0;
+
+volatile int16_t   GenstartTimeCount =0;
 
 volatile signed char Timer_flag =0;
 
@@ -682,12 +685,504 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				
 			}
 		}
+		if(GenstartTimeCount)
+		{
+			if(--GenstartTimeCount <=0)
+			{
+				GenstartTimeCount =0;
+				HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
+				
+			}
+		}
 	}
 }
 
 
 
 
+
+void checkgenschedule(void)
+{
+	if((genschedulestart.genschedule_enable)&&(systemValue == main_gens))
+	{
+		if(genschedulestart.genschedule_every == DAILY)
+		{
+			if((genschedulestart.genschedule_hour == Timeupdate.Hours) && (genschedulestart.genschedule_minute == Timeupdate.Minutes))
+			{
+				if(GenstartTimeCount == 0){
+					HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+					GenstartTimeCount = genschedulestart.genschedule_time * 60;
+				}
+			}
+		}
+		else if(genschedulestart.genschedule_every == WEEKLY){
+			if(genschedulestart.genschedule_dayofweek == Dateupdate.WeekDay){
+				if((genschedulestart.genschedule_hour == Timeupdate.Hours) && (genschedulestart.genschedule_minute == Timeupdate.Minutes))
+				{
+					if(GenstartTimeCount == 0){
+						HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+						GenstartTimeCount = genschedulestart.genschedule_time * 60;
+					}
+				}
+			}
+		}
+		else if(genschedulestart.genschedule_every == MONTHLY){
+			if(genschedulestart.genschedule_date == Dateupdate.Date){
+				if((genschedulestart.genschedule_hour == Timeupdate.Hours) && (genschedulestart.genschedule_minute == Timeupdate.Minutes))
+				{
+					if(GenstartTimeCount == 0){
+						HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+						GenstartTimeCount = genschedulestart.genschedule_time * 60;
+					}
+				}
+			}
+		}
+	}
+}
+
+void checkgenpromp(void)
+{
+	if(NetworkSelectValue == sys3P4W)
+	{
+		if(source_out == selecsource1){
+			if(((V2_A > UnderValue)&&(V2_A < OverValue)) && ((V2_B > UnderValue)&&(V2_B < OverValue)) && ((V2_C > UnderValue)&&(V2_C < OverValue))&& 
+			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
+			{
+				source2OK = 1;
+				//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+				ctrlATScount = CTRL_ATS_TIMEOUT;
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+				source_out = selecsource2;
+				releaserelay =1;
+			}
+		}
+	}
+	else// if(NetworkSelectValue == sys1P2W)
+	{
+		if(source_out == selecsource1){
+			if((V2_A > UnderValue)&&(V2_A < OverValue) &&
+			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
+			{
+				source2OK = 1;
+				//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+				ctrlATScount = CTRL_ATS_TIMEOUT;
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+				source_out = selecsource2;
+				releaserelay =1;
+			}
+		}
+	}
+}
+
+
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_CRC_Init();
+  MX_SPI1_Init();
+  MX_USART1_UART_Init();
+  MX_USB_DEVICE_Init();
+  MX_SPI2_Init();
+  MX_RTC_Init();
+  MX_TIM7_Init();
+  /* USER CODE BEGIN 2 */
+	HAL_GPIO_WritePin(Buzzer_GPIO_Port, Buzzer_Pin,OFF_BUZZER);
+	HAL_GPIO_WritePin(SPI1_CS1_GPIO_Port,SPI1_CS1_Pin,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port,SPI2_CS_Pin,GPIO_PIN_SET);
+	HAL_Delay(1);
+	
+	InitEnergyIC(SOURCE2);
+	InitEnergyIC(SOURCE1);
+	
+	ReadSetting();
+	system_init();
+	
+	ssd1306_Init();
+	ssd1306_Fill(Black);
+	
+	uint32_t delta;
+
+/*
+// off all relay
+//	HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(LED_Manual_GPIO_Port,LED_Manual_Pin,GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(LED_Auto_GPIO_Port,LED_Auto_Pin,GPIO_PIN_SET);
+
+		// write Rectangle
+//	for(delta = 0; delta < 1; delta ++) {
+//		ssd1306_DrawRectangle(1 + (5*delta),1 + (5*delta) ,SSD1306_WIDTH-1 - (5*delta),SSD1306_HEIGHT-1 - (5*delta),White);
+//	}
+*/	
+	
+	HAL_TIM_Base_Start_IT(&htim7);
+	
+	CommEnergyIC(SOURCE1, 0, EMMIntEn1, 0x7000);
+	CommEnergyIC(SOURCE2, 0, EMMIntEn1, 0x7000);
+	
+	initstartdelaycount = INIT_STARTDELAY;
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+	
+	//  ATS_process // jj // jj
+  while (1)
+  {
+		loopcount++;
+			
+		buttonRead();
+		check_releaserelay();
+		if(genstart == GENSTART)
+		{
+			checkgenpromp();
+		}
+		if(workmodeValue == modemanual)
+		{
+			checkauxinput();
+		}
+		if(((loopcount % 100) == 0) && (lcdflag ==0)&& (start_ats))// 10.4 ms.
+		{
+			HAL_GPIO_TogglePin(LCD_D2_GPIO_Port,LCD_D2_Pin);	
+			readvolt(); //1 ms.
+		}
+		
+		if(((loopcount % 20000) == 0))// 120.4 ms.
+		{
+			hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+			if (HAL_SPI_Init(&hspi1) != HAL_OK)
+			{
+				Error_Handler();
+			}
+			
+			lcdupdate(); // 13.5 ms.
+			
+			hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
+			if (HAL_SPI_Init(&hspi1) != HAL_OK)
+			{
+				Error_Handler();
+			}
+		}
+		
+		if(Checksource2OK)
+		{
+			if(NetworkSelectValue == sys3P4W){
+					if((V2_A > UnderValue) && (V2_B > UnderValue) && (V2_C > UnderValue)&&
+					(V2_A < OverValue) && (V2_B < OverValue) && (V2_C < OverValue) &&
+					(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) )
+					{
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+						source_out = selecsource2;
+						releaserelay =1;
+						Checksource2OK =0;
+					}
+			}
+			else{ //sys1P2W
+				if((V2_A > UnderValue) && (V2_A < OverValue) &&
+					(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) ){
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+						source_out = selecsource2;
+						releaserelay =1;
+						Checksource2OK =0;
+				}
+			}
+		}
+		if(Checksource1OK)
+		{
+			if(NetworkSelectValue == sys3P4W){
+				if((V1_A > UnderValue) && (V1_B > UnderValue) && (V1_C > UnderValue)&&
+				(V1_A < OverValue) && (V1_B < OverValue) && (V1_C < OverValue) &&
+				(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) )
+				{
+					ctrlATScount = CTRL_ATS_TIMEOUT;
+					HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+					HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+					source_out = selecsource1;
+					releaserelay =1;
+					Checksource1OK =0;
+				}
+			}
+			else //1P2W
+			{
+				if((V1_A > UnderValue) && (V1_A < OverValue) &&
+				(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) )
+				{
+					ctrlATScount = CTRL_ATS_TIMEOUT;
+					HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+					HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+					source_out = selecsource1;
+					releaserelay =1;
+					Checksource1OK =0;
+				}
+			}
+		}
+		
+		if((loopcount % 35000) == 0)// 1.5 sec.
+		{
+			checkgenschedule();
+			HAL_GPIO_TogglePin(LED_HEALTY_GPIO_Port,LED_HEALTY_Pin);
+		}
+		//HAL_IWDG_Refresh(&hiwdg);
+		
+		//  3.370 us. per loop.
+		
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+
+  /** Configure LSE Drive Capability
+  */
+  HAL_PWR_EnableBkUpAccess();
+  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_HIGH);
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48|RCC_OSCILLATORTYPE_HSE
+                              |RCC_OSCILLATORTYPE_LSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+  RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL6;
+  RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB|RCC_PERIPHCLK_USART1
+                              |RCC_PERIPHCLK_RTC;
+  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
+  PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
+  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_HSI48;
+
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/* USER CODE BEGIN 4 */
+
+//--------------- FLASH fUNCTION ---------------------------------//
+uint8_t FlashErase(void)
+{
+  uint8_t ret = 1;
+  uint32_t Address;
+  
+  /* Unlock the Flash to enable the flash control register access *************/ 
+	HAL_FLASH_Unlock();
+  
+  /* Erase the user Flash area ***********/
+
+  /* Clear pending flags (if any) */  
+  FLASH->SR = (FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR);
+  
+  for(Address = FLASH_PAGE_START_ADDRESS; Address < FLASH_PAGE_END_ADDRESS; Address += FLASH_PAGE_size)
+  {
+    /* Wait for last operation to be completed */
+    while((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY);
+    
+    if((FLASH->SR & (uint32_t)FLASH_FLAG_WRPERR)!= (uint32_t)0x00)
+    {
+      /* Write protected error */
+      ret = 0;
+      break;
+    }
+    
+    if((FLASH->SR & (uint32_t)(FLASH_SR_PGERR)) != (uint32_t)0x00)
+    {
+      /* Programming error */
+      ret = 0;
+      break;
+    }
+    
+    /* If the previous operation is completed, proceed to erase the page */
+    FLASH->CR |= FLASH_CR_PER;
+    FLASH->AR  = Address;
+    FLASH->CR |= FLASH_CR_STRT;
+      
+    /* Wait for last operation to be completed */
+    while((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY);
+    
+    if((FLASH->SR & (uint32_t)FLASH_FLAG_WRPERR)!= (uint32_t)0x00)
+    {
+      /* Write protected error */
+      ret = 0;
+      break;
+    }
+    
+    if((FLASH->SR & (uint32_t)(FLASH_SR_PGERR)) != (uint32_t)0x00)
+    {
+      /* Programming error */
+      ret = 0;
+      break;
+    }
+      
+    /* Disable the PER Bit */
+    FLASH->CR &= ~FLASH_CR_PER;
+  }
+  
+  /* Lock the Flash to disable the flash control register access (recommended
+  to protect the FLASH memory against possible unwanted operation) *********/
+  /* Set the LOCK Bit to lock the FLASH control register and program memory access */
+  FLASH->CR |= FLASH_CR_LOCK;
+  
+  return ret;
+}
+
+uint8_t FlashWrite(uint32_t Address, uint8_t *Data, uint32_t Length)
+{
+  uint8_t ret = 1;
+  uint16_t TmpData;
+  
+  if(Address >= FLASH_PAGE_START_ADDRESS && Address <= FLASH_PAGE_END_ADDRESS)
+  {
+    /* Unlock the Flash to enable the flash control register access *************/ 
+    HAL_FLASH_Unlock();
+    
+    /* Clear pending flags (if any) */  
+    FLASH->SR = (FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR);
+    
+    while(Length > 0)
+    {
+      if(Length == 1)
+      {
+        TmpData = Data[0] | (0x00 << 8 );
+        Data = Data + 1;
+        Length = Length - 1;
+      }
+      else
+      {
+        TmpData = Data[0] | (Data[1] << 8 );
+        Data = Data + 2;
+        Length = Length - 2;
+      }
+      
+      /* Wait for last operation to be completed */
+      while((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY);
+      
+      if((FLASH->SR & (uint32_t)FLASH_FLAG_WRPERR)!= (uint32_t)0x00)
+      {
+        /* Write protected error */
+        ret = 0;
+        break;
+      }
+      
+      if((FLASH->SR & (uint32_t)(FLASH_SR_PGERR)) != (uint32_t)0x00)
+      {
+        /* Programming error */
+        ret = 0;
+        break;
+      }
+      
+      /* If the previous operation is completed, proceed to program the new data */
+      FLASH->CR |= FLASH_CR_PG;
+      
+      *(__IO uint16_t*)Address = TmpData;
+      
+      /* Wait for last operation to be completed */
+      while((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY);
+      
+      if((FLASH->SR & (uint32_t)FLASH_FLAG_WRPERR)!= (uint32_t)0x00)
+      {
+        /* Write protected error */
+        ret = 0;
+        break;
+      }
+      
+      if((FLASH->SR & (uint32_t)(FLASH_SR_PGERR)) != (uint32_t)0x00)
+      {
+        /* Programming error */
+        ret = 0;
+        break;
+      }
+      
+      /* Disable the PG Bit */
+      FLASH->CR &= ~FLASH_CR_PG;
+      
+      /* Next address */
+      Address = Address + 2;
+    }
+    
+    /* Lock the Flash to disable the flash control register access (recommended
+    to protect the FLASH memory against possible unwanted operation) *********/
+    /* Set the LOCK Bit to lock the FLASH control register and program memory access */
+    FLASH->CR |= FLASH_CR_LOCK;
+  }
+  else
+    ret = 0;
+  
+  return ret;
+}
+
+/* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
+void EEPROMWriteInt(uint32_t addr, uint16_t Value)
+{
+	Flashdata[1 + addr] = (uint8_t)Value;
+	Value = Value>>8;
+	Flashdata[0 + addr] = (uint8_t)Value;
+}
+
+
+/* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
 uint16_t EMMInt1 ,EMMInt2 ,EMMInt3,EMMInt4;
 void readvolt(void)
 {
@@ -1575,459 +2070,6 @@ void readvolt(void)
 	
 	
 }
-
-void checkgenpromp(void)
-{
-	if(NetworkSelectValue == sys3P4W)
-	{
-		if(source_out == selecsource1){
-			if(((V2_A > UnderValue)&&(V2_A < OverValue)) && ((V2_B > UnderValue)&&(V2_B < OverValue)) && ((V2_C > UnderValue)&&(V2_C < OverValue))&& 
-			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
-			{
-				source2OK = 1;
-				//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
-				ctrlATScount = CTRL_ATS_TIMEOUT;
-				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-				source_out = selecsource2;
-				releaserelay =1;
-			}
-		}
-	}
-	else// if(NetworkSelectValue == sys1P2W)
-	{
-		if(source_out == selecsource1){
-			if((V2_A > UnderValue)&&(V2_A < OverValue) &&
-			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
-			{
-				source2OK = 1;
-				//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
-				ctrlATScount = CTRL_ATS_TIMEOUT;
-				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-				source_out = selecsource2;
-				releaserelay =1;
-			}
-		}
-	}
-}
-
-
-/* USER CODE END 0 */
-
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
-int main(void)
-{
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
-  /* MCU Configuration--------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
-  SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_CRC_Init();
-  MX_SPI1_Init();
-  MX_USART1_UART_Init();
-  MX_USB_DEVICE_Init();
-  MX_SPI2_Init();
-  MX_RTC_Init();
-  MX_TIM7_Init();
-  /* USER CODE BEGIN 2 */
-	HAL_GPIO_WritePin(Buzzer_GPIO_Port, Buzzer_Pin,OFF_BUZZER);
-	HAL_GPIO_WritePin(SPI1_CS1_GPIO_Port,SPI1_CS1_Pin,GPIO_PIN_SET);
-	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port,SPI2_CS_Pin,GPIO_PIN_SET);
-	HAL_Delay(1);
-	
-	InitEnergyIC(SOURCE2);
-	InitEnergyIC(SOURCE1);
-	
-	ReadSetting();
-	system_init();
-	
-	ssd1306_Init();
-	ssd1306_Fill(Black);
-	
-	uint32_t delta;
-
-/*
-// off all relay
-//	HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,GPIO_PIN_RESET);
-//	HAL_GPIO_WritePin(LED_Manual_GPIO_Port,LED_Manual_Pin,GPIO_PIN_RESET);
-//	HAL_GPIO_WritePin(LED_Auto_GPIO_Port,LED_Auto_Pin,GPIO_PIN_SET);
-
-		// write Rectangle
-//	for(delta = 0; delta < 1; delta ++) {
-//		ssd1306_DrawRectangle(1 + (5*delta),1 + (5*delta) ,SSD1306_WIDTH-1 - (5*delta),SSD1306_HEIGHT-1 - (5*delta),White);
-//	}
-*/	
-	
-	HAL_TIM_Base_Start_IT(&htim7);
-	
-	CommEnergyIC(SOURCE1, 0, EMMIntEn1, 0x7000);
-	CommEnergyIC(SOURCE2, 0, EMMIntEn1, 0x7000);
-	
-	initstartdelaycount = INIT_STARTDELAY;
-  /* USER CODE END 2 */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-	
-	//  ATS_process // jj // jj
-  while (1)
-  {
-		loopcount++;
-			
-		buttonRead();
-		check_releaserelay();
-		if(genstart == GENSTART)
-		{
-			checkgenpromp();
-		}
-		if(workmodeValue == modemanual)
-		{
-			checkauxinput();
-		}
-		if(((loopcount % 100) == 0) && (lcdflag ==0)&& (start_ats))// 10.4 ms.
-		{
-			HAL_GPIO_TogglePin(LCD_D2_GPIO_Port,LCD_D2_Pin);
-			//HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_SET);
-			
-			readvolt(); //1 ms.
-			//HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_RESET);
-		}
-		
-		if(((loopcount % 20000) == 0))// 120.4 ms.
-		{
-			//HAL_GPIO_TogglePin(LCD_D2_GPIO_Port,LCD_D2_Pin);
-			//HAL_GPIO_WritePin(LCD_D2_GPIO_Port,LCD_D2_Pin,GPIO_PIN_SET);
-			hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
-			if (HAL_SPI_Init(&hspi1) != HAL_OK)
-			{
-				Error_Handler();
-			}
-			
-			lcdupdate(); // 13.5 ms.
-			
-			hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
-			if (HAL_SPI_Init(&hspi1) != HAL_OK)
-			{
-				Error_Handler();
-			}
-		
-			//HAL_GPIO_WritePin(LCD_D2_GPIO_Port,LCD_D2_Pin,GPIO_PIN_RESET);
-		}
-		
-		if(Checksource2OK)
-		{
-			if(NetworkSelectValue == sys3P4W){
-					if((V2_A > UnderValue) && (V2_B > UnderValue) && (V2_C > UnderValue)&&
-					(V2_A < OverValue) && (V2_B < OverValue) && (V2_C < OverValue) &&
-					(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) )
-					{
-						ctrlATScount = CTRL_ATS_TIMEOUT;
-						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-						source_out = selecsource2;
-						releaserelay =1;
-						Checksource2OK =0;
-					}
-			}
-			else{ //sys1P2W
-				if((V2_A > UnderValue) && (V2_A < OverValue) &&
-					(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) ){
-						ctrlATScount = CTRL_ATS_TIMEOUT;
-						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-						source_out = selecsource2;
-						releaserelay =1;
-						Checksource2OK =0;
-				}
-			}
-		}
-		if(Checksource1OK)
-		{
-			if(NetworkSelectValue == sys3P4W){
-				if((V1_A > UnderValue) && (V1_B > UnderValue) && (V1_C > UnderValue)&&
-				(V1_A < OverValue) && (V1_B < OverValue) && (V1_C < OverValue) &&
-				(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) )
-				{
-					ctrlATScount = CTRL_ATS_TIMEOUT;
-					HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-					HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-					source_out = selecsource1;
-					releaserelay =1;
-					Checksource1OK =0;
-				}
-			}
-			else //1P2W
-			{
-				if((V1_A > UnderValue) && (V1_A < OverValue) &&
-				(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) )
-				{
-					ctrlATScount = CTRL_ATS_TIMEOUT;
-					HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-					HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-					source_out = selecsource1;
-					releaserelay =1;
-					Checksource1OK =0;
-				}
-			}
-		}
-		
-		if((loopcount % 35000) == 0)// 1.5 sec.
-		{
-			HAL_GPIO_TogglePin(LED_HEALTY_GPIO_Port,LED_HEALTY_Pin);
-		}
-			
-		//HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_RESET);
-		//HAL_IWDG_Refresh(&hiwdg);
-		
-		//  3.370 us. per loop.
-		
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
-}
-
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
-void SystemClock_Config(void)
-{
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
-
-  /** Configure LSE Drive Capability
-  */
-  HAL_PWR_EnableBkUpAccess();
-  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_HIGH);
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48|RCC_OSCILLATORTYPE_HSE
-                              |RCC_OSCILLATORTYPE_LSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
-  RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL6;
-  RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB|RCC_PERIPHCLK_USART1
-                              |RCC_PERIPHCLK_RTC;
-  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
-  PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
-  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_HSI48;
-
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
-
-/* USER CODE BEGIN 4 */
-
-//--------------- FLASH fUNCTION ---------------------------------//
-uint8_t FlashErase(void)
-{
-  uint8_t ret = 1;
-  uint32_t Address;
-  
-  /* Unlock the Flash to enable the flash control register access *************/ 
-	HAL_FLASH_Unlock();
-  
-  /* Erase the user Flash area ***********/
-
-  /* Clear pending flags (if any) */  
-  FLASH->SR = (FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR);
-  
-  for(Address = FLASH_PAGE_START_ADDRESS; Address < FLASH_PAGE_END_ADDRESS; Address += FLASH_PAGE_size)
-  {
-    /* Wait for last operation to be completed */
-    while((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY);
-    
-    if((FLASH->SR & (uint32_t)FLASH_FLAG_WRPERR)!= (uint32_t)0x00)
-    {
-      /* Write protected error */
-      ret = 0;
-      break;
-    }
-    
-    if((FLASH->SR & (uint32_t)(FLASH_SR_PGERR)) != (uint32_t)0x00)
-    {
-      /* Programming error */
-      ret = 0;
-      break;
-    }
-    
-    /* If the previous operation is completed, proceed to erase the page */
-    FLASH->CR |= FLASH_CR_PER;
-    FLASH->AR  = Address;
-    FLASH->CR |= FLASH_CR_STRT;
-      
-    /* Wait for last operation to be completed */
-    while((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY);
-    
-    if((FLASH->SR & (uint32_t)FLASH_FLAG_WRPERR)!= (uint32_t)0x00)
-    {
-      /* Write protected error */
-      ret = 0;
-      break;
-    }
-    
-    if((FLASH->SR & (uint32_t)(FLASH_SR_PGERR)) != (uint32_t)0x00)
-    {
-      /* Programming error */
-      ret = 0;
-      break;
-    }
-      
-    /* Disable the PER Bit */
-    FLASH->CR &= ~FLASH_CR_PER;
-  }
-  
-  /* Lock the Flash to disable the flash control register access (recommended
-  to protect the FLASH memory against possible unwanted operation) *********/
-  /* Set the LOCK Bit to lock the FLASH control register and program memory access */
-  FLASH->CR |= FLASH_CR_LOCK;
-  
-  return ret;
-}
-
-uint8_t FlashWrite(uint32_t Address, uint8_t *Data, uint32_t Length)
-{
-  uint8_t ret = 1;
-  uint16_t TmpData;
-  
-  if(Address >= FLASH_PAGE_START_ADDRESS && Address <= FLASH_PAGE_END_ADDRESS)
-  {
-    /* Unlock the Flash to enable the flash control register access *************/ 
-    HAL_FLASH_Unlock();
-    
-    /* Clear pending flags (if any) */  
-    FLASH->SR = (FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR);
-    
-    while(Length > 0)
-    {
-      if(Length == 1)
-      {
-        TmpData = Data[0] | (0x00 << 8 );
-        Data = Data + 1;
-        Length = Length - 1;
-      }
-      else
-      {
-        TmpData = Data[0] | (Data[1] << 8 );
-        Data = Data + 2;
-        Length = Length - 2;
-      }
-      
-      /* Wait for last operation to be completed */
-      while((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY);
-      
-      if((FLASH->SR & (uint32_t)FLASH_FLAG_WRPERR)!= (uint32_t)0x00)
-      {
-        /* Write protected error */
-        ret = 0;
-        break;
-      }
-      
-      if((FLASH->SR & (uint32_t)(FLASH_SR_PGERR)) != (uint32_t)0x00)
-      {
-        /* Programming error */
-        ret = 0;
-        break;
-      }
-      
-      /* If the previous operation is completed, proceed to program the new data */
-      FLASH->CR |= FLASH_CR_PG;
-      
-      *(__IO uint16_t*)Address = TmpData;
-      
-      /* Wait for last operation to be completed */
-      while((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY);
-      
-      if((FLASH->SR & (uint32_t)FLASH_FLAG_WRPERR)!= (uint32_t)0x00)
-      {
-        /* Write protected error */
-        ret = 0;
-        break;
-      }
-      
-      if((FLASH->SR & (uint32_t)(FLASH_SR_PGERR)) != (uint32_t)0x00)
-      {
-        /* Programming error */
-        ret = 0;
-        break;
-      }
-      
-      /* Disable the PG Bit */
-      FLASH->CR &= ~FLASH_CR_PG;
-      
-      /* Next address */
-      Address = Address + 2;
-    }
-    
-    /* Lock the Flash to disable the flash control register access (recommended
-    to protect the FLASH memory against possible unwanted operation) *********/
-    /* Set the LOCK Bit to lock the FLASH control register and program memory access */
-    FLASH->CR |= FLASH_CR_LOCK;
-  }
-  else
-    ret = 0;
-  
-  return ret;
-}
-
-/* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
-void EEPROMWriteInt(uint32_t addr, uint16_t Value)
-{
-	Flashdata[1 + addr] = (uint8_t)Value;
-	Value = Value>>8;
-	Flashdata[0 + addr] = (uint8_t)Value;
-}
-
-
-/* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
-
 /* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
 
 #define rd(j,k)  HAL_GPIO_ReadPin(j, k)
@@ -2685,8 +2727,7 @@ void buttonRead(void)
 											}
 											else{
 												Checksource1OK = 1;
-											}
-											
+											}			
 										}
 										else{ //sys1P2W
 											if((V1_A > UnderValue) && (V1_A < OverValue) &&
@@ -2720,12 +2761,13 @@ void buttonRead(void)
 												SourceSelectValue = selecsource2;
 												releaserelay =1;
 											}
-											else{
+											else
+											{
 												Checksource2OK = 1;
 											}
-											
 										}
-										else{ //sys1P2W
+										else //sys1P2W
+										{ 
 											if((V2_A > UnderValue) && (V2_A < OverValue) &&
 											(F_S2 > freqUnderValue) && (F_S2 < freqOverValue))
 											{
@@ -2737,7 +2779,8 @@ void buttonRead(void)
 												SourceSelectValue = selecsource2;
 												releaserelay =1;
 											}
-											else{
+											else
+											{
 												Checksource2OK = 1;
 											}
 										}
@@ -2927,8 +2970,8 @@ void buttonRead(void)
                 	case WEEKLY:
 										genschedulestart.genschedule_every = WEEKLY;
                 		break;
-									case MONTLY:
-										genschedulestart.genschedule_every = MONTLY;
+									case MONTHLY:
+										genschedulestart.genschedule_every = MONTHLY;
                 		break;
                 	default:
                 		break;
