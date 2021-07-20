@@ -894,7 +894,8 @@ int main(void)
 		
 		if(Checksource2OK)
 		{
-			if(NetworkSelectValue == sys3P4W){
+			if(NetworkSelectValue == sys3P4W)
+			{
 					if((V2_A > UnderValue) && (V2_B > UnderValue) && (V2_C > UnderValue)&&
 					(V2_A < OverValue) && (V2_B < OverValue) && (V2_C < OverValue) &&
 					(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) )
@@ -909,7 +910,7 @@ int main(void)
 			}
 			else{ //sys1P2W
 				if((V2_A > UnderValue) && (V2_A < OverValue) &&
-					(F_S2 > freqUnderValue) && (F_S2 < freqOverValue) ){
+					(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)){
 						ctrlATScount = CTRL_ATS_TIMEOUT;
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
@@ -2638,15 +2639,13 @@ void buttonRead(void)
 				else //Mode Auto
 				{
 					if((PageMenuCount == Pagemenu1_T) && (Submenu1Count == 8) )
-					{
-						
+					{	
 						if(comparesettingvalue())
 						{
 							FlashErase();
 							FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 						}
 						/* Save data to Flash */
-						
 						PageMenuCount--;
 					}
 					else if(PageMenuCount == Pagemenu2_T)
@@ -2676,7 +2675,6 @@ void buttonRead(void)
 									default:
 										break;
 								}
-
 								break;
 							case OvererSet_T: //1
 								switch (Submenu2Count)
@@ -2868,23 +2866,26 @@ void buttonRead(void)
 									
 									default:
 										break;
-								}
-										
+								}		
 							break;
 							case Schedule_T: //7
 								switch (Submenu2Count)
                 {
                 	case ScheduleEnable_T: //0
 										setvalueselect = 	GenScheduleEnableSet;
+										Submenu3Count = genschedulestart.genschedule_enable;
                 		break;
                 	case SchedulePeriod_T: //1
 										setvalueselect = 	SchedulePeriodSet;
+										Submenu3Count = genschedulestart.genschedule_every;
                 		break;
 									case ScheduleSetDateTime_T: //2
 										setvalueselect = 	ScheduleSetDateTimeSet;
+										Submenu3Count = 0;
                 		break;
 									case ScheduleStartTime_T: //3
 										setvalueselect = 	ScheduleStartTimeSet;
+										Submenu3Count = 0;
                 		break;
 									case ScheduleGoback_T: //4
 										// Save befor goback
@@ -2915,14 +2916,11 @@ void buttonRead(void)
                 	default:
                 		break;
                 }
-								Submenu3Count = 0;
+								//Submenu3Count = 0;
 								break;
-
-								
 							default:
 								break;
 						}
-
 						PageMenuCount++;
 					}
 					else if(PageMenuCount == Pagemenu3_T)
@@ -3054,9 +3052,7 @@ void buttonRead(void)
 							PageMenuCount = Pagemenu3_T;
 						}
 					}
-	
 				}
-					
 				state = st3;
 			}
 			else if(!rd(btn_MODE_GPIO_Port,btn_MODE_Pin))
