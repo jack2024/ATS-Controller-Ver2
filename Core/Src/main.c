@@ -387,8 +387,8 @@ volatile uint8_t releaserelay =0;
 volatile uint8_t Checksource1OK =0;
 volatile uint8_t Checksource2OK =0;
 
-enum{GENSTOP,GENSTART};
-volatile uint8_t genstart =GENSTOP;
+enum{GENSTOP , GENSTART};
+volatile uint8_t genstart = GENSTOP;
 
 /* USER CODE END PV */
 
@@ -516,7 +516,6 @@ void HAL_SYSTICK_Callback()
 			if(--UnderResTimeCount <=0)
 			{
 				UnderResTimeCount = 0;
-				
 				if(SourceSelectValue == SELECTSOURCE1)
 				{
 					source1OK = 1;
@@ -542,17 +541,14 @@ void HAL_SYSTICK_Callback()
 							source_out = selecsource1;
 							releaserelay =1;
 						}
-						
 						HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
 						genstart = GENSTOP;
 					}	
-					
 				}
 				else // (SourceSelectValue == SELECTSOURCE2)
 				{
 					source2OK = 1;
 				}
-				
 				if(State == State_PreUnderRes)/**/
 				{
 					State = State_nor;
@@ -588,13 +584,58 @@ void HAL_SYSTICK_Callback()
 				if(SourceSelectValue == SELECTSOURCE1)
 				{
 					source1OK = 0;
+					if(systemValue == main_main)
+					{
+						if(source2OK)
+						{
+							if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+							{
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
+							}
+						}
+						else{
+							Checksource2OK = 1;
+						}
+					}
+					else //(main_gens)
+					{
+						HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+						genstart = GENSTART;
+					}	
+					
 				}
 				else // (SourceSelectValue == SELECTSOURCE2)
 				{
 					source2OK = 0;
-				}
-				State = State_Over;		
-				if((UnderTimeCount ==0) && (UnderResTimeCount ==0)&& (OverResTimeCount ==0))
+					if(systemValue == main_main)
+					{
+						if(source1OK)
+						{
+							if(HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
+							{
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+								source_out = selecsource1;
+								releaserelay =1;
+							}
+						}
+						else
+						{
+							Checksource1OK = 1;
+						}
+					}
+					else //(main_gens)
+					{
+							
+					}	
+				}		
+				State = State_Over;
+				if((UnderResTimeCount ==0) && (UnderResTimeCount ==0)&& (OverResTimeCount ==0))
 				{
 					Timer_flag = 0; // stop timer
 				}
@@ -609,16 +650,56 @@ void HAL_SYSTICK_Callback()
 				if(SourceSelectValue == SELECTSOURCE1)
 				{
 					source1OK = 1;
+					State = State_nor;
+					if(systemValue == main_main)
+					{
+						if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+						{
+							ctrlATScount = CTRL_ATS_TIMEOUT;
+							HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+							source_out = selecsource1;
+							releaserelay =1;
+						}
+					}
+					else //(main_gens)
+					{
+						if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+						{
+							ctrlATScount = CTRL_ATS_TIMEOUT;
+							HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+							source_out = selecsource1;
+							releaserelay =1;
+						}
+						HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
+						genstart = GENSTOP;
+					}	
 				}
 				else // (SourceSelectValue == SELECTSOURCE2)
 				{
 					source2OK = 1;
 				}
-				if(State == State_PreOverRes)/**/
+				if(State == State_PreUnderRes)/**/
 				{
 					State = State_nor;
+					if(systemValue == main_main)
+					{
+						if(!HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
+						{
+							ctrlATScount = CTRL_ATS_TIMEOUT;
+							HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+							source_out = selecsource2;
+							releaserelay =1;
+						}
+					}
+					else //(main_gens)
+					{
+						// impossible
+					}	
 				}
-				if((UnderTimeCount ==0) && (UnderResTimeCount ==0)&& (OverTimeCount ==0))
+				if((UnderTimeCount ==0) && (UnderResTimeCount ==0) && (OverTimeCount ==0))
 				{
 					Timer_flag = 0; // stop timer
 				}
@@ -730,7 +811,8 @@ void checkgenschedule(void)
 			if(genschedulestart.genschedule_date == Dateupdate.Date){
 				if((genschedulestart.genschedule_hour == Timeupdate.Hours) && (genschedulestart.genschedule_minute == Timeupdate.Minutes))
 				{
-					if(GenstartTimeCount == 0){
+					if(GenstartTimeCount == 0)
+					{
 						HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
 						GenstartTimeCount = genschedulestart.genschedule_time * 60;
 					}
@@ -1586,7 +1668,7 @@ void readvolt(void)
 		}
 		F_S1 = (uint16_t)freqS1;
 		
-		if((V1_A > UnderValue)&&(V1_A < OverValue) && (F_S1 > freqUnderValue) && (F_S1 < freqOverValue)  )
+		if((V1_A > UnderValue)&&(V1_A < OverValue) && (F_S1 > freqUnderValue) && (F_S1 < freqOverValue))
 		{
 			source1OK = 1;
 			
@@ -1676,7 +1758,6 @@ void readvolt(void)
 						source1OK = 1; 
 						if(State == State_PreUnderRes)/**/
 						{
-							
 							State = State_nor;
 							if(systemValue == main_main)
 							{
@@ -1687,7 +1768,6 @@ void readvolt(void)
 									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 									source_out = selecsource1;
 									releaserelay =1;
-									
 								}
 							}
 							else //(main_gens)
@@ -1695,7 +1775,6 @@ void readvolt(void)
 								HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
 								genstart = GENSTOP;
 							}	
-							
 						}		
 					}
 					else
@@ -1722,6 +1801,27 @@ void readvolt(void)
 					{
 						source1OK = 0;
 						State = State_Over;
+						if(systemValue == main_main)
+						{
+							if(source2OK){
+								if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+								{
+									ctrlATScount = CTRL_ATS_TIMEOUT;
+									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+									source_out = selecsource2;
+									releaserelay =1;
+								}
+							}
+							else{
+								Checksource2OK = 1;
+							}
+						}
+						else //(main_gens)
+						{
+							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+							genstart = GENSTART;
+						}	
 					}
 					else
 					{
@@ -1744,8 +1844,27 @@ void readvolt(void)
 					State = State_PreOverRes;
 					if(OverResTimeCount == 0)
 					{
-						//if(State == State_PreOverRes)
-							source1OK = 1;
+						source2OK = 1; 
+						if(State == State_PreOverRes)/**/
+						{
+							State = State_nor;
+							if(systemValue == main_main)
+							{
+								if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+								{
+									ctrlATScount = CTRL_ATS_TIMEOUT;
+									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+									source_out = selecsource1;
+									releaserelay =1;
+								}
+							}
+							else //(main_gens)
+							{
+								HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
+								genstart = GENSTOP;
+							}	
+						}		
 					}
 					else
 					{
@@ -1753,8 +1872,7 @@ void readvolt(void)
 						{
 							Timer_flag =1; // start timer
 						}
-					}
-					
+					}		
 				}
 				if( (V1_A >= OverResValue) && ((State == State_nor)&&(State == State_PreOverRes)) )
 				{
@@ -1763,14 +1881,13 @@ void readvolt(void)
 				}
 				
 				if((V1_A > UnderValue) && (V1_A < OverValue) &&
-					(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) ){
-
+					(F_S1 > freqUnderValue) && (F_S1 < freqOverValue))
+				{
 					source1OK = 1;
 					HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
 				}
 				else
 				{
-
 					source1OK = 0;
 					HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
 				}
@@ -1785,7 +1902,6 @@ void readvolt(void)
 					source2OK = 0;
 					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
 				}
-			
 			}
 			else //*****(SourceSelectValue == SELECTSOURCE2)
 			{
@@ -3522,6 +3638,7 @@ void lcdupdate(void)
 							sprintf(buff,"%s",statusmenu[State]);
 						}
 					}
+					//               2                          4
 					if((State > State_Under) && (State <= State_UnderRes))
 					{
 						if(UnderResTimeCount)
@@ -3533,6 +3650,30 @@ void lcdupdate(void)
 						}
 					}
 					
+					if((State >= State_PreOver) && (State <= State_Over))
+					{
+						if(OverTimeCount)
+						{
+							timecountdisplay = (OverTimeCount/1000)+1;
+							sprintf(buff,"%s: %d",statusmenu[State],timecountdisplay );
+						}
+						else
+						{
+							sprintf(buff,"%s",statusmenu[State]);
+						}
+					}
+					if((State >= State_PreOverRes) && (State <= State_OverRes))
+					{
+						if(OverResTimeCount)
+						{
+							timecountdisplay = (OverResTimeCount/1000)+1;
+							sprintf(buff,"%s: %d",statusmenu[State],timecountdisplay );
+						}
+						else
+						{
+							sprintf(buff,"%s",statusmenu[State]);
+						}
+					}
 				}
 				else { // state = normal
 					if(++toggletime % 2)
@@ -3543,9 +3684,7 @@ void lcdupdate(void)
 					{
 						sprintf(buff,"%d/%s/%d %d:%d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
 					}
-
-				}
-				
+				}		
 				numofstring = 64 - (((strlen(buff)/2)*7)+3);
 				//ssd1306_SetCursor(3+(14), 17+12+12+12);
 				//ssd1306_SetCursor(17, 53);
@@ -3558,7 +3697,6 @@ void lcdupdate(void)
 				ssd1306_WriteString("MENU", Font_7x10, White);	
 				for(char i=0; i<5; i++)
 				{
-
 					ssd1306_SetCursor(5, 3+10+(i*10));
 					if(Submenu1Count <5)
 					{
@@ -3574,7 +3712,6 @@ void lcdupdate(void)
 					}
 					else
 					{
-						
 						if((5 + i) > 8)
 						{
 							break;
@@ -3586,8 +3723,7 @@ void lcdupdate(void)
 						else{
 							ssd1306_WriteString(buff, Font_7x10, White);	
 						}
-					}
-							
+					}		
 				}
 				break;
 			case Pagemenu2_T:
@@ -3674,7 +3810,6 @@ void lcdupdate(void)
 							}
 							else
 							{
-								
 								if((5 + i) > 4)
 								{
 									break;
@@ -3702,8 +3837,7 @@ void lcdupdate(void)
 								}
 							}
 							else
-							{
-								
+							{	
 								if((5 + i) > 4)
 								{
 									break;
@@ -3733,7 +3867,6 @@ void lcdupdate(void)
 							}
 							else
 							{
-								
 								if((5 + i) > 6)
 								{
 									break;
@@ -3763,7 +3896,6 @@ void lcdupdate(void)
 							}
 							else
 							{
-								
 								if((5 + i) > 4)
 								{
 									break;
@@ -3794,7 +3926,6 @@ void lcdupdate(void)
 							}
 							else
 							{
-								
 								if((5 + i) > 6)
 								{
 									break;
@@ -3823,8 +3954,7 @@ void lcdupdate(void)
 								}
 							}
 							else
-							{
-								
+							{					
 								if((5 + i) > 4)
 								{
 									break;
@@ -3841,10 +3971,7 @@ void lcdupdate(void)
 							break;
 						default:
 							break;
-					}
-					
-
-							
+					}												
 				}
 				
 				break;
