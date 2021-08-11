@@ -1712,7 +1712,8 @@ void readvolt(void)
 						State = State_Under;
 						if(systemValue == main_main)
 						{
-							if(source2OK){
+							if(source2OK)
+							{
 								if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
 								{
 									ctrlATScount = CTRL_ATS_TIMEOUT;
@@ -1722,7 +1723,8 @@ void readvolt(void)
 									releaserelay =1;
 								}
 							}
-							else{
+							else
+							{
 								Checksource2OK = 1;
 							}
 						}
@@ -1792,7 +1794,7 @@ void readvolt(void)
 				}
 				
 				/*****************OVER**********************/
-				if( ((V1_A >= OverValue )||(F_S1 >= freqOverValue)) && ((State == State_nor)||(State == State_PreUnderRes)) )
+				if( ((V1_A >= OverValue )||((F_S1 >= freqOverValue)&&(V1_B >= 10))) && ((State == State_nor)||(State == State_PreUnderRes)) )
 				{
 					OverTimeCount = OverTimSetValue*1000;
 					State = State_PreOver;
@@ -1843,7 +1845,7 @@ void readvolt(void)
 					State = State_PreOverRes;
 					if(OverResTimeCount == 0)
 					{
-						source2OK = 1; 
+						source1OK = 1; 
 						if(State == State_PreOverRes)/**/
 						{
 							State = State_nor;
@@ -1905,7 +1907,7 @@ void readvolt(void)
 			else //*****(SourceSelectValue == SELECTSOURCE2)
 			{
 				/*****************UNDER**********************/
-				if( (V2_A <= UnderValue )&&((State == State_nor)||(State == State_PreOverRes)))
+				if( ((V2_A <= UnderValue )||(F_S2 <= freqUnderValue))&&((State == State_nor)||(State == State_PreOverRes)))
 				{
 					UnderTimeCount = UnderTimSetValue*1000;
 					State = State_PreUnder;
@@ -1930,11 +1932,11 @@ void readvolt(void)
 							{
 								Checksource1OK = 1;
 							}
-							
 						}
 						else //(main_gens)
 						{
-
+							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+							genstart = GENSTART;
 						}	
 					}
 					else
@@ -1947,14 +1949,14 @@ void readvolt(void)
 					
 				}
 				
-				if( ((V2_A > UnderValue ) ) && (State == State_PreUnder))
+				if( ((V2_A > UnderValue )&&(F_S2 > freqUnderValue) ) && (State == State_PreUnder))
 				{
 					UnderTimeCount = 0;
 					State = State_nor;
 					Timer_flag = 0; // stop timer
 				}
-				
-				if( (V2_A >= UnderResValue ) && (State == State_Under) )
+				// UNDER Return
+				if( ((V2_A >= UnderResValue )&&(F_S2 >= freqUnderResValue)) && (State == State_Under) )
 				{
 					UnderResTimeCount = UnderResTimSetValue*1000; //1000*1ms = 1 Sec
 					State = State_PreUnderRes;
@@ -1978,7 +1980,8 @@ void readvolt(void)
 							}
 							else //(main_gens)
 							{
-
+								HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
+								genstart = GENSTOP;
 							}	
 							
 						}		
@@ -1991,7 +1994,7 @@ void readvolt(void)
 						}
 					}		
 				}
-				if( (V2_A <= UnderResValue) && (State == State_PreUnderRes) )
+				if( ((V2_A <= UnderResValue)||(F_S2 <= freqUnderResValue)) && (State == State_PreUnderRes) )
 				{
 					State = State_Under;
 					UnderResTimeCount = 0;
@@ -1999,7 +2002,7 @@ void readvolt(void)
 				}
 				
 				/*****************OVER**********************/
-				if( (V2_A >= OverValue ) && ((State == State_nor)||(State == State_PreUnderRes)) )
+				if( ((V2_A >= OverValue )||((F_S2 >= freqOverValue)&&(V2_B >= 10))) && ((State == State_nor)||(State == State_PreUnderRes)) )
 				{
 					OverTimeCount = OverTimSetValue*1000;
 					State = State_PreOver;
@@ -2007,6 +2010,27 @@ void readvolt(void)
 					{
 						source2OK = 0;
 						State = State_Over;
+						if(systemValue == main_main)
+						{
+							if(source1OK){
+								if(HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
+								{
+									ctrlATScount = CTRL_ATS_TIMEOUT;
+									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+									source_out = selecsource1;
+									releaserelay =1;
+								}
+							}
+							else{
+								Checksource1OK = 1;
+							}
+						}
+						else //(main_gens)
+						{
+							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,ON_rly);
+							genstart = GENSTART;
+						}
 					}
 					else
 					{
@@ -2017,20 +2041,39 @@ void readvolt(void)
 					}
 				}
 				
-				if( (V2_A <= OverValue) && (State == State_PreOver) )
+				if( ((V2_A <= OverValue)&&(F_S2 <= freqOverValue)) && (State == State_PreOver) )
 				{
 					State = State_nor;
 					Timer_flag = 0; // stop timer
 				}
 				//over return
-				if( (V2_A <= OverResValue) && (State == State_Over) )
+				if( ((V2_A <= OverResValue)&&(F_S2 <= freqOverResValue)) && (State == State_Over) )
 				{
 					OverResTimeCount = OverResTimSetValue*1000; //1000*1ms = 1 Sec
 					State = State_PreOverRes;
 					if(OverResTimeCount == 0)
 					{
-						//if(State == State_PreOverRes)
-							source2OK = 1;
+						source2OK = 1; 
+						if(State == State_PreOverRes)/**/
+						{
+							State = State_nor;
+							if(systemValue == main_main)
+							{
+								if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
+								{
+									ctrlATScount = CTRL_ATS_TIMEOUT;
+									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+									source_out = selecsource2;
+									releaserelay =1;
+								}
+							}
+							else //(main_gens)
+							{
+								HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
+								genstart = GENSTOP;
+							}	
+						}		
 					}
 					else
 					{
@@ -2041,7 +2084,7 @@ void readvolt(void)
 					}
 					
 				}
-				if( (V2_A >= OverResValue) && ((State == State_nor)&&(State == State_PreOverRes)) )
+				if( ((V2_A >= OverResValue)||(F_S2 >= freqOverResValue)) && ((State == State_nor)&&(State == State_PreOverRes)) )
 				{
 					State = State_Over;
 					Timer_flag = 0; // stop timer
