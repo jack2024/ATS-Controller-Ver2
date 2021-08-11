@@ -1671,7 +1671,6 @@ void readvolt(void)
 		if((V1_A > UnderValue)&&(V1_A < OverValue) && (F_S1 > freqUnderValue) && (F_S1 < freqOverValue))
 		{
 			source1OK = 1;
-			
 		}
 		
 		source2_A = GetLineVoltageA(SOURCE2);
@@ -1703,7 +1702,7 @@ void readvolt(void)
 			if(SourceSelectValue == SELECTSOURCE1)
 			{
 				/*****************UNDER**********************/
-				if( (V1_A <= UnderValue )&&((State == State_nor)||(State == State_PreOverRes)))
+				if( ((V1_A <= UnderValue )||(F_S1 <= freqUnderValue))&&((State == State_nor)||(State == State_PreOverRes)))
 				{
 					UnderTimeCount = UnderTimSetValue*1000;
 					State = State_PreUnder;
@@ -1742,14 +1741,14 @@ void readvolt(void)
 					}	
 				}
 				
-				if( (V1_A > UnderValue ) && (State == State_PreUnder))
+				if( ((V1_A > UnderValue )&&(F_S1 > freqUnderValue)) && (State == State_PreUnder))
 				{
 					UnderTimeCount = 0;
 					State = State_nor;
 					Timer_flag = 0; // stop timer
 				}
 				
-				if( (V1_A >= UnderResValue ) && (State == State_Under) )
+				if( ((V1_A >= UnderResValue )&&(F_S1 >= freqUnderResValue)) && (State == State_Under) )
 				{
 					UnderResTimeCount = UnderResTimSetValue*1000; //1000*1ms = 1 Sec
 					State = State_PreUnderRes;
@@ -1785,7 +1784,7 @@ void readvolt(void)
 						}
 					}		
 				}
-				if( (V1_A <= UnderResValue) && (State == State_PreUnderRes) )
+				if(((V1_A <= UnderResValue)||(F_S1 <= freqUnderResValue)) && (State == State_PreUnderRes) )
 				{
 					State = State_Under;
 					UnderResTimeCount = 0;
@@ -1793,7 +1792,7 @@ void readvolt(void)
 				}
 				
 				/*****************OVER**********************/
-				if( (V1_A >= OverValue ) && ((State == State_nor)||(State == State_PreUnderRes)) )
+				if( ((V1_A >= OverValue )||(F_S1 >= freqOverValue)) && ((State == State_nor)||(State == State_PreUnderRes)) )
 				{
 					OverTimeCount = OverTimSetValue*1000;
 					State = State_PreOver;
@@ -1832,13 +1831,13 @@ void readvolt(void)
 					}
 				}
 				
-				if( (V1_A <= OverValue) && (State == State_PreOver) )
+				if( ((V1_A <= OverValue)&&(F_S1 <= freqOverValue)) && (State == State_PreOver) )
 				{
 					State = State_nor;
 					Timer_flag = 0; // stop timer
 				}
 				//over return
-				if( (V1_A <= OverResValue) && (State == State_Over) )
+				if( ((V1_A <= OverResValue)&&(F_S1 <= freqOverResValue)) && (State == State_Over) )
 				{
 					OverResTimeCount = OverResTimSetValue*1000; //1000*1ms = 1 Sec
 					State = State_PreOverRes;
@@ -1874,7 +1873,7 @@ void readvolt(void)
 						}
 					}		
 				}
-				if( (V1_A >= OverResValue) && ((State == State_nor)&&(State == State_PreOverRes)) )
+				if( ((V1_A >= OverResValue)||(F_S1 >= freqOverResValue)) && ((State == State_nor)&&(State == State_PreOverRes)) )
 				{
 					State = State_Over;
 					Timer_flag = 0; // stop timer
