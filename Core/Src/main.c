@@ -594,7 +594,10 @@ void HAL_SYSTICK_Callback()
 					else //(main_gens)
 					{
 						// impossible
-					}	
+					}
+					if(F_S2 >= freqUnderResValue){
+						freqUnderflag = 0 ;
+					}
 				}
 				if((UnderTimeCount ==0) && (OverTimeCount ==0)&& (OverResTimeCount ==0))
 				{
@@ -1734,7 +1737,7 @@ void readvolt(void)
 				// UNDER RETURN
 				if( (((V2_A >= UnderResValue ) && (V2_B >= UnderResValue ) && (V2_C >= UnderResValue )) &&(F_S2 >= freqUnderResValue))&& (State == State_Under) )
 				{
-					if((V2_A >= UnderResValue ) && (V2_B >= UnderResValue ) && (V2_C >= UnderResValue )){
+					if(((V2_A >= UnderResValue ) && (V2_B >= UnderResValue ) && (V2_C >= UnderResValue )) && (!freqUnderflag)){
 						UnderResTimeCount = UnderResTimSetValue*1000; //1000*1ms = 1 Sec
 					}
 					else{
@@ -2128,7 +2131,10 @@ void readvolt(void)
 						OverResTimeCount = OverResTimSetValue*1000; //1000*1ms = 1 Sec
 					}
 					else{
-						OverResTimeCount = freqNormalTimeSetValue*1000;
+						OverResTimeCount = freqNormalTimeSetValue * 1000;
+						if(!OverResTimeCount){
+							freqOverflag = 0;
+						}
 					}
 					
 					State = State_PreOverRes;
@@ -2310,9 +2316,9 @@ void readvolt(void)
 				}
 				
 				/*****************OVER**********************/
-				if( ((V2_A >= OverValue )||(freq1overcount >=5)) && ((State == State_nor)||(State == State_PreUnderRes)) )
+				if( ((V2_A >= OverValue )||(freq2overcount >=5)) && ((State == State_nor)||(State == State_PreUnderRes)) )
 				{
-					if((V2_A >= OverValue) && (freq1overcount <5)){
+					if((V2_A >= OverValue) && (freq2overcount <5)){
 						OverTimeCount = OverTimSetValue*1000;
 					}
 					else{
@@ -2367,7 +2373,7 @@ void readvolt(void)
 				//over return
 				if( ((V2_A <= OverResValue)&&(F_S2 <= freqOverResValue)) && (State == State_Over) )
 				{
-					if(V2_A <= OverResValue){
+					if((V2_A <= OverResValue) && (!freqOverflag)){
 						OverResTimeCount = OverResTimSetValue*1000; //1000*1ms = 1 Sec
 					}
 					else{
