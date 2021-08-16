@@ -1894,8 +1894,7 @@ void readvolt(void)
 				{
 					State = State_Over;
 					Timer_flag = 0; // stop timer
-				}
-					
+				}	
 			}
 			
 		}//
