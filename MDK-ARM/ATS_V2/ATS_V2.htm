@@ -3,7 +3,7 @@
 <title>Static Call Graph - [ATS_V2\ATS_V2.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ATS_V2\ATS_V2.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Sat Aug 14 12:48:53 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Mon Aug 16 13:48:00 2021
 <BR><P>
 <H3>Maximum Stack Usage =        312 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1023,8 +1023,7 @@ Global Symbols
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_ByteToBcd2
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_WaitForSynchro
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_RTC_Init
-<LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
+<BR>[Called By]<UL><LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
 </UL>
 
 <P><STRONG><a name="[be]"></a>HAL_RTC_SetTime</STRONG> (Thumb, 310 bytes, Stack size 24 bytes, stm32f0xx_hal_rtc.o(i.HAL_RTC_SetTime))
@@ -1034,8 +1033,7 @@ Global Symbols
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_ByteToBcd2
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_WaitForSynchro
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_RTC_Init
-<LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
+<BR>[Called By]<UL><LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
 </UL>
 
 <P><STRONG><a name="[bb]"></a>HAL_RTC_WaitForSynchro</STRONG> (Thumb, 60 bytes, Stack size 16 bytes, stm32f0xx_hal_rtc.o(i.HAL_RTC_WaitForSynchro))
@@ -1302,12 +1300,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[e7]"></a>MX_RTC_Init</STRONG> (Thumb, 126 bytes, Stack size 32 bytes, rtc.o(i.MX_RTC_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = MX_RTC_Init &rArr; HAL_RTC_SetTime &rArr; RTC_EnterInitMode
+<P><STRONG><a name="[e7]"></a>MX_RTC_Init</STRONG> (Thumb, 60 bytes, Stack size 32 bytes, rtc.o(i.MX_RTC_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = MX_RTC_Init &rArr; HAL_RTC_Init &rArr; RTC_EnterInitMode
 </UL>
-<BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_SetTime
-<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_SetDate
-<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<BR>[Calls]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
 <LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_Init
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
