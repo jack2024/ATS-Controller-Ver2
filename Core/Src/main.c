@@ -981,17 +981,6 @@ int main(void)
 	
 	uint32_t delta;
 
-/*
-// off all relay
-//	HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,GPIO_PIN_RESET);
-//	HAL_GPIO_WritePin(LED_Manual_GPIO_Port,LED_Manual_Pin,GPIO_PIN_RESET);
-//	HAL_GPIO_WritePin(LED_Auto_GPIO_Port,LED_Auto_Pin,GPIO_PIN_SET);
-
-		// write Rectangle
-//	for(delta = 0; delta < 1; delta ++) {
-//		ssd1306_DrawRectangle(1 + (5*delta),1 + (5*delta) ,SSD1306_WIDTH-1 - (5*delta),SSD1306_HEIGHT-1 - (5*delta),White);
-//	}
-*/	
 	
 	HAL_TIM_Base_Start_IT(&htim7);
 	
@@ -4145,7 +4134,7 @@ void lcdupdate(void)
 							if(Submenu2Count <5){
 								strcpy(buff, overmenu[i]);
 								if(Submenu2Count == i){
-								ssd1306_WriteString(buff, Font_7x10, Black);	
+									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
 								else{
 									ssd1306_WriteString(buff, Font_7x10, White);	
