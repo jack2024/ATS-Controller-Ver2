@@ -4046,12 +4046,12 @@ void lcdupdate(void)
 					{
 						sprintf(buff,"%d/%s/%d %d:%d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
 					}
+
 				}		
-				numofstring = 64 - (((strlen(buff)/2)*7)+3);
-				//ssd1306_SetCursor(3+(14), 17+12+12+12);
-				//ssd1306_SetCursor(17, 53);
+				numofstring = 64 - (((strlen(buff)/2)*6)+3);
 				ssd1306_SetCursor(numofstring , 53);
-				ssd1306_WriteString(buff, Font_7x10, White);
+				//ssd1306_SetCursor(0 , 53);
+				ssd1306_WriteString(buff, Font_6x8, White);
 
 				break;
 			case Pagemenu1_T:
