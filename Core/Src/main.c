@@ -1092,8 +1092,11 @@ int main(void)
 		
 		if((loopcount % 35000) == 0)// 1.5 sec.
 		{
-			checkgenschedule();
 			HAL_GPIO_TogglePin(LED_HEALTY_GPIO_Port,LED_HEALTY_Pin);
+			if(systemValue == main_gens){
+				checkgenschedule();
+			}
+			
 		}
 		//HAL_IWDG_Refresh(&hiwdg);
 		
