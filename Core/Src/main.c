@@ -993,7 +993,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	
-	//  ATS_process // jj // jj
+	//  Gen Schedule Control // jj18/8/64
   while (1)
   {
 		loopcount++;
@@ -2656,7 +2656,6 @@ void buttonRead(void)
 										Submenu2Count = main_gens;
 									}
 									break;
-								//break;
 								case FreqSet_T:
 									if(++Submenu2Count > 6)
 									{
@@ -2669,8 +2668,6 @@ void buttonRead(void)
 										Submenu2Count =0;
 									}
 									break;
-								
-								//break;
 
               	default:
               		break;
@@ -3997,10 +3994,93 @@ void lcdupdate(void)
 						if(UnderTimeCount)
 						{
 							timecountdisplay = (UnderTimeCount/1000)+1;
-							sprintf(buff,"%s: %d",statusmenu[State],timecountdisplay );
+							//sprintf(buff,"%s: %d",statusmenu[State],timecountdisplay );
+							
+							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+							if(SourceSelectValue == SELECTSOURCE1)
+							{
+								if(NetworkSelectValue == sys3P4W){
+									if((V1_A <= 10) || (V1_B <= 10) || (V1_C <= 10)){
+										sprintf(buff,"Phase Loss: %d",timecountdisplay );
+									}
+									else{
+										sprintf(buff,"%s: %d",statusmenu[State],timecountdisplay );
+									}
+								}
+								else{ // sys1P2W
+									if((V1_A <= 0)){
+										sprintf(buff,"Phase Loss: %d",timecountdisplay );
+									}
+									else{
+										sprintf(buff,"%s: %d",statusmenu[State],timecountdisplay );
+									}
+								}	
+							}
+							else// SourceSelectValue == SELECTSOURCE2
+							{
+								if(NetworkSelectValue == sys3P4W){
+									if((V2_A <= 10) || (V2_B <= 10) || (V2_C <= 10)){
+											sprintf(buff,"Phase Loss: %d",timecountdisplay );
+									}
+									else{
+										sprintf(buff,"%s: %d",statusmenu[State],timecountdisplay );
+									}
+								}
+								else{ // sys1P2W
+									if((V2_A <= 0)){
+										sprintf(buff,"Phase Loss: %d",timecountdisplay );	
+									}
+									else{
+										sprintf(buff,"%s: %d",statusmenu[State],timecountdisplay );
+									}
+								}
+							}
+							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						}
 						else{
-							sprintf(buff,"%s",statusmenu[State]);
+							//sprintf(buff,"%s",statusmenu[State]);
+							
+							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+							if(SourceSelectValue == SELECTSOURCE1)
+							{
+								if(NetworkSelectValue == sys3P4W){
+									if((V1_A <= 10) || (V1_B <= 10) || (V1_C <= 10)){
+										sprintf(buff,"Phase Loss");	
+									}
+									else{
+										sprintf(buff,"%s",statusmenu[State]);
+									}
+								}
+								else{ // sys1P2W
+									if((V1_A <= 0)){
+										sprintf(buff,"Phase Loss");	
+									}
+									else{
+										sprintf(buff,"%s",statusmenu[State]);
+									}
+								}	
+							}
+							else// SourceSelectValue == SELECTSOURCE2
+							{
+								if(NetworkSelectValue == sys3P4W){
+									if((V2_A <= 10) || (V2_B <= 10) || (V2_C <= 10)){
+											sprintf(buff,"Phase Loss");	
+									}
+									else{
+										sprintf(buff,"%s",statusmenu[State]);
+									}
+								}
+								else{ // sys1P2W
+									if((V2_A <= 0)){
+										sprintf(buff,"Phase Loss");	
+									}
+									else{
+										sprintf(buff,"%s",statusmenu[State]);
+									}
+								}
+							}
+							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+							
 						}
 					}
 					//               2                          4
@@ -4977,7 +5057,7 @@ void ats_process(void)
 						
 					}	
         }
-        else if ((source1OK) && (!UnderResTimeCount))// Return to normal
+        else if ((source1OK) && (!UnderResTimeCount)) // Return to normal
         {
 					if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin)){
 						ctrlATScount = CTRL_ATS_TIMEOUT;
@@ -5019,8 +5099,7 @@ void ats_process(void)
 						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 						source_out = selecsource1;
 					}
-					
-
+				
         }
         else if ((source2OK)) // Return to normal
         {
@@ -5047,9 +5126,6 @@ void ats_process(void)
 		
 	}
 }
-
-
-
 
 /* USER CODE END 4 */
 
