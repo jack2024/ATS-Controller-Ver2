@@ -216,27 +216,12 @@
         <Ww>
           <count>13</count>
           <WinNumber>1</WinNumber>
-          <ItemText>freq1overcount</ItemText>
+          <ItemText>freq1overcount,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>14</count>
           <WinNumber>1</WinNumber>
-          <ItemText>freq2overcount</ItemText>
-        </Ww>
-        <Ww>
-          <count>15</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Timeupdate,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>16</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Dateupdate,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>17</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>genschedulestart,0x0A</ItemText>
+          <ItemText>freq2overcount,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
