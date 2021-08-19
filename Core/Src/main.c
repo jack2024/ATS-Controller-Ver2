@@ -853,10 +853,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
-
-
-
-
 void checkgenschedule(void)
 {
 	if((genschedulestart.genschedule_enable)&&(systemValue == main_gens))
@@ -933,7 +929,6 @@ void checkgenpromp(void)
 	}
 }
 
-
 /* USER CODE END 0 */
 
 /**
@@ -988,7 +983,6 @@ int main(void)
 	
 	uint32_t delta;
 
-	
 	HAL_TIM_Base_Start_IT(&htim7);
 	
 	CommEnergyIC(SOURCE1, 0, EMMIntEn1, 0x7000);
@@ -1105,7 +1099,6 @@ int main(void)
 			}
 		}
 		//HAL_IWDG_Refresh(&hiwdg);
-		
 		
     /* USER CODE END WHILE */
 
@@ -5103,8 +5096,7 @@ void ats_process(void)
 						HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
 						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 						source_out = selecsource1;
-					}
-				
+					}	
         }
         else if ((source2OK)) // Return to normal
         {
@@ -5128,7 +5120,6 @@ void ats_process(void)
 
 			}
     }
-		
 	}
 }
 
