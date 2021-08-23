@@ -283,6 +283,10 @@ uint16_t V1_B;
 uint16_t V1_C;
 uint16_t F_S1;
 
+uint8_t phase_sequen_source1;
+uint8_t phase_sequen_source2;
+uint8_t phasesequencount =0;
+
 float source2_A;
 float source2_B;
 float source2_C;
@@ -298,8 +302,8 @@ enum{UnderSet_T, OvererSet_T, MainselectSet_T, ConfigSet_T, TimeSet_T, SystemSet
 enum{VoltCut_T,VoltReturn_T,TimeCut_T,TimeReturn_T,Goback_T};
 
 enum{modeauto,modemanual};
-//				0					 1							2							3									4							5							6							7								8
-enum{State_nor,State_PreUnder,State_Under,State_PreUnderRes,State_UnderRes,State_PreOver,State_Over,State_PreOverRes,State_OverRes};
+//				0					 1							2							3									4							5							6							7								8   
+enum{State_nor,State_PreUnder,State_Under,State_PreUnderRes,State_UnderRes,State_PreOver,State_Over,State_PreOverRes,State_OverRes };
 enum{nor, UnderSet, OverSet,UnderResSet,OverResSet,UnderTimSet,OverTimSet,UnderResTimSet,OverResTimSet};
 enum{normal, SetUnder, SetUnderRes,SetUnderTim,SetUnderResTim,SetSource};
 
@@ -417,6 +421,7 @@ void ats_process(void);
 void check_releaserelay(void);
 void checkgenpromp(void);
 void checkgenschedule(void);
+uint8_t chechphasesequen(unsigned char selectsource);
 
 volatile int16_t systickcount =0;
 volatile signed char beepcount = 0;
@@ -446,7 +451,6 @@ void HAL_SYSTICK_Callback()
 	if(Timer_flag)
 	{
 		/////////////// Under //////////////////////
-		//if((UnderTimeCount)&&(State == State_PreUnder))
 		if(UnderTimeCount)
 		{	
 			if(--UnderTimeCount <=0)
@@ -454,8 +458,7 @@ void HAL_SYSTICK_Callback()
 				UnderTimeCount = 0;
 				if(SourceSelectValue == SELECTSOURCE1)
 				{
-					//source1OK = 0;
-					
+					//source1OK = 0;		
 					if(systemValue == main_main)
 					{
 						if(source2OK)
@@ -472,8 +475,6 @@ void HAL_SYSTICK_Callback()
 						else{
 							Checksource2OK = 1;
 						}
-						
-
 					}
 					else //(main_gens)
 					{
@@ -490,8 +491,6 @@ void HAL_SYSTICK_Callback()
 							freqUnderflag = 1;
 						}
 					}
-					
-					
 				}
 				else // (SourceSelectValue == SELECTSOURCE2)
 				{
@@ -533,10 +532,8 @@ void HAL_SYSTICK_Callback()
 				{
 					Timer_flag = 0; // stop timer
 				}
-				
 			}
 		}
-		//if((UnderResTimeCount)&&(State == State_PreUnderRes))
 		if(UnderResTimeCount)
 		{
 			if(--UnderResTimeCount <=0)
@@ -544,7 +541,6 @@ void HAL_SYSTICK_Callback()
 				UnderResTimeCount = 0;
 				if(SourceSelectValue == SELECTSOURCE1)
 				{
-					//source1OK = 1;
 					if(source1OK){
 						State = State_nor;
 						if(systemValue == main_main)
@@ -609,7 +605,6 @@ void HAL_SYSTICK_Callback()
 			}
 		}
 		/////////////// Over //////////////////////
-		//if((OverTimeCount)&&(State == State_PreOver))
 		if(OverTimeCount)
 		{		
 			if(--OverTimeCount <=0)
@@ -617,7 +612,6 @@ void HAL_SYSTICK_Callback()
 				OverTimeCount = 0;
 				if(SourceSelectValue == SELECTSOURCE1)
 				{
-					//source1OK = 0;
 					if(systemValue == main_main)
 					{
 						if(source2OK)
@@ -680,7 +674,6 @@ void HAL_SYSTICK_Callback()
 				}
 			}
 		}
-		//if((OverResTimeCount)&&(State == State_PreOverRes))
 		if(OverResTimeCount)
 		{
 			if(--OverResTimeCount <=0)
@@ -688,7 +681,6 @@ void HAL_SYSTICK_Callback()
 				OverResTimeCount = 0;
 				if(SourceSelectValue == SELECTSOURCE1)
 				{
-					//source1OK = 1;
 					if(source1OK)
 					{
 						State = State_nor;
@@ -723,7 +715,6 @@ void HAL_SYSTICK_Callback()
 				}
 				else // (SourceSelectValue == SELECTSOURCE2)
 				{
-					//source2OK = 1;
 					if(source2OK){
 						State = State_nor;
 						if(systemValue == main_main)
@@ -902,7 +893,6 @@ void checkgenpromp(void)
 			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
 			{
 				source2OK = 1;
-				//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
 				ctrlATScount = CTRL_ATS_TIMEOUT;
 				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
@@ -918,7 +908,6 @@ void checkgenpromp(void)
 			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
 			{
 				source2OK = 1;
-				//HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
 				ctrlATScount = CTRL_ATS_TIMEOUT;
 				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
@@ -1014,7 +1003,6 @@ int main(void)
 			HAL_GPIO_TogglePin(LCD_D2_GPIO_Port,LCD_D2_Pin);	
 			readvolt(); //1 ms.
 		}
-		
 		if(((loopcount % 20000) == 0))// 120.4 ms.
 		{
 			hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
@@ -1093,6 +1081,49 @@ int main(void)
 		
 		if((loopcount % 35000) == 0)// 1.5 sec.
 		{
+			//  Check Phase Sequen 
+			if((NetworkSelectValue == sys3P4W)&& (start_ats)){
+				if(source_out == SELECTSOURCE1){
+					if(chechphasesequen(SOURCE1))
+					{
+						phase_sequen_source1 = 1;
+						phasesequencount = 0;
+					}
+					else //chechphasesequen(SOURCE1) == 0
+					{
+						if(phase_sequen_source1){
+							if(++phasesequencount >= 5)
+								phase_sequen_source1 = 0;
+						}
+						else{
+							phase_sequen_source1 = 0;
+						}
+					}
+					phase_sequen_source2 =0;
+				}
+				else if(source_out == SELECTSOURCE2){
+					if(chechphasesequen(SOURCE2))
+					{
+						phase_sequen_source2 = 1;
+						phasesequencount = 0;
+					}
+					else //chechphasesequen(SOURCE2) == 0
+					{
+						if(phase_sequen_source2){
+							if(++phasesequencount >= 5)
+								phase_sequen_source2 = 0;
+						}else{
+							phase_sequen_source2 = 0;
+						}
+					}
+					phase_sequen_source1 =0;
+				}
+//				phase_sequen_source1 = GetSysStatus0(SOURCE1);
+//				phase_sequen_source1 = phase_sequen_source1 & 0x200;
+//				phase_sequen_source2 = GetSysStatus0(SOURCE2);
+//				phase_sequen_source2 = phase_sequen_source2 & 0x200;
+			}
+			
 			HAL_GPIO_TogglePin(LED_HEALTY_GPIO_Port,LED_HEALTY_Pin);
 			if(systemValue == main_gens){
 				checkgenschedule();
@@ -1399,7 +1430,8 @@ void readvolt(void)
 		F_S2 = (uint16_t)freqS2;
 		if(F_S2 >= freqOverValue)
 		{
-			if(++freq2overcount > 5){
+			if(++freq2overcount > 5)
+			{
 				freq2overcount = 5;
 			}
 		}
@@ -1429,7 +1461,6 @@ void readvolt(void)
 		{
 			Checksource2OK =0;
 		}
-		
 		
 		if(start_ats)
 		{
@@ -1510,7 +1541,6 @@ void readvolt(void)
 							freqUnderflag = 0 ;
 						}
 					}
-					
 					State = State_PreUnderRes;
 					if(UnderResTimeCount == 0)
 					{
@@ -1556,20 +1586,20 @@ void readvolt(void)
 					UnderResTimeCount = 0;
 					Timer_flag = 0; // stop timer
 				}
-				
 				/*****************OVER**********************/
 				if((((V1_A >= OverValue )||(V1_B >= OverValue )||(V1_C >= OverValue ))||(freq1overcount >=5))&& ((State == State_nor)||(State == State_PreUnderRes)) )
 				{
 					if(((V1_A >= OverValue )||(V1_B >= OverValue )||(V1_C >= OverValue )) && (freq1overcount <5)){
 						OverTimeCount = OverTimSetValue*1000;
 					}
-					else{
+					else
+					{
 						OverTimeCount = freqABnormalTimeSetValue*1000;
-						if(!OverTimeCount){
+						if(!OverTimeCount)
+						{
 							freqOverflag = 1;
 						}
-					}
-					
+					}	
 					State = State_PreOver;
 					if(OverTimeCount ==0)
 					{
@@ -1585,7 +1615,6 @@ void readvolt(void)
 								source_out = selecsource2;
 								releaserelay =1;
 							}
-
 						}
 						else //(main_gens)
 						{
@@ -2403,7 +2432,6 @@ void readvolt(void)
 							Timer_flag =1; // start timer
 						}
 					}
-					
 				}
 				if( ((V2_A >= OverResValue)||(F_S2 >= freqOverResValue)) && ((State == State_nor)&&(State == State_PreOverRes)) )
 				{
@@ -2429,7 +2457,6 @@ void readvolt(void)
 				}
 				else
 				{
-					//source2OK = 0;
 					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
 				}
 
@@ -2437,118 +2464,7 @@ void readvolt(void)
 		}// start_ats
 		
 	}
-	
-/*	
-	source2_A = GetLineVoltageA(SOURCE2);
-	if(NetworkSelectValue == sys3P4W)
-	{
-		source2_B = GetLineVoltageB(SOURCE2);
-		source2_C = GetLineVoltageC(SOURCE2);
-	}
-	
-	freqS2 = GetFrequency(SOURCE2);
-	
-	EMMInt1 = CommEnergyIC(SOURCE2, 1, EMMIntState1, 0xFFFF);
-	EMMInt2 = CommEnergyIC(SOURCE2, 1, EMMState1, 0xFFFF);
-	EMMInt3 = CommEnergyIC(SOURCE2, 1, PhaseLossTh, 0xFFFF);
-	EMMInt4 = CommEnergyIC(SOURCE2, 1, SagTh, 0xFFFF);
-	
-	V1_A = (uint16_t)source1_A;
-	if(NetworkSelectValue == sys3P4W)
-	{
-		V1_B = (uint16_t)source1_B;
-		V1_C = (uint16_t)source1_C;
-	}
-	
-	if(V1_A <10)
-		V1_A = 0;
-	if(NetworkSelectValue == sys3P4W)
-	{
-		if(V1_B <10)
-			V1_B = 0;
-		if(V1_C <10)
-			V1_C = 0;
-	}
-	
-	
-	V2_A = (uint16_t)source2_A;
-	if(NetworkSelectValue == sys3P4W)
-	{
-		V2_B = (uint16_t)source2_B;
-		V2_C = (uint16_t)source2_C;
-	}
-	
-	if(V2_A <10)
-		V2_A = 0;
-	if(NetworkSelectValue == sys3P4W)
-	{
-		if(V2_B <10)
-			V2_B = 0;
-		if(V2_C <10)
-			V2_C = 0;
-	}
-*/
-
-	//ats_process();
-
-/*	
-	if(NetworkSelectValue == sys3P4W)
-	{
-		if(((V1_A >= UnderValue) && (V1_A <= OverValue)) && 
-			((V1_B >= UnderValue) && (V1_B <= OverValue)) && 
-			((V1_C >= UnderValue) && (V1_C <= OverValue)) )
-		{
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
-			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
-	//		exit1_flag = 0;
-		}
-		else{
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
-		}
-	}
-	else // sys1P2W
-	{
-		if(V1_A >= UnderValue)
-		{
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
-			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
-		}
-		else{
-			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
-		}
 		
-	}
-	
-	if(NetworkSelectValue == sys3P4W)
-	{
-		if(((V2_A >= UnderValue) && (V2_A <= OverValue)) && 
-			((V2_B >= UnderValue) && (V2_B <= OverValue)) && 
-			((V2_C >= UnderValue) && (V2_C <= OverValue)) )
-		{
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
-			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
-			exit1_flag = 0;
-		}
-		else
-		{
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
-		}
-	}
-	else//sys1P2WS
-	{
-		if(V2_A >= UnderValue)
-		{
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
-			CommEnergyIC(SOURCE2, 0, EMMIntState1, 0x7000);	// jj	
-			exit1_flag = 0;
-		}
-		else{
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
-		}
-	}
-*/
-	
-	
 }
 /* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
 
@@ -2596,6 +2512,7 @@ void buttonRead(void)
 					FlashErase();
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 					releaserelay =1;
+					source_out = SELECTSOURCE1;
 				}
 				else //Mode Auto
 				{	
@@ -2838,6 +2755,7 @@ void buttonRead(void)
 					FlashErase();
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 					releaserelay =1;
+					source_out = SELECT_NON;
 				}
 				else //Mode Auto
 				{
@@ -3111,6 +3029,7 @@ void buttonRead(void)
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 					system_init();
 					releaserelay =1;
+					source_out = SELECTSOURCE2;
 				}
 				else //Mode Auto
 				{
@@ -3373,26 +3292,13 @@ void buttonRead(void)
 										EEPROMWriteInt(GesScheduleMinute_addr , genschedulestart.genschedule_minute);
 										EEPROMWriteInt(GesScheduleTime_addr , genschedulestart.genschedule_time);									
 										
-										PageMenuCount = Pagemenu1_T;
-//										if (Submenu2Count == ScheduleGoback_T)
-//                    {
-//											PageMenuCount = 0;
-//                    }
-//                    else
-//                    {
-//											PageMenuCount--;
-//                    }
-										//PageMenuCount = 0;
-										
-										
-										//PageMenuCount = mainpage_T;
+										PageMenuCount = Pagemenu1_T;									
 										PageMenuCount--;
 										setvalueselect = NONselect;
                 		break;
                 	default:
                 		break;
                 }
-								//Submenu3Count = 0;
 								break;
 							default:
 								break;
@@ -3467,9 +3373,7 @@ void buttonRead(void)
 										
                 		break;
 									case Schedulegoback_T:
-										//Submenu2Count = 0;
 										PageMenuCount--;
-										//setvalueselect = NONselect;
                 		break;
                 	default :
                 		break;
@@ -3496,11 +3400,9 @@ void buttonRead(void)
 							setvalueselect = NONselect;
 							PageMenuCount--;
             }
-						
 					}
 					else
 					{
-						//PageMenuCount++;
 						if(PageMenuCount == mainpage_T)
 						{
 							Submenu1Count = 0;
@@ -3509,19 +3411,22 @@ void buttonRead(void)
 						}
 						else if(PageMenuCount == Pagemenu1_T)
 						{
-							if(Submenu1Count == SystemSet_T){
+							if(Submenu1Count == SystemSet_T)
+							{
 								Submenu2Count = systemValue;
 							}
-							else if(Submenu1Count == MainselectSet_T){
+							else if(Submenu1Count == MainselectSet_T)
+							{
 								Submenu2Count = SourceSelectValue -1; // -1 for eject non_select to menu setup
 							}
-							else if(Submenu1Count == ConfigSet_T){
+							else if(Submenu1Count == ConfigSet_T)
+							{
 								Submenu2Count = NetworkSelectValue;
 							}
-							else{
+							else
+							{
 								Submenu2Count = 0;
 							}
-							
 						}
 						if(++PageMenuCount >Pagemenu3_T)
 						{
@@ -3531,7 +3436,7 @@ void buttonRead(void)
 				}
 				state = st3;
 			}
-			else if(!rd(btn_MODE_GPIO_Port,btn_MODE_Pin))
+			else if(!rd(btn_MODE_GPIO_Port,btn_MODE_Pin) && (PageMenuCount == mainpage_T))
 			{
 				if(workmodeValue == modeauto)
 				{
@@ -3575,7 +3480,6 @@ void buttonRead(void)
 							break;
 					}
 				}
-				
 				state = st3;
 			}
 			
@@ -3597,10 +3501,6 @@ void lcdupdate(void)
 	//static char pageold;
 	static uint16_t toggletime =0; 
 
-//	if(pageold != PageMenuCount)
-//	{
-//		cleardisplay();
-//	}
 	cleardisplay();
 	
 	//  Show Setting Value
@@ -3633,10 +3533,6 @@ void lcdupdate(void)
 				ssd1306_SetCursor(numofstring , 3+15);
 				ssd1306_WriteString(buff, Font_11x18, White);
 				
-				//ssd1306_SetCursor(47, 3+15);
-				//snprintf(buff, 4, "%d  ", UnderTimSetValue);
-				//ssd1306_WriteString(buff, Font_11x18, White);	
-			
     		break;
     	case TimeUnderReturnSet:
 				ssd1306_SetCursor(15, 3);
@@ -3647,10 +3543,6 @@ void lcdupdate(void)
 				ssd1306_SetCursor(numofstring , 3+15);
 				ssd1306_WriteString(buff, Font_11x18, White);
 				
-//				ssd1306_SetCursor(47, 3+15);
-//				snprintf(buff, 4, "%d  ", UnderResTimSetValue);
-//				ssd1306_WriteString(buff, Font_11x18, White);		
-			
     		break;
 			case VoltOverSet:
 				ssd1306_SetCursor(36, 3);
@@ -3679,10 +3571,6 @@ void lcdupdate(void)
 				ssd1306_SetCursor(numofstring , 3+15);
 				ssd1306_WriteString(buff, Font_11x18, White);
 				
-//				ssd1306_SetCursor(47, 3+15);
-//				snprintf(buff, 4, "%d  ", OverTimSetValue);
-//				ssd1306_WriteString(buff, Font_11x18, White);	
-			
     		break;
     	case TimeOverReturnSet:
 				ssd1306_SetCursor(15, 3);
@@ -3691,11 +3579,7 @@ void lcdupdate(void)
 				snprintf(buff, 4, "%d  ", OverResTimSetValue);
 				numofstring = 64 - (((strlen(buff)/2)*7)+3);
 				ssd1306_SetCursor(numofstring , 3+15);
-				ssd1306_WriteString(buff, Font_11x18, White);
-				
-//				ssd1306_SetCursor(47, 3+15);
-//				snprintf(buff, 4, "%d  ", OverResTimSetValue);
-//				ssd1306_WriteString(buff, Font_11x18, White);		
+				ssd1306_WriteString(buff, Font_11x18, White);					
 			
     		break;
 			case DateSet:
@@ -3808,7 +3692,6 @@ void lcdupdate(void)
 		switch (PageMenuCount)
 		{
 			case mainpage_T:
-				//snprintf(buff, sizeof(buff), "%02f Volt", source2_A);
 				ssd1306_SetCursor(3, 5);
 				if(DisplayMain == Display1_T)
 				{
@@ -3829,20 +3712,17 @@ void lcdupdate(void)
 				}
 				if(NetworkSelectValue == sys3P4W)
 				{
-					//ssd1306_SetCursor(3+(6*7), 5);
 					ssd1306_SetCursor(45, 5);
 					ssd1306_WriteString(buff, Font_7x10, White);
 				}
 				else//sys1P2W
 				{
-					//ssd1306_SetCursor(3+((7*3)*1)+(7*7), 5);
 					ssd1306_SetCursor(73, 5);
 					ssd1306_WriteString(buff, Font_7x10, White);
 				}
 				
 				if(NetworkSelectValue == sys3P4W)
 				{
-	
 					if(DisplayMain == Display1_T)
 					{
 						snprintf(buff, 4, "%d  ", V1_B);
@@ -3851,7 +3731,6 @@ void lcdupdate(void)
 					{
 						snprintf(buff, 4, "%f  ", (V1_B*1.732));
 					}
-					//ssd1306_SetCursor(3+((7*3)*1)+(7*7), 5);
 					ssd1306_SetCursor(73, 5);
 					ssd1306_WriteString(buff, Font_7x10, White);
 					
@@ -3863,7 +3742,6 @@ void lcdupdate(void)
 					{
 						snprintf(buff, 4, "%f  ", (V1_C*1.732));
 					}
-					//ssd1306_SetCursor(3+((7*3)*2)+(8*7), 5);
 					ssd1306_SetCursor(101, 5);
 					ssd1306_WriteString(buff, Font_7x10, White);
 				}
@@ -3886,24 +3764,19 @@ void lcdupdate(void)
 				{
 					snprintf(buff, 4, "%f  ", (V2_A*1.732));
 				}
-				
 				if(NetworkSelectValue == sys3P4W)
 				{
-						//ssd1306_SetCursor(3+(6*7), 17);
 					ssd1306_SetCursor(45, 17);
 					ssd1306_WriteString(buff, Font_7x10, White);
 				}
 				else//sys1P2W
 				{
-					//ssd1306_SetCursor(3+((7*3)*1)+(7*7), 17);
 					ssd1306_SetCursor(73, 17);
 					ssd1306_WriteString(buff, Font_7x10, White);
 				}
-				
-				
-				if(NetworkSelectValue == sys3P4W)
-				{
 					
+				if(NetworkSelectValue == sys3P4W)
+				{			
 					if(DisplayMain == Display1_T)
 					{
 						snprintf(buff, 4, "%d  ", V2_B);
@@ -3912,7 +3785,7 @@ void lcdupdate(void)
 					{
 						snprintf(buff, 4, "%f  ", (V2_B*1.732));
 					}
-					//ssd1306_SetCursor(3+((7*3)*1)+(7*7), 17);
+
 					ssd1306_SetCursor(73, 17);
 					ssd1306_WriteString(buff, Font_7x10, White);
 					
@@ -3924,32 +3797,25 @@ void lcdupdate(void)
 					{
 						snprintf(buff, 4, "%f  ", (V2_C*1.732));
 					}
-					//ssd1306_SetCursor(3+((7*3)*2)+(8*7), 17);
 					ssd1306_SetCursor(101, 17);
 					ssd1306_WriteString(buff, Font_7x10, White);
 				}	
 				
-				
-				
-				//ssd1306_SetCursor(3, 17+12);
 				ssd1306_SetCursor(3, 29);
 				ssd1306_WriteString("F1", Font_7x10, White);	
 				
 				snprintf(buff, 5, "%.1f", freqS1);
-				//ssd1306_SetCursor(3+((7*2)+5), 17+12);
+
 				ssd1306_SetCursor(22, 29);
 				ssd1306_WriteString(buff, Font_7x10, White);
 				
-				//ssd1306_SetCursor(3+((7*8)+3), 29);
 				ssd1306_SetCursor(62, 17+12);
 				ssd1306_WriteString("F2", Font_7x10, White);
 				
 				snprintf(buff, 5, "%.1f", freqS2);
-				//ssd1306_SetCursor(3+((7*10)+6+2), 17+12);
 				ssd1306_SetCursor(81, 29);
 				ssd1306_WriteString(buff, Font_7x10, White);
 				
-				//ssd1306_SetCursor(3+((7*14)+6+4), 17+12);
 				ssd1306_SetCursor(111, 29);
 				ssd1306_WriteString("Hz", Font_7x10, White);
 
@@ -3958,7 +3824,6 @@ void lcdupdate(void)
 				Timeset = Timeupdate;
 				Dateset = Dateupdate;
 				
-				//ssd1306_SetCursor(3, 17+12+12);
 				ssd1306_SetCursor(3, 41);
 				if(workmodeValue)
 				{
@@ -3969,7 +3834,6 @@ void lcdupdate(void)
 					ssd1306_WriteString("Mode:Auto", Font_7x10, White);
 				}
 				
-				//ssd1306_SetCursor(3+(9*8), 17+12+12);
 				ssd1306_SetCursor(75, 41);
 				switch (source_out)
 				{
@@ -3987,13 +3851,14 @@ void lcdupdate(void)
 				}
 				
 				uint8_t timecountdisplay;
-				if(State){ // stste = ab normal
+				//  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+				// state = ab normal
+				if(State)
+				{ 
 					if(State <= State_Under){
 						if(UnderTimeCount)
 						{
 							timecountdisplay = (UnderTimeCount/1000)+1;
-							//sprintf(buff,"%s: %d",statusmenu[State],timecountdisplay );
-							
 							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 							if(SourceSelectValue == SELECTSOURCE1)
 							{
@@ -4017,7 +3882,8 @@ void lcdupdate(void)
 							else// SourceSelectValue == SELECTSOURCE2
 							{
 								if(NetworkSelectValue == sys3P4W){
-									if((V2_A <= 10) || (V2_B <= 10) || (V2_C <= 10)){
+									if((V2_A <= 10) || (V2_B <= 10) || (V2_C <= 10))
+									{
 											sprintf(buff,"Phase Loss: %d",timecountdisplay );
 									}
 									else{
@@ -4035,14 +3901,13 @@ void lcdupdate(void)
 							}
 							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						}
-						else{
-							//sprintf(buff,"%s",statusmenu[State]);
-							
+						else{						
 							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 							if(SourceSelectValue == SELECTSOURCE1)
 							{
 								if(NetworkSelectValue == sys3P4W){
-									if((V1_A <= 10) || (V1_B <= 10) || (V1_C <= 10)){
+									if((V1_A <= 10) || (V1_B <= 10) || (V1_C <= 10))
+									{
 										sprintf(buff,"Phase Loss");	
 									}
 									else{
@@ -4060,15 +3925,18 @@ void lcdupdate(void)
 							}
 							else// SourceSelectValue == SELECTSOURCE2
 							{
-								if(NetworkSelectValue == sys3P4W){
-									if((V2_A <= 10) || (V2_B <= 10) || (V2_C <= 10)){
+								if(NetworkSelectValue == sys3P4W)
+								{
+									if((V2_A <= 10) || (V2_B <= 10) || (V2_C <= 10))
+									{
 											sprintf(buff,"Phase Loss");	
 									}
 									else{
 										sprintf(buff,"%s",statusmenu[State]);
 									}
 								}
-								else{ // sys1P2W
+								else  // sys1P2W
+								{ 
 									if((V2_A <= 0)){
 										sprintf(buff,"Phase Loss");	
 									}
@@ -4078,7 +3946,6 @@ void lcdupdate(void)
 								}
 							}
 							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-							
 						}
 					}
 					//               2                          4
@@ -4092,7 +3959,6 @@ void lcdupdate(void)
 							sprintf(buff,"%s",statusmenu[State]);
 						}
 					}
-					
 					if((State >= State_PreOver) && (State <= State_Over))
 					{
 						if(OverTimeCount)
@@ -4117,21 +3983,32 @@ void lcdupdate(void)
 							sprintf(buff,"%s",statusmenu[State]);
 						}
 					}
+//					if(State == State_SequenError)
+//					{
+//						sprintf(buff,"Phase Loss");
+//					}
 				}
-				else { // state = normal
-					if(++toggletime % 2)
+				else // state = normal 
+				{ 
+					// check phase sequen error
+					if((NetworkSelectValue == sys3P4W) && ((phase_sequen_source1)||(phase_sequen_source2)))
 					{
-						sprintf(buff,"%d/%s/%d %d %d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
+						sprintf(buff,"PhaseSequenError");
 					}
-					else
+					else //state = normal  
 					{
-						sprintf(buff,"%d/%s/%d %d:%d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
+						if(++toggletime % 2)
+						{
+							sprintf(buff,"%d/%s/%d %d %d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
+						}
+						else
+						{
+							sprintf(buff,"%d/%s/%d %d:%d %s", Dateupdate.Date,mountname[Dateupdate.Month],Dateupdate.Year,Timeupdate.Hours,Timeupdate.Minutes,dayname[Dateupdate.WeekDay]);
+						}
 					}
-
 				}		
 				numofstring = 64 - (((strlen(buff)/2)*6)+3);
 				ssd1306_SetCursor(numofstring , 53);
-				//ssd1306_SetCursor(0 , 53);
 				ssd1306_WriteString(buff, Font_6x8, White);
 
 				break;
@@ -4160,10 +4037,12 @@ void lcdupdate(void)
 							break;
 						}
 						strcpy(buff, mainmenu[i+5]);
-						if(Submenu1Count == i+5){
+						if(Submenu1Count == i+5)
+						{
 							ssd1306_WriteString(buff, Font_7x10, Black);	
 						}
-						else{
+						else
+						{
 							ssd1306_WriteString(buff, Font_7x10, White);	
 						}
 					}		
@@ -4173,7 +4052,6 @@ void lcdupdate(void)
 				
 				for(char i=0; i<5; i++)
 				{
-					//UnderSet_T,OvererSet_T,MainselectSet_T,ConfigSet_T,TimeSet_T
 					switch (Submenu1Count)
 					{
 						case UnderSet_T:
@@ -4192,16 +4070,17 @@ void lcdupdate(void)
 							}
 							else
 							{
-								
 								if((5 + i) > 4)
 								{
 									break;
 								}
 								strcpy(buff, undermenu[i+5]);
-								if(Submenu2Count == i+5){
+								if(Submenu2Count == i+5)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
@@ -4212,12 +4091,15 @@ void lcdupdate(void)
 							ssd1306_WriteString("OVER", Font_7x10, White); 
 						
 							ssd1306_SetCursor(5, 3+10+(i*10));
-							if(Submenu2Count <5){
+							if(Submenu2Count <5)
+							{
 								strcpy(buff, overmenu[i]);
-								if(Submenu2Count == i){
+								if(Submenu2Count == i)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
@@ -4229,7 +4111,8 @@ void lcdupdate(void)
 									break;
 								}
 								strcpy(buff, overmenu[i+5]);
-								if(Submenu2Count == i+5){
+								if(Submenu2Count == i+5)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
 								else{
@@ -4258,10 +4141,12 @@ void lcdupdate(void)
 									break;
 								}
 								strcpy(buff, sourceselectmenu[i+5]);
-								if(Submenu2Count == i+5){
+								if(Submenu2Count == i+5)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
@@ -4270,12 +4155,15 @@ void lcdupdate(void)
 							ssd1306_SetCursor(30, 3);
 							ssd1306_WriteString("ConfigNetwork", Font_7x10, White);
 							ssd1306_SetCursor(5, 3+10+(i*10));
-							if(Submenu2Count <5){
+							if(Submenu2Count <5)
+							{
 								strcpy(buff, networksystemmenu[i]);
-								if(Submenu2Count == i){
+								if(Submenu2Count == i)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
@@ -4286,10 +4174,12 @@ void lcdupdate(void)
 									break;
 								}
 								strcpy(buff, networksystemmenu[i+5]);
-								if(Submenu2Count == i+5){
+								if(Submenu2Count == i+5)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
@@ -4299,12 +4189,15 @@ void lcdupdate(void)
 							ssd1306_WriteString("DateTime", Font_7x10, White);
 						
 							ssd1306_SetCursor(5, 3+10+(i*10));
-							if(Submenu2Count <5){
+							if(Submenu2Count <5)
+							{
 								strcpy(buff, datetimemenu[i]);
-								if(Submenu2Count == i){
+								if(Submenu2Count == i)
+								{
 								ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
@@ -4315,25 +4208,29 @@ void lcdupdate(void)
 									break;
 								}
 								strcpy(buff, datetimemenu[i+5]);
-								if(Submenu2Count == i+5){
+								if(Submenu2Count == i+5)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
 							break;
-							
 						case SystemSet_T:
 							ssd1306_SetCursor(30, 3);
 							ssd1306_WriteString("SystemConfig", Font_7x10, White);
 							ssd1306_SetCursor(5, 3+10+(i*10));
-							if(Submenu2Count <5){
+							if(Submenu2Count <5)
+							{
 								strcpy(buff, systemtypemenu[i]);
-								if(Submenu2Count == i){
+								if(Submenu2Count == i)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
@@ -4344,10 +4241,12 @@ void lcdupdate(void)
 									break;
 								}
 								strcpy(buff, systemtypemenu[i+5]);
-								if(Submenu2Count == i+5){
+								if(Submenu2Count == i+5)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
@@ -4360,10 +4259,12 @@ void lcdupdate(void)
 							ssd1306_SetCursor(5, 3+10+(i*10));
 							if(Submenu2Count <5){
 								strcpy(buff, frequencymenu[i]);
-								if(Submenu2Count == i){
+								if(Submenu2Count == i)
+								{
 								ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
@@ -4374,10 +4275,12 @@ void lcdupdate(void)
 									break;
 								}
 								strcpy(buff, frequencymenu[i+5]);
-								if(Submenu2Count == i+5){
+								if(Submenu2Count == i+5)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}			
@@ -4387,12 +4290,15 @@ void lcdupdate(void)
 							ssd1306_WriteString("GenStartSchedule", Font_7x10, White);	
 							
 							ssd1306_SetCursor(5, 3+10+(i*10));
-							if(Submenu2Count <5){
+							if(Submenu2Count <5)
+							{
 								strcpy(buff, GenSchedulemenu[i]);
-								if(Submenu2Count == i){
+								if(Submenu2Count == i)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
@@ -4403,22 +4309,21 @@ void lcdupdate(void)
 									break;
 								}
 								strcpy(buff, GenSchedulemenu[i+5]);
-								if(Submenu2Count == i+5){
+								if(Submenu2Count == i+5)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}	
-						
 							break;
 						default:
 							break;
 					}												
-				}
-				
+				}			
 				break;
-				
 			case Pagemenu3_T:
 				for(char i=0; i<5; i++)
         {
@@ -4427,29 +4332,32 @@ void lcdupdate(void)
 						case GenScheduleEnableSet:
 							ssd1306_SetCursor(15, 3);
 							ssd1306_WriteString("GenStartEnable", Font_7x10, White);	
-							
 							ssd1306_SetCursor(5, 3+10+(i*10));
-							if(Submenu3Count <5){
+							if(Submenu3Count <5)
+							{
 								strcpy(buff, GenStartEnablemenu[i]);
-								if(Submenu3Count == i){
+								if(Submenu3Count == i)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
 							else
 							{
-								
 								if((5 + i) > 4)
 								{
 									break;
 								}
 								strcpy(buff, GenStartEnablemenu[i+5]);
-								if(Submenu3Count == i+5){
+								if(Submenu3Count == i+5)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}	
@@ -4459,18 +4367,20 @@ void lcdupdate(void)
 							ssd1306_WriteString("GenStartPeriod", Font_7x10, White);	
 							
 							ssd1306_SetCursor(5, 3+10+(i*10));
-							if(Submenu3Count <5){
+							if(Submenu3Count <5)
+							{
 								strcpy(buff, Periodmenu[i]);
-								if(Submenu3Count == i){
+								if(Submenu3Count == i)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
 							else
 							{
-								
 								if((5 + i) > 4)
 								{
 									break;
@@ -4489,27 +4399,31 @@ void lcdupdate(void)
 							ssd1306_WriteString("GenStartDateTime", Font_7x10, White);	
 							
 							ssd1306_SetCursor(5, 3+10+(i*10));
-							if(Submenu3Count <5){
+							if(Submenu3Count <5)
+							{
 								strcpy(buff, GenStartDateTimemenu[i]);
-								if(Submenu3Count == i){
+								if(Submenu3Count == i)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}
 							else
 							{
-								
 								if((5 + i) > 4)
 								{
 									break;
 								}
 								strcpy(buff, GenStartDateTimemenu[i+5]);
-								if(Submenu3Count == i+5){
+								if(Submenu3Count == i+5)
+								{
 									ssd1306_WriteString(buff, Font_7x10, Black);	
 								}
-								else{
+								else
+								{
 									ssd1306_WriteString(buff, Font_7x10, White);	
 								}
 							}	
@@ -4573,12 +4487,8 @@ void lcdupdate(void)
 				break;
 		}
 	}
-	
-	
-	
 	ssd1306_UpdateScreen();
-	//pageold = PageMenuCount;
-	
+
 }
 
 
@@ -4684,8 +4594,6 @@ void ReadSetting(void)
 	genschedulestart.genschedule_time = genschedulestart.genschedule_time<<8;
 	genschedulestart.genschedule_time |= *(uint8_t *)0x801F831;
 	
-	//SourceSelectValue, NetworkSelectValue;
-	
 	if((UnderValue > 220)||(UnderValue < 150))
 		UnderValue = 200;
 	if((OverValue > 280)||(OverValue <235))
@@ -4735,8 +4643,6 @@ void ReadSetting(void)
 			}
 		}
 	}
-	
-	
 	
 	if((freqUnderValue >70)||(freqUnderValue <40))
 		freqUnderValue = 47;
@@ -4957,8 +4863,6 @@ void system_init(void)
 	
 }
 
-//  GPIO_PIN_RESET = 0U,
-//  GPIO_PIN_SET
 GPIO_PinState s1_input, s2_input, s3_input, s4_input;
 uint8_t checkauxinput(void)
 {
@@ -4974,7 +4878,6 @@ uint8_t checkauxinput(void)
 		{
 			HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 		}
-		
 	}
 }
 
@@ -4982,21 +4885,12 @@ void cleardisplay(void)
 {
 	uint32_t delta;
 	ssd1306_Fill(Black);
-	if(PageMenuCount == mainpage_T)
-	{
-// write Rectangle
-//		for(delta = 0; delta < 1; delta ++) {
-//			ssd1306_DrawRectangle(1 + (5*delta),1 + (5*delta) ,SSD1306_WIDTH-1 - (5*delta),SSD1306_HEIGHT-1 - (5*delta),White);
-//		}	
-	}
 	
 }
 void Beep(void)
 {
 	HAL_GPIO_WritePin(Buzzer_GPIO_Port, Buzzer_Pin,ON_BUZZER);
 	beepcount = 50;
-	//HAL_Delay(50);
-	//HAL_GPIO_WritePin(Buzzer_GPIO_Port, Buzzer_Pin,OFF_BUZZER);
 }
 void check_releaserelay(void)
 {
@@ -5120,6 +5014,19 @@ void ats_process(void)
 
 			}
     }
+	}
+}
+
+uint8_t chechphasesequen(unsigned char selectsource)
+{
+	uint16_t phasesequenError;
+	phasesequenError = GetSysStatus0(selectsource);
+	phasesequenError = phasesequenError & 0x200;
+	if(phasesequenError){
+		return 1;
+	}
+	else{
+		return 0;
 	}
 }
 

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [ATS_V2\ATS_V2.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ATS_V2\ATS_V2.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Wed Aug 18 15:59:55 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Mon Aug 23 14:16:57 2021
 <BR><P>
 <H3>Maximum Stack Usage =        312 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -91,7 +91,7 @@ Global Symbols
 <P><STRONG><a name="[3d]"></a>__main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry.o(.ARM.Collect$$$$00000000))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f072xb.o(.text)
 </UL>
-<P><STRONG><a name="[148]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
+<P><STRONG><a name="[149]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
 
 <P><STRONG><a name="[42]"></a>_main_scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry5.o(.ARM.Collect$$$$00000004))
 <BR><BR>[Calls]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
@@ -101,15 +101,15 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
-<P><STRONG><a name="[149]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
+<P><STRONG><a name="[14a]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
 
-<P><STRONG><a name="[14a]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
+<P><STRONG><a name="[14b]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
 
-<P><STRONG><a name="[14b]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
+<P><STRONG><a name="[14c]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
 
-<P><STRONG><a name="[14c]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
+<P><STRONG><a name="[14d]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
 
-<P><STRONG><a name="[14d]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
+<P><STRONG><a name="[14e]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
 
 <P><STRONG><a name="[15]"></a>Reset_Handler</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, startup_stm32f072xb.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f072xb.o(RESET)
@@ -196,7 +196,7 @@ Global Symbols
 <P><STRONG><a name="[1b]"></a>WWDG_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32f072xb.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f072xb.o(RESET)
 </UL>
-<P><STRONG><a name="[14e]"></a>__aeabi_uidiv</STRONG> (Thumb, 0 bytes, Stack size 12 bytes, uidiv.o(.text), UNUSED)
+<P><STRONG><a name="[14f]"></a>__aeabi_uidiv</STRONG> (Thumb, 0 bytes, Stack size 12 bytes, uidiv.o(.text), UNUSED)
 
 <P><STRONG><a name="[45]"></a>__aeabi_uidivmod</STRONG> (Thumb, 44 bytes, Stack size 12 bytes, uidiv.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = __aeabi_uidivmod
@@ -210,7 +210,7 @@ Global Symbols
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
 </UL>
 
-<P><STRONG><a name="[14f]"></a>__aeabi_idiv</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, idiv.o(.text), UNUSED)
+<P><STRONG><a name="[150]"></a>__aeabi_idiv</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, idiv.o(.text), UNUSED)
 
 <P><STRONG><a name="[44]"></a>__aeabi_idivmod</STRONG> (Thumb, 40 bytes, Stack size 16 bytes, idiv.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = __aeabi_idivmod &rArr; __aeabi_uidivmod
@@ -239,11 +239,11 @@ Global Symbols
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2ulz
 </UL>
 
-<P><STRONG><a name="[150]"></a>_ll_ushift_r</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llushr.o(.text), UNUSED)
+<P><STRONG><a name="[151]"></a>_ll_ushift_r</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llushr.o(.text), UNUSED)
 
-<P><STRONG><a name="[151]"></a>___aeabi_memcpy8$move</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, memmovea.o(.text), UNUSED)
+<P><STRONG><a name="[152]"></a>___aeabi_memcpy8$move</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, memmovea.o(.text), UNUSED)
 
-<P><STRONG><a name="[152]"></a>__aeabi_memcpy</STRONG> (Thumb, 64 bytes, Stack size 8 bytes, memmovea.o(.text), UNUSED)
+<P><STRONG><a name="[153]"></a>__aeabi_memcpy</STRONG> (Thumb, 64 bytes, Stack size 8 bytes, memmovea.o(.text), UNUSED)
 
 <P><STRONG><a name="[9d]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, memmovea.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_memcpy4
@@ -252,20 +252,20 @@ Global Symbols
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_Init
 </UL>
 
-<P><STRONG><a name="[153]"></a>__aeabi_memmove</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, memmovea.o(.text), UNUSED)
+<P><STRONG><a name="[154]"></a>__aeabi_memmove</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, memmovea.o(.text), UNUSED)
 
-<P><STRONG><a name="[154]"></a>__aeabi_memmove4</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, memmovea.o(.text), UNUSED)
+<P><STRONG><a name="[155]"></a>__aeabi_memmove4</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, memmovea.o(.text), UNUSED)
 
-<P><STRONG><a name="[155]"></a>__aeabi_memmove8</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, memmovea.o(.text), UNUSED)
+<P><STRONG><a name="[156]"></a>__aeabi_memmove8</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, memmovea.o(.text), UNUSED)
 
 <P><STRONG><a name="[4a]"></a>__aeabi_memset</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
 <BR><BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_memset$wrapper
 <LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
 </UL>
 
-<P><STRONG><a name="[156]"></a>__aeabi_memset4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+<P><STRONG><a name="[157]"></a>__aeabi_memset4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
 
-<P><STRONG><a name="[157]"></a>__aeabi_memset8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+<P><STRONG><a name="[158]"></a>__aeabi_memset8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
 
 <P><STRONG><a name="[49]"></a>__aeabi_memclr</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
@@ -279,17 +279,17 @@ Global Symbols
 <LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
 </UL>
 
-<P><STRONG><a name="[158]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+<P><STRONG><a name="[159]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
 
 <P><STRONG><a name="[4b]"></a>_memset$wrapper</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, memseta.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
 </UL>
 
-<P><STRONG><a name="[137]"></a>strlen</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, strlen.o(.text))
+<P><STRONG><a name="[138]"></a>strlen</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, strlen.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 </UL>
 
-<P><STRONG><a name="[139]"></a>strcpy</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, strcpy.o(.text))
+<P><STRONG><a name="[13a]"></a>strcpy</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, strcpy.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 </UL>
 
@@ -340,8 +340,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 </UL>
 
-<P><STRONG><a name="[13f]"></a>__aeabi_f2uiz</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, ffixui.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
+<P><STRONG><a name="[140]"></a>__aeabi_f2uiz</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, ffixui.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
 </UL>
 
 <P><STRONG><a name="[6c]"></a>__aeabi_f2d</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, f2d.o(.text))
@@ -361,8 +361,8 @@ Global Symbols
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetLineVoltageA
 </UL>
 
-<P><STRONG><a name="[140]"></a>__aeabi_cfrcmple</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, cfrcmple.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
+<P><STRONG><a name="[141]"></a>__aeabi_cfrcmple</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, cfrcmple.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
 </UL>
 
 <P><STRONG><a name="[48]"></a>__aeabi_llsl</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, llshl.o(.text))
@@ -374,9 +374,9 @@ Global Symbols
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2ulz
 </UL>
 
-<P><STRONG><a name="[159]"></a>_ll_shift_l</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llshl.o(.text), UNUSED)
+<P><STRONG><a name="[15a]"></a>_ll_shift_l</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llshl.o(.text), UNUSED)
 
-<P><STRONG><a name="[15a]"></a>__I$use$fp</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, iusefp.o(.text), UNUSED)
+<P><STRONG><a name="[15b]"></a>__I$use$fp</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, iusefp.o(.text), UNUSED)
 
 <P><STRONG><a name="[4d]"></a>_float_round</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, fepilogue.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
@@ -446,17 +446,17 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_main_scatterload
 </UL>
 
-<P><STRONG><a name="[15b]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
+<P><STRONG><a name="[15c]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
 <P><STRONG><a name="[58]"></a>__aeabi_lasr</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, llsshr.o(.text), UNUSED)
 <BR><BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
 
-<P><STRONG><a name="[15c]"></a>_ll_sshift_r</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llsshr.o(.text), UNUSED)
+<P><STRONG><a name="[15d]"></a>_ll_sshift_r</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llsshr.o(.text), UNUSED)
 
-<P><STRONG><a name="[15d]"></a>__decompress</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __dczerorl2.o(.text), UNUSED)
+<P><STRONG><a name="[15e]"></a>__decompress</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __dczerorl2.o(.text), UNUSED)
 
-<P><STRONG><a name="[15e]"></a>__decompress1</STRONG> (Thumb, 86 bytes, Stack size unknown bytes, __dczerorl2.o(.text), UNUSED)
+<P><STRONG><a name="[15f]"></a>__decompress1</STRONG> (Thumb, 86 bytes, Stack size unknown bytes, __dczerorl2.o(.text), UNUSED)
 
 <P><STRONG><a name="[5d]"></a>Beep</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, main.o(i.Beep))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Beep
@@ -540,7 +540,7 @@ Global Symbols
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CommEnergyIC
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
+<BR>[Called By]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
 </UL>
 
 <P><STRONG><a name="[6b]"></a>GetLineVoltageA</STRONG> (Thumb, 48 bytes, Stack size 32 bytes, m90e32.o(i.GetLineVoltageA))
@@ -552,7 +552,7 @@ Global Symbols
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CommEnergyIC
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
+<BR>[Called By]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
 </UL>
 
 <P><STRONG><a name="[6d]"></a>GetLineVoltageB</STRONG> (Thumb, 48 bytes, Stack size 32 bytes, m90e32.o(i.GetLineVoltageB))
@@ -564,7 +564,7 @@ Global Symbols
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CommEnergyIC
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
+<BR>[Called By]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
 </UL>
 
 <P><STRONG><a name="[6e]"></a>GetLineVoltageC</STRONG> (Thumb, 48 bytes, Stack size 32 bytes, m90e32.o(i.GetLineVoltageC))
@@ -576,7 +576,7 @@ Global Symbols
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CommEnergyIC
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
+<BR>[Called By]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
 </UL>
 
 <P><STRONG><a name="[6f]"></a>GetSysStatus0</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, m90e32.o(i.GetSysStatus0))
@@ -584,7 +584,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CommEnergyIC
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitEnergyIC
+<BR>[Called By]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chechphasesequen
+<LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitEnergyIC
 </UL>
 
 <P><STRONG><a name="[74]"></a>HAL_CRCEx_Polynomial_Set</STRONG> (Thumb, 106 bytes, Stack size 16 bytes, stm32f0xx_hal_crc_ex.o(i.HAL_CRCEx_Polynomial_Set))
@@ -624,9 +625,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
+<BR>[Called By]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Reset
+<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Reset
 </UL>
 
 <P><STRONG><a name="[68]"></a>HAL_FLASH_Unlock</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, stm32f0xx_hal_flash.o(i.HAL_FLASH_Unlock))
@@ -655,14 +656,14 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[ca]"></a>HAL_GPIO_ReadPin</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f0xx_hal_gpio.o(i.HAL_GPIO_ReadPin))
-<BR><BR>[Called By]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
-<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkauxinput
-<LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_releaserelay
+<BR><BR>[Called By]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
+<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkauxinput
+<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_releaserelay
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SYSTICK_Callback
 </UL>
 
-<P><STRONG><a name="[13d]"></a>HAL_GPIO_TogglePin</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, stm32f0xx_hal_gpio.o(i.HAL_GPIO_TogglePin))
+<P><STRONG><a name="[13e]"></a>HAL_GPIO_TogglePin</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, stm32f0xx_hal_gpio.o(i.HAL_GPIO_TogglePin))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = HAL_GPIO_TogglePin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -671,20 +672,20 @@ Global Symbols
 <P><STRONG><a name="[5e]"></a>HAL_GPIO_WritePin</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f0xx_hal_gpio.o(i.HAL_GPIO_WritePin))
 <BR><BR>[Called By]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_init
-<LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
+<LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkgenschedule
-<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkgenpromp
-<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkauxinput
-<LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_releaserelay
+<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkgenschedule
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkgenpromp
+<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkauxinput
+<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_releaserelay
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SYSTICK_Callback
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Beep
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CommEnergyIC
-<LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteData
-<LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
-<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Reset
+<LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteData
+<LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
+<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Reset
 </UL>
 
 <P><STRONG><a name="[76]"></a>HAL_GetTick</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f0xx_hal.o(i.HAL_GetTick))
@@ -1099,8 +1100,8 @@ Global Symbols
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_EndRxTxTransaction
 </UL>
 <BR>[Called By]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CommEnergyIC
-<LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteData
-<LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
+<LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteData
+<LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
 </UL>
 
 <P><STRONG><a name="[c6]"></a>HAL_SPI_TransmitReceive</STRONG> (Thumb, 618 bytes, Stack size 56 bytes, stm32f0xx_hal_spi.o(i.HAL_SPI_TransmitReceive))
@@ -1169,7 +1170,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Init
 </UL>
 
-<P><STRONG><a name="[13c]"></a>HAL_TIM_Base_Start_IT</STRONG> (Thumb, 108 bytes, Stack size 0 bytes, stm32f0xx_hal_tim.o(i.HAL_TIM_Base_Start_IT))
+<P><STRONG><a name="[13d]"></a>HAL_TIM_Base_Start_IT</STRONG> (Thumb, 108 bytes, Stack size 0 bytes, stm32f0xx_hal_tim.o(i.HAL_TIM_Base_Start_IT))
 <BR><BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -1539,16 +1540,16 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_StallEP
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdItfReq
-<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdEPReq
-<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
-<LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CDC_Setup
+<BR>[Called By]<UL><LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CDC_Setup
 <LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_SetConfig
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_SetAddress
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_GetStatus
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_GetDescriptor
 <LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_GetConfig
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_ClrFeature
+<LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdItfReq
+<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdEPReq
+<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
 </UL>
 
 <P><STRONG><a name="[103]"></a>USBD_CtlPrepareRx</STRONG> (Thumb, 44 bytes, Stack size 16 bytes, usbd_ioreq.o(i.USBD_CtlPrepareRx))
@@ -1572,11 +1573,11 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_Transmit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdEPReq
-<LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CDC_Setup
+<BR>[Called By]<UL><LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CDC_Setup
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_GetStatus
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_GetDescriptor
 <LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_GetConfig
+<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdEPReq
 </UL>
 
 <P><STRONG><a name="[106]"></a>USBD_CtlSendStatus</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, usbd_ioreq.o(i.USBD_CtlSendStatus))
@@ -1585,13 +1586,13 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_Transmit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_DataOutStage
-<LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdItfReq
-<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdEPReq
 <LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_SetFeature
 <LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_SetConfig
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_SetAddress
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_GetDescriptor
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_ClrFeature
+<LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdItfReq
+<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdEPReq
 </UL>
 
 <P><STRONG><a name="[5]"></a>USBD_FS_ConfigStrDescriptor</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, usbd_desc.o(i.USBD_FS_ConfigStrDescriptor))
@@ -1677,10 +1678,10 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_StallEP
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_PrepareReceive
-<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlReceiveStatus
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlContinueSendData
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_RunTestMode
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
+<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlReceiveStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_DataInStageCallback
 </UL>
@@ -1689,8 +1690,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = USBD_LL_DataOutStage &rArr; USBD_CtlContinueRx &rArr; USBD_LL_PrepareReceive &rArr; HAL_PCD_EP_Receive &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
 <BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_StallEP
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlContinueRx
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_DataOutStageCallback
 </UL>
@@ -1737,10 +1738,10 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_DataInStage
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CDC_ReceivePacket
-<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlReceiveStatus
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlContinueRx
 <LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CDC_Init
 <LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlPrepareRx
+<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlReceiveStatus
 </UL>
 
 <P><STRONG><a name="[a3]"></a>USBD_LL_Reset</STRONG> (Thumb, 114 bytes, Stack size 8 bytes, usbd_core.o(i.USBD_LL_Reset))
@@ -1795,8 +1796,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_SetupStage
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_DataOutStage
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_DataInStage
-<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdEPReq
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
+<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdEPReq
 </UL>
 
 <P><STRONG><a name="[11c]"></a>USBD_LL_Start</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, usbd_conf.o(i.USBD_LL_Start))
@@ -1818,10 +1819,10 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_EP_Transmit
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_Get_USB_Status
 </UL>
-<BR>[Called By]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
-<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlContinueSendData
+<BR>[Called By]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlContinueSendData
 <LI><a href="#[f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CDC_DataIn
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendData
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 </UL>
 
 <P><STRONG><a name="[118]"></a>USBD_ParseSetupRequest</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, usbd_ctlreq.o(i.USBD_ParseSetupRequest))
@@ -1872,9 +1873,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_StallEP
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_IsStallEP
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_ClearStallEP
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendData
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_SetupStage
 </UL>
@@ -1882,8 +1883,8 @@ Global Symbols
 <P><STRONG><a name="[11a]"></a>USBD_StdItfReq</STRONG> (Thumb, 140 bytes, Stack size 16 bytes, usbd_ctlreq.o(i.USBD_StdItfReq))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = USBD_StdItfReq &rArr; USBD_CtlSendStatus &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
-<BR>[Calls]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
+<BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_SetupStage
 </UL>
@@ -1981,34 +1982,34 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
 </UL>
 
-<P><STRONG><a name="[15f]"></a>__1snprintf</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, printfa.o(i.__0snprintf), UNUSED)
+<P><STRONG><a name="[160]"></a>__1snprintf</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, printfa.o(i.__0snprintf), UNUSED)
 
-<P><STRONG><a name="[136]"></a>__2snprintf</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, printfa.o(i.__0snprintf))
+<P><STRONG><a name="[137]"></a>__2snprintf</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, printfa.o(i.__0snprintf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __2snprintf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 </UL>
 
-<P><STRONG><a name="[160]"></a>__c89snprintf</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, printfa.o(i.__0snprintf), UNUSED)
+<P><STRONG><a name="[161]"></a>__c89snprintf</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, printfa.o(i.__0snprintf), UNUSED)
 
-<P><STRONG><a name="[161]"></a>snprintf</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, printfa.o(i.__0snprintf), UNUSED)
+<P><STRONG><a name="[162]"></a>snprintf</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, printfa.o(i.__0snprintf), UNUSED)
 
 <P><STRONG><a name="[125]"></a>__0sprintf</STRONG> (Thumb, 36 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sputc
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
 </UL>
 
-<P><STRONG><a name="[162]"></a>__1sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf), UNUSED)
+<P><STRONG><a name="[163]"></a>__1sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf), UNUSED)
 
-<P><STRONG><a name="[138]"></a>__2sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf))
+<P><STRONG><a name="[139]"></a>__2sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2sprintf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 </UL>
 
-<P><STRONG><a name="[163]"></a>__c89sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf), UNUSED)
+<P><STRONG><a name="[164]"></a>__c89sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf), UNUSED)
 
-<P><STRONG><a name="[164]"></a>sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf), UNUSED)
+<P><STRONG><a name="[165]"></a>sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf), UNUSED)
 
 <P><STRONG><a name="[56]"></a>__ARM_clz</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, depilogue.o(i.__ARM_clz))
 <BR><BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
@@ -2025,17 +2026,17 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
-<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_GetDescriptor
+<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
 </UL>
 
-<P><STRONG><a name="[165]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+<P><STRONG><a name="[166]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[166]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+<P><STRONG><a name="[167]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[167]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+<P><STRONG><a name="[168]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[12a]"></a>buttonRead</STRONG> (Thumb, 5274 bytes, Stack size 8 bytes, main.o(i.buttonRead))
+<P><STRONG><a name="[12a]"></a>buttonRead</STRONG> (Thumb, 5310 bytes, Stack size 8 bytes, main.o(i.buttonRead))
 <BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = buttonRead &rArr; lcdupdate &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_SetTime
@@ -2055,7 +2056,15 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[12e]"></a>check_releaserelay</STRONG> (Thumb, 148 bytes, Stack size 8 bytes, main.o(i.check_releaserelay))
+<P><STRONG><a name="[12e]"></a>chechphasesequen</STRONG> (Thumb, 30 bytes, Stack size 16 bytes, main.o(i.chechphasesequen))
+<BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = chechphasesequen &rArr; GetSysStatus0 &rArr; CommEnergyIC &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+</UL>
+<BR>[Calls]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetSysStatus0
+</UL>
+<BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[12f]"></a>check_releaserelay</STRONG> (Thumb, 148 bytes, Stack size 8 bytes, main.o(i.check_releaserelay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = check_releaserelay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
@@ -2064,7 +2073,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[12f]"></a>checkauxinput</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, main.o(i.checkauxinput))
+<P><STRONG><a name="[130]"></a>checkauxinput</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, main.o(i.checkauxinput))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = checkauxinput
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
@@ -2073,7 +2082,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[130]"></a>checkgenpromp</STRONG> (Thumb, 290 bytes, Stack size 8 bytes, main.o(i.checkgenpromp))
+<P><STRONG><a name="[131]"></a>checkgenpromp</STRONG> (Thumb, 290 bytes, Stack size 8 bytes, main.o(i.checkgenpromp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = checkgenpromp
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -2081,7 +2090,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[131]"></a>checkgenschedule</STRONG> (Thumb, 262 bytes, Stack size 8 bytes, main.o(i.checkgenschedule))
+<P><STRONG><a name="[132]"></a>checkgenschedule</STRONG> (Thumb, 262 bytes, Stack size 8 bytes, main.o(i.checkgenschedule))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = checkgenschedule
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -2089,10 +2098,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[132]"></a>cleardisplay</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, main.o(i.cleardisplay))
+<P><STRONG><a name="[133]"></a>cleardisplay</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, main.o(i.cleardisplay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = cleardisplay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Fill
+<BR>[Calls]<UL><LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Fill
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 </UL>
@@ -2102,35 +2111,35 @@ Global Symbols
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 </UL>
 
-<P><STRONG><a name="[12d]"></a>lcdupdate</STRONG> (Thumb, 7272 bytes, Stack size 64 bytes, main.o(i.lcdupdate))
+<P><STRONG><a name="[12d]"></a>lcdupdate</STRONG> (Thumb, 7336 bytes, Stack size 64 bytes, main.o(i.lcdupdate))
 <BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = lcdupdate &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteString
-<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_UpdateScreen
-<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SetCursor
+<BR>[Calls]<UL><LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteString
+<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_UpdateScreen
+<LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SetCursor
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_GetTime
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_GetDate
-<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cleardisplay
+<LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cleardisplay
 <LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_switch8
 <LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcpy
-<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
+<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcpy
+<LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
-<LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
-<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2snprintf
+<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2snprintf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
 </UL>
 
-<P><STRONG><a name="[3b]"></a>main</STRONG> (Thumb, 864 bytes, Stack size 0 bytes, main.o(i.main))
+<P><STRONG><a name="[3b]"></a>main</STRONG> (Thumb, 1176 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = main &rArr; readvolt &rArr; GetLineVoltageC &rArr; CommEnergyIC &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
-<LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Fill
+<BR>[Calls]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
+<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Fill
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USB_DEVICE_Init
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USART1_UART_Init
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM7_Init
@@ -2139,18 +2148,19 @@ Global Symbols
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_RTC_Init
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_CRC_Init
-<LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
+<LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Init
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
-<LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
+<LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_init
-<LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
+<LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readvolt
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
-<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkgenschedule
-<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkgenpromp
-<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkauxinput
-<LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_releaserelay
+<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkgenschedule
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkgenpromp
+<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkauxinput
+<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_releaserelay
+<LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chechphasesequen
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
 <LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadSetting
@@ -2162,11 +2172,11 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[13e]"></a>readvolt</STRONG> (Thumb, 7704 bytes, Stack size 8 bytes, main.o(i.readvolt))
+<P><STRONG><a name="[13f]"></a>readvolt</STRONG> (Thumb, 7704 bytes, Stack size 8 bytes, main.o(i.readvolt))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = readvolt &rArr; GetLineVoltageC &rArr; CommEnergyIC &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
-<LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple
+<BR>[Calls]<UL><LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetLineVoltageC
@@ -2177,104 +2187,104 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[147]"></a>ssd1306_DrawPixel</STRONG> (Thumb, 154 bytes, Stack size 20 bytes, ssd1306.o(i.ssd1306_DrawPixel))
+<P><STRONG><a name="[148]"></a>ssd1306_DrawPixel</STRONG> (Thumb, 154 bytes, Stack size 20 bytes, ssd1306.o(i.ssd1306_DrawPixel))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = ssd1306_DrawPixel
 </UL>
-<BR>[Called By]<UL><LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteChar
+<BR>[Called By]<UL><LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteChar
 </UL>
 
-<P><STRONG><a name="[133]"></a>ssd1306_Fill</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, ssd1306.o(i.ssd1306_Fill))
-<BR><BR>[Called By]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
+<P><STRONG><a name="[134]"></a>ssd1306_Fill</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, ssd1306.o(i.ssd1306_Fill))
+<BR><BR>[Called By]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cleardisplay
+<LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cleardisplay
 </UL>
 
-<P><STRONG><a name="[13b]"></a>ssd1306_Init</STRONG> (Thumb, 198 bytes, Stack size 8 bytes, ssd1306.o(i.ssd1306_Init))
+<P><STRONG><a name="[13c]"></a>ssd1306_Init</STRONG> (Thumb, 198 bytes, Stack size 8 bytes, ssd1306.o(i.ssd1306_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = ssd1306_Init &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_UpdateScreen
-<LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Fill
+<BR>[Calls]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_UpdateScreen
+<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Fill
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
-<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SetDisplayOn
-<LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SetContrast
-<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Reset
+<LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
+<LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SetDisplayOn
+<LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SetContrast
+<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Reset
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[141]"></a>ssd1306_Reset</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, ssd1306.o(i.ssd1306_Reset))
+<P><STRONG><a name="[142]"></a>ssd1306_Reset</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, ssd1306.o(i.ssd1306_Reset))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = ssd1306_Reset &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
+<BR>[Called By]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
 </UL>
 
-<P><STRONG><a name="[144]"></a>ssd1306_SetContrast</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, ssd1306.o(i.ssd1306_SetContrast))
+<P><STRONG><a name="[145]"></a>ssd1306_SetContrast</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, ssd1306.o(i.ssd1306_SetContrast))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = ssd1306_SetContrast &rArr; ssd1306_WriteCommand &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
+<BR>[Calls]<UL><LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
+<BR>[Called By]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
 </UL>
 
-<P><STRONG><a name="[134]"></a>ssd1306_SetCursor</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, ssd1306.o(i.ssd1306_SetCursor))
+<P><STRONG><a name="[135]"></a>ssd1306_SetCursor</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, ssd1306.o(i.ssd1306_SetCursor))
 <BR><BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 </UL>
 
-<P><STRONG><a name="[142]"></a>ssd1306_SetDisplayOn</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, ssd1306.o(i.ssd1306_SetDisplayOn))
+<P><STRONG><a name="[143]"></a>ssd1306_SetDisplayOn</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, ssd1306.o(i.ssd1306_SetDisplayOn))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = ssd1306_SetDisplayOn &rArr; ssd1306_WriteCommand &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
+<BR>[Calls]<UL><LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
+<BR>[Called By]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
 </UL>
 
-<P><STRONG><a name="[13a]"></a>ssd1306_UpdateScreen</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, ssd1306.o(i.ssd1306_UpdateScreen))
+<P><STRONG><a name="[13b]"></a>ssd1306_UpdateScreen</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, ssd1306.o(i.ssd1306_UpdateScreen))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteData
-<LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
+<BR>[Calls]<UL><LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteData
+<LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteCommand
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
+<BR>[Called By]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 </UL>
 
-<P><STRONG><a name="[146]"></a>ssd1306_WriteChar</STRONG> (Thumb, 190 bytes, Stack size 40 bytes, ssd1306.o(i.ssd1306_WriteChar))
+<P><STRONG><a name="[147]"></a>ssd1306_WriteChar</STRONG> (Thumb, 190 bytes, Stack size 40 bytes, ssd1306.o(i.ssd1306_WriteChar))
 <BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = ssd1306_WriteChar &rArr; ssd1306_DrawPixel
 </UL>
-<BR>[Calls]<UL><LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_DrawPixel
+<BR>[Calls]<UL><LI><a href="#[148]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_DrawPixel
 </UL>
-<BR>[Called By]<UL><LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteString
+<BR>[Called By]<UL><LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteString
 </UL>
 
-<P><STRONG><a name="[143]"></a>ssd1306_WriteCommand</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, ssd1306.o(i.ssd1306_WriteCommand))
+<P><STRONG><a name="[144]"></a>ssd1306_WriteCommand</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, ssd1306.o(i.ssd1306_WriteCommand))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = ssd1306_WriteCommand &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Transmit
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_UpdateScreen
-<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
-<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SetDisplayOn
-<LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SetContrast
+<BR>[Called By]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_UpdateScreen
+<LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
+<LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SetDisplayOn
+<LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SetContrast
 </UL>
 
-<P><STRONG><a name="[145]"></a>ssd1306_WriteData</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, ssd1306.o(i.ssd1306_WriteData))
+<P><STRONG><a name="[146]"></a>ssd1306_WriteData</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, ssd1306.o(i.ssd1306_WriteData))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Transmit
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_UpdateScreen
+<BR>[Called By]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_UpdateScreen
 </UL>
 
-<P><STRONG><a name="[135]"></a>ssd1306_WriteString</STRONG> (Thumb, 44 bytes, Stack size 28 bytes, ssd1306.o(i.ssd1306_WriteString))
+<P><STRONG><a name="[136]"></a>ssd1306_WriteString</STRONG> (Thumb, 44 bytes, Stack size 28 bytes, ssd1306.o(i.ssd1306_WriteString))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = ssd1306_WriteString &rArr; ssd1306_WriteChar &rArr; ssd1306_DrawPixel
 </UL>
-<BR>[Calls]<UL><LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteChar
+<BR>[Calls]<UL><LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteChar
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdupdate
 </UL>
@@ -2454,8 +2464,8 @@ Local Symbols
 <P><STRONG><a name="[105]"></a>USBD_ClrFeature</STRONG> (Thumb, 70 bytes, Stack size 16 bytes, usbd_ctlreq.o(i.USBD_ClrFeature))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = USBD_ClrFeature &rArr; USBD_CtlSendStatus &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
-<BR>[Calls]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
+<BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
 </UL>
@@ -2473,9 +2483,9 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = USBD_GetDescriptor &rArr; USBD_CtlSendData &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_switch8
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendData
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
 </UL>
@@ -2497,8 +2507,8 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = USBD_SetAddress &rArr; USBD_CtlSendStatus &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
 <BR>[Calls]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_SetUSBAddress
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
 </UL>
@@ -2506,10 +2516,10 @@ Local Symbols
 <P><STRONG><a name="[11e]"></a>USBD_SetConfig</STRONG> (Thumb, 244 bytes, Stack size 16 bytes, usbd_ctlreq.o(i.USBD_SetConfig))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = USBD_SetConfig &rArr; USBD_CtlSendStatus &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePMA
 </UL>
-<BR>[Calls]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
-<LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_SetClassConfig
+<BR>[Calls]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_SetClassConfig
 <LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_ClrClassConfig
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlError
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CtlSendStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_StdDevReq
 </UL>
