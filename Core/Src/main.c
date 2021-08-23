@@ -422,10 +422,26 @@ void check_releaserelay(void);
 void checkgenpromp(void);
 void checkgenschedule(void);
 uint8_t chechphasesequen(unsigned char selectsource);
+void checkfault (void);
+
 
 volatile int16_t systickcount =0;
 volatile signed char beepcount = 0;
 volatile signed int ctrlATScount = 0;
+
+void checkfault (void)
+{
+	if((phase_sequen_source1)||(phase_sequen_source2))
+	{
+		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,ON_rly);
+	}
+	else{
+		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,OFF_rly);
+	}
+}
+
 void HAL_SYSTICK_Callback()
 {	
 	systickcount++;
@@ -1118,11 +1134,9 @@ int main(void)
 					}
 					phase_sequen_source1 =0;
 				}
-//				phase_sequen_source1 = GetSysStatus0(SOURCE1);
-//				phase_sequen_source1 = phase_sequen_source1 & 0x200;
-//				phase_sequen_source2 = GetSysStatus0(SOURCE2);
-//				phase_sequen_source2 = phase_sequen_source2 & 0x200;
+
 			}
+			checkfault();
 			
 			HAL_GPIO_TogglePin(LED_HEALTY_GPIO_Port,LED_HEALTY_Pin);
 			if(systemValue == main_gens){
