@@ -1579,7 +1579,6 @@ void readvolt(void)
 								HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
 								genstart = GENSTOP;
 							}	
-							
 						}		
 					}
 					else
@@ -1657,8 +1656,7 @@ void readvolt(void)
 						if(!OverResTimeCount){
 							freqOverflag = 0;
 						}
-					}
-					
+					}			
 					State = State_PreOverRes;
 					if(OverResTimeCount == 0)
 					{
@@ -1690,16 +1688,13 @@ void readvolt(void)
 						{
 							Timer_flag =1; // start timer
 						}
-					}
-					
+					}		
 				}
 				if( (((V1_A >= OverResValue)||(V1_B >= OverResValue)||(V1_C >= OverResValue))||(F_S1 >= freqOverResValue) )&& ((State == State_nor)&&(State == State_PreOverRes)) )
 				{
 					State = State_Over;
 					Timer_flag = 0; // stop timer
-				}
-				
-					
+				}								
 			}
 			else //*****(SourceSelectValue == SELECTSOURCE2)
 			{
