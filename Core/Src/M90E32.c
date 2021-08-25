@@ -180,7 +180,6 @@ unsigned short GetSysStatus1(unsigned char selectsource) {
 }
 
 void InitEnergyIC(unsigned char selectsource) {
-  //Serial.println("Initialising:");
   unsigned short systemstatus0;
 	
 	CommEnergyIC(selectsource, 0, MeterEn, 0xFFFF); //Perform EnMeter ---jj
@@ -254,7 +253,6 @@ void InitEnergyIC(unsigned char selectsource) {
 	//CommEnergyIC(selectsource, 0, PhaseLossTh, 0xBA54); //  jj 200v Threshold
 	//CommEnergyIC(selectsource, 0, EMMIntEn1, 0x7F00);
 
-	
 	systemstatus0 = GetSysStatus0(selectsource);
 	
 }

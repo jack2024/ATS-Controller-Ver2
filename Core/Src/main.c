@@ -424,7 +424,6 @@ void checkgenschedule(void);
 uint8_t chechphasesequen(unsigned char selectsource);
 void checkfault (void);
 
-
 volatile int16_t systickcount =0;
 volatile signed char beepcount = 0;
 volatile signed int ctrlATScount = 0;
@@ -436,7 +435,8 @@ void checkfault (void)
 		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_SET);
 		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,ON_rly);
 	}
-	else{
+	else
+	{
 		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,OFF_rly);
 	}
@@ -985,8 +985,6 @@ int main(void)
 	
 	ssd1306_Init();
 	ssd1306_Fill(Black);
-	
-	uint32_t delta;
 
 	HAL_TIM_Base_Start_IT(&htim7);
 	
@@ -1007,14 +1005,14 @@ int main(void)
 		buttonRead();
 		check_releaserelay();
 		if(genstart == GENSTART)
-		{
+		{ 
 			checkgenpromp();
 		}
 		if(workmodeValue == modemanual)
 		{
 			checkauxinput();
 		}
-		if(((loopcount % 100) == 0) && (lcdflag ==0)&& (start_ats))// 10.4 ms.
+		if(((loopcount % 100) == 0) && (lcdflag ==0)&& (start_ats)) // 10.4 ms.
 		{
 			HAL_GPIO_TogglePin(LCD_D2_GPIO_Port,LCD_D2_Pin);	
 			readvolt(); //1 ms.
@@ -1026,9 +1024,7 @@ int main(void)
 			{
 				Error_Handler();
 			}
-			
 			lcdupdate(); // 13.5 ms.
-			
 			hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
 			if (HAL_SPI_Init(&hspi1) != HAL_OK)
 			{
@@ -1098,7 +1094,7 @@ int main(void)
 		if((loopcount % 35000) == 0)// 1.5 sec.
 		{
 			//  Check Phase Sequen 
-			if((NetworkSelectValue == sys3P4W)&& (start_ats)){
+			if((NetworkSelectValue == sys3P4W)&& (start_ats) && (State == State_nor)){
 				if(source_out == SELECTSOURCE1){
 					if(chechphasesequen(SOURCE1))
 					{
@@ -4874,7 +4870,6 @@ void system_init(void)
 	}
 	
 	ctrlATScount = CTRL_ATS_TIMEOUT;
-	
 }
 
 GPIO_PinState s1_input, s2_input, s3_input, s4_input;

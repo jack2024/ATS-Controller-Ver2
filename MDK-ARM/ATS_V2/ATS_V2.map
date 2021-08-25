@@ -3019,28 +3019,28 @@ Image Symbol Table
     i.comparesettingvalue                    0x0800b0f8   Section        0  main.o(i.comparesettingvalue)
     i.lcdupdate                              0x0800b320   Section        0  main.o(i.lcdupdate)
     i.main                                   0x0800cfec   Section        0  main.o(i.main)
-    i.readvolt                               0x0800d488   Section        0  main.o(i.readvolt)
-    i.ssd1306_DrawPixel                      0x0800f314   Section        0  ssd1306.o(i.ssd1306_DrawPixel)
-    i.ssd1306_Fill                           0x0800f3b8   Section        0  ssd1306.o(i.ssd1306_Fill)
-    i.ssd1306_Init                           0x0800f3dc   Section        0  ssd1306.o(i.ssd1306_Init)
-    i.ssd1306_Reset                          0x0800f4a8   Section        0  ssd1306.o(i.ssd1306_Reset)
-    i.ssd1306_SetContrast                    0x0800f4e0   Section        0  ssd1306.o(i.ssd1306_SetContrast)
-    i.ssd1306_SetCursor                      0x0800f4f4   Section        0  ssd1306.o(i.ssd1306_SetCursor)
-    i.ssd1306_SetDisplayOn                   0x0800f500   Section        0  ssd1306.o(i.ssd1306_SetDisplayOn)
-    i.ssd1306_UpdateScreen                   0x0800f528   Section        0  ssd1306.o(i.ssd1306_UpdateScreen)
-    i.ssd1306_WriteChar                      0x0800f560   Section        0  ssd1306.o(i.ssd1306_WriteChar)
-    i.ssd1306_WriteCommand                   0x0800f624   Section        0  ssd1306.o(i.ssd1306_WriteCommand)
-    i.ssd1306_WriteData                      0x0800f65c   Section        0  ssd1306.o(i.ssd1306_WriteData)
-    i.ssd1306_WriteString                    0x0800f698   Section        0  ssd1306.o(i.ssd1306_WriteString)
-    i.storecomparevalue                      0x0800f6c4   Section        0  main.o(i.storecomparevalue)
-    i.system_init                            0x0800f828   Section        0  main.o(i.system_init)
-    .constdata                               0x0800f96c   Section     1332  main.o(.constdata)
-    .constdata                               0x0800fea0   Section       24  system_stm32f0xx.o(.constdata)
-    .constdata                               0x0800feb8   Section    11780  ssd1306_fonts.o(.constdata)
-    Font7x10                                 0x0800feb8   Data        1900  ssd1306_fonts.o(.constdata)
-    Font11x18                                0x08010624   Data        3420  ssd1306_fonts.o(.constdata)
-    Font16x26                                0x08011380   Data        4940  ssd1306_fonts.o(.constdata)
-    Font6x8                                  0x080126cc   Data        1520  ssd1306_fonts.o(.constdata)
+    i.readvolt                               0x0800d494   Section        0  main.o(i.readvolt)
+    i.ssd1306_DrawPixel                      0x0800f320   Section        0  ssd1306.o(i.ssd1306_DrawPixel)
+    i.ssd1306_Fill                           0x0800f3c4   Section        0  ssd1306.o(i.ssd1306_Fill)
+    i.ssd1306_Init                           0x0800f3e8   Section        0  ssd1306.o(i.ssd1306_Init)
+    i.ssd1306_Reset                          0x0800f4b4   Section        0  ssd1306.o(i.ssd1306_Reset)
+    i.ssd1306_SetContrast                    0x0800f4ec   Section        0  ssd1306.o(i.ssd1306_SetContrast)
+    i.ssd1306_SetCursor                      0x0800f500   Section        0  ssd1306.o(i.ssd1306_SetCursor)
+    i.ssd1306_SetDisplayOn                   0x0800f50c   Section        0  ssd1306.o(i.ssd1306_SetDisplayOn)
+    i.ssd1306_UpdateScreen                   0x0800f534   Section        0  ssd1306.o(i.ssd1306_UpdateScreen)
+    i.ssd1306_WriteChar                      0x0800f56c   Section        0  ssd1306.o(i.ssd1306_WriteChar)
+    i.ssd1306_WriteCommand                   0x0800f630   Section        0  ssd1306.o(i.ssd1306_WriteCommand)
+    i.ssd1306_WriteData                      0x0800f668   Section        0  ssd1306.o(i.ssd1306_WriteData)
+    i.ssd1306_WriteString                    0x0800f6a4   Section        0  ssd1306.o(i.ssd1306_WriteString)
+    i.storecomparevalue                      0x0800f6d0   Section        0  main.o(i.storecomparevalue)
+    i.system_init                            0x0800f834   Section        0  main.o(i.system_init)
+    .constdata                               0x0800f978   Section     1332  main.o(.constdata)
+    .constdata                               0x0800feac   Section       24  system_stm32f0xx.o(.constdata)
+    .constdata                               0x0800fec4   Section    11780  ssd1306_fonts.o(.constdata)
+    Font7x10                                 0x0800fec4   Data        1900  ssd1306_fonts.o(.constdata)
+    Font11x18                                0x08010630   Data        3420  ssd1306_fonts.o(.constdata)
+    Font16x26                                0x0801138c   Data        4940  ssd1306_fonts.o(.constdata)
+    Font6x8                                  0x080126d8   Data        1520  ssd1306_fonts.o(.constdata)
     .data                                    0x20000000   Section      246  main.o(.data)
     state                                    0x200000ec   Data           4  main.o(.data)
     deb                                      0x200000f0   Data           4  main.o(.data)
@@ -3428,139 +3428,139 @@ Image Symbol Table
     cleardisplay                             0x0800b0ed   Thumb Code    10  main.o(i.cleardisplay)
     comparesettingvalue                      0x0800b0f9   Thumb Code   402  main.o(i.comparesettingvalue)
     lcdupdate                                0x0800b321   Thumb Code  7336  main.o(i.lcdupdate)
-    main                                     0x0800cfed   Thumb Code  1180  main.o(i.main)
-    readvolt                                 0x0800d489   Thumb Code  7704  main.o(i.readvolt)
-    ssd1306_DrawPixel                        0x0800f315   Thumb Code   154  ssd1306.o(i.ssd1306_DrawPixel)
-    ssd1306_Fill                             0x0800f3b9   Thumb Code    32  ssd1306.o(i.ssd1306_Fill)
-    ssd1306_Init                             0x0800f3dd   Thumb Code   198  ssd1306.o(i.ssd1306_Init)
-    ssd1306_Reset                            0x0800f4a9   Thumb Code    48  ssd1306.o(i.ssd1306_Reset)
-    ssd1306_SetContrast                      0x0800f4e1   Thumb Code    20  ssd1306.o(i.ssd1306_SetContrast)
-    ssd1306_SetCursor                        0x0800f4f5   Thumb Code     8  ssd1306.o(i.ssd1306_SetCursor)
-    ssd1306_SetDisplayOn                     0x0800f501   Thumb Code    34  ssd1306.o(i.ssd1306_SetDisplayOn)
-    ssd1306_UpdateScreen                     0x0800f529   Thumb Code    50  ssd1306.o(i.ssd1306_UpdateScreen)
-    ssd1306_WriteChar                        0x0800f561   Thumb Code   190  ssd1306.o(i.ssd1306_WriteChar)
-    ssd1306_WriteCommand                     0x0800f625   Thumb Code    48  ssd1306.o(i.ssd1306_WriteCommand)
-    ssd1306_WriteData                        0x0800f65d   Thumb Code    52  ssd1306.o(i.ssd1306_WriteData)
-    ssd1306_WriteString                      0x0800f699   Thumb Code    44  ssd1306.o(i.ssd1306_WriteString)
-    storecomparevalue                        0x0800f6c5   Thumb Code   210  main.o(i.storecomparevalue)
-    system_init                              0x0800f829   Thumb Code   286  main.o(i.system_init)
-    mountname0                               0x0800f96c   Data           1  main.o(.constdata)
-    mountname1                               0x0800f96d   Data           4  main.o(.constdata)
-    mountname2                               0x0800f971   Data           4  main.o(.constdata)
-    mountname3                               0x0800f975   Data           4  main.o(.constdata)
-    mountname4                               0x0800f979   Data           4  main.o(.constdata)
-    mountname5                               0x0800f97d   Data           4  main.o(.constdata)
-    mountname6                               0x0800f981   Data           4  main.o(.constdata)
-    mountname7                               0x0800f985   Data           4  main.o(.constdata)
-    mountname8                               0x0800f989   Data           4  main.o(.constdata)
-    mountname9                               0x0800f98d   Data           4  main.o(.constdata)
-    mountname10                              0x0800f991   Data           4  main.o(.constdata)
-    mountname11                              0x0800f995   Data           4  main.o(.constdata)
-    mountname12                              0x0800f999   Data           4  main.o(.constdata)
-    mountname                                0x0800f9a0   Data          52  main.o(.constdata)
-    dayname0                                 0x0800f9d4   Data           1  main.o(.constdata)
-    dayname1                                 0x0800f9d5   Data           4  main.o(.constdata)
-    dayname2                                 0x0800f9d9   Data           4  main.o(.constdata)
-    dayname3                                 0x0800f9dd   Data           4  main.o(.constdata)
-    dayname4                                 0x0800f9e1   Data           4  main.o(.constdata)
-    dayname5                                 0x0800f9e5   Data           4  main.o(.constdata)
-    dayname6                                 0x0800f9e9   Data           4  main.o(.constdata)
-    dayname7                                 0x0800f9ed   Data           4  main.o(.constdata)
-    dayname                                  0x0800f9f4   Data          32  main.o(.constdata)
-    main1                                    0x0800fa14   Data          18  main.o(.constdata)
-    main2                                    0x0800fa26   Data          17  main.o(.constdata)
-    main3                                    0x0800fa37   Data          17  main.o(.constdata)
-    main4                                    0x0800fa48   Data          17  main.o(.constdata)
-    main5                                    0x0800fa59   Data          17  main.o(.constdata)
-    main6                                    0x0800fa6a   Data          14  main.o(.constdata)
-    main7                                    0x0800fa78   Data          18  main.o(.constdata)
-    main8                                    0x0800fa8a   Data          14  main.o(.constdata)
-    main9                                    0x0800fa98   Data           7  main.o(.constdata)
-    mainmenu                                 0x0800faa0   Data          36  main.o(.constdata)
-    undermenu1                               0x0800fac4   Data          18  main.o(.constdata)
-    undermenu2                               0x0800fad6   Data          18  main.o(.constdata)
-    undermenu3                               0x0800fae8   Data          18  main.o(.constdata)
-    undermenu4                               0x0800fafa   Data          18  main.o(.constdata)
-    undermenu5                               0x0800fb0c   Data           7  main.o(.constdata)
-    undermenu                                0x0800fb14   Data          20  main.o(.constdata)
-    overmenu1                                0x0800fb28   Data          17  main.o(.constdata)
-    overmenu2                                0x0800fb39   Data          17  main.o(.constdata)
-    overmenu3                                0x0800fb4a   Data          17  main.o(.constdata)
-    overmenu4                                0x0800fb5b   Data          17  main.o(.constdata)
-    overmenu5                                0x0800fb6c   Data           7  main.o(.constdata)
-    overmenu                                 0x0800fb74   Data          20  main.o(.constdata)
-    sourceselectmenu1                        0x0800fb88   Data          10  main.o(.constdata)
-    sourceselectmenu2                        0x0800fb92   Data          10  main.o(.constdata)
-    sourceselectmenu3                        0x0800fb9c   Data           1  main.o(.constdata)
-    sourceselectmenu4                        0x0800fb9d   Data           1  main.o(.constdata)
-    sourceselectmenu5                        0x0800fb9e   Data          15  main.o(.constdata)
-    sourceselectmenu                         0x0800fbb0   Data          20  main.o(.constdata)
-    networksystemmenu1                       0x0800fbc4   Data           7  main.o(.constdata)
-    networksystemmenu2                       0x0800fbcb   Data           7  main.o(.constdata)
-    networksystemmenu3                       0x0800fbd2   Data           1  main.o(.constdata)
-    networksystemmenu4                       0x0800fbd3   Data           1  main.o(.constdata)
-    networksystemmenu5                       0x0800fbd4   Data          15  main.o(.constdata)
-    networksystemmenu                        0x0800fbe4   Data          20  main.o(.constdata)
-    datetimemenu1                            0x0800fbf8   Data          11  main.o(.constdata)
-    datetimemenu2                            0x0800fc03   Data          12  main.o(.constdata)
-    datetimemenu3                            0x0800fc0f   Data          11  main.o(.constdata)
-    datetimemenu4                            0x0800fc1a   Data          12  main.o(.constdata)
-    datetimemenu5                            0x0800fc26   Data          13  main.o(.constdata)
-    datetimemenu6                            0x0800fc33   Data          16  main.o(.constdata)
-    datetimemenu7                            0x0800fc43   Data           7  main.o(.constdata)
-    datetimemenu                             0x0800fc4c   Data          28  main.o(.constdata)
-    systemtypemenu1                          0x0800fc68   Data          17  main.o(.constdata)
-    systemtypemenu2                          0x0800fc79   Data          17  main.o(.constdata)
-    systemtypemenu3                          0x0800fc8a   Data           1  main.o(.constdata)
-    systemtypemenu4                          0x0800fc8b   Data           1  main.o(.constdata)
-    systemtypemenu5                          0x0800fc8c   Data          15  main.o(.constdata)
-    systemtypemenu                           0x0800fc9c   Data          20  main.o(.constdata)
-    freqmenu1                                0x0800fcb0   Data          18  main.o(.constdata)
-    freqmenu2                                0x0800fcc2   Data          18  main.o(.constdata)
-    freqmenu3                                0x0800fcd4   Data          17  main.o(.constdata)
-    freqmenu4                                0x0800fce5   Data          17  main.o(.constdata)
-    freqmenu5                                0x0800fcf6   Data          17  main.o(.constdata)
-    freqmenu6                                0x0800fd07   Data          17  main.o(.constdata)
-    freqmenu7                                0x0800fd18   Data           7  main.o(.constdata)
-    frequencymenu                            0x0800fd20   Data          28  main.o(.constdata)
-    GenSchedulemenu1                         0x0800fd3c   Data          17  main.o(.constdata)
-    GenSchedulemenu2                         0x0800fd4d   Data           9  main.o(.constdata)
-    GenSchedulemenu3                         0x0800fd56   Data          12  main.o(.constdata)
-    GenSchedulemenu4                         0x0800fd62   Data          12  main.o(.constdata)
-    GenSchedulemenu5                         0x0800fd6e   Data           7  main.o(.constdata)
-    GenSchedulemenu                          0x0800fd78   Data          20  main.o(.constdata)
-    GenStartEnablemenu1                      0x0800fd8c   Data          10  main.o(.constdata)
-    GenStartEnablemenu2                      0x0800fd96   Data           9  main.o(.constdata)
-    GenStartEnablemenu3                      0x0800fd9f   Data           1  main.o(.constdata)
-    GenStartEnablemenu4                      0x0800fda0   Data           1  main.o(.constdata)
-    GenStartEnablemenu5                      0x0800fda1   Data          15  main.o(.constdata)
-    GenStartEnablemenu                       0x0800fdb0   Data          20  main.o(.constdata)
-    Periodmenu1                              0x0800fdc4   Data           8  main.o(.constdata)
-    Periodmenu2                              0x0800fdcc   Data           9  main.o(.constdata)
-    Periodmenu3                              0x0800fdd5   Data          10  main.o(.constdata)
-    Periodmenu4                              0x0800fddf   Data           1  main.o(.constdata)
-    Periodmenu5                              0x0800fde0   Data          15  main.o(.constdata)
-    Periodmenu                               0x0800fdf0   Data          20  main.o(.constdata)
-    GenStartDateTimemenu1                    0x0800fe04   Data           7  main.o(.constdata)
-    GenStartDateTimemenu2                    0x0800fe0b   Data          12  main.o(.constdata)
-    GenStartDateTimemenu3                    0x0800fe17   Data           8  main.o(.constdata)
-    GenStartDateTimemenu4                    0x0800fe1f   Data           9  main.o(.constdata)
-    GenStartDateTimemenu5                    0x0800fe28   Data           7  main.o(.constdata)
-    GenStartDateTimemenu                     0x0800fe30   Data          20  main.o(.constdata)
-    statusmenu0                              0x0800fe44   Data           7  main.o(.constdata)
-    statusmenu1                              0x0800fe4b   Data           6  main.o(.constdata)
-    statusmenu2                              0x0800fe51   Data           6  main.o(.constdata)
-    statusmenu3                              0x0800fe57   Data          12  main.o(.constdata)
-    statusmenu4                              0x0800fe63   Data           1  main.o(.constdata)
-    statusmenu5                              0x0800fe64   Data           5  main.o(.constdata)
-    statusmenu6                              0x0800fe69   Data           5  main.o(.constdata)
-    statusmenu7                              0x0800fe6e   Data          11  main.o(.constdata)
-    statusmenu8                              0x0800fe79   Data           1  main.o(.constdata)
-    statusmenu                               0x0800fe7c   Data          36  main.o(.constdata)
-    AHBPrescTable                            0x0800fea0   Data          16  system_stm32f0xx.o(.constdata)
-    APBPrescTable                            0x0800feb0   Data           8  system_stm32f0xx.o(.constdata)
-    Region$$Table$$Base                      0x08012cbc   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08012cdc   Number         0  anon$$obj.o(Region$$Table)
+    main                                     0x0800cfed   Thumb Code  1192  main.o(i.main)
+    readvolt                                 0x0800d495   Thumb Code  7704  main.o(i.readvolt)
+    ssd1306_DrawPixel                        0x0800f321   Thumb Code   154  ssd1306.o(i.ssd1306_DrawPixel)
+    ssd1306_Fill                             0x0800f3c5   Thumb Code    32  ssd1306.o(i.ssd1306_Fill)
+    ssd1306_Init                             0x0800f3e9   Thumb Code   198  ssd1306.o(i.ssd1306_Init)
+    ssd1306_Reset                            0x0800f4b5   Thumb Code    48  ssd1306.o(i.ssd1306_Reset)
+    ssd1306_SetContrast                      0x0800f4ed   Thumb Code    20  ssd1306.o(i.ssd1306_SetContrast)
+    ssd1306_SetCursor                        0x0800f501   Thumb Code     8  ssd1306.o(i.ssd1306_SetCursor)
+    ssd1306_SetDisplayOn                     0x0800f50d   Thumb Code    34  ssd1306.o(i.ssd1306_SetDisplayOn)
+    ssd1306_UpdateScreen                     0x0800f535   Thumb Code    50  ssd1306.o(i.ssd1306_UpdateScreen)
+    ssd1306_WriteChar                        0x0800f56d   Thumb Code   190  ssd1306.o(i.ssd1306_WriteChar)
+    ssd1306_WriteCommand                     0x0800f631   Thumb Code    48  ssd1306.o(i.ssd1306_WriteCommand)
+    ssd1306_WriteData                        0x0800f669   Thumb Code    52  ssd1306.o(i.ssd1306_WriteData)
+    ssd1306_WriteString                      0x0800f6a5   Thumb Code    44  ssd1306.o(i.ssd1306_WriteString)
+    storecomparevalue                        0x0800f6d1   Thumb Code   210  main.o(i.storecomparevalue)
+    system_init                              0x0800f835   Thumb Code   286  main.o(i.system_init)
+    mountname0                               0x0800f978   Data           1  main.o(.constdata)
+    mountname1                               0x0800f979   Data           4  main.o(.constdata)
+    mountname2                               0x0800f97d   Data           4  main.o(.constdata)
+    mountname3                               0x0800f981   Data           4  main.o(.constdata)
+    mountname4                               0x0800f985   Data           4  main.o(.constdata)
+    mountname5                               0x0800f989   Data           4  main.o(.constdata)
+    mountname6                               0x0800f98d   Data           4  main.o(.constdata)
+    mountname7                               0x0800f991   Data           4  main.o(.constdata)
+    mountname8                               0x0800f995   Data           4  main.o(.constdata)
+    mountname9                               0x0800f999   Data           4  main.o(.constdata)
+    mountname10                              0x0800f99d   Data           4  main.o(.constdata)
+    mountname11                              0x0800f9a1   Data           4  main.o(.constdata)
+    mountname12                              0x0800f9a5   Data           4  main.o(.constdata)
+    mountname                                0x0800f9ac   Data          52  main.o(.constdata)
+    dayname0                                 0x0800f9e0   Data           1  main.o(.constdata)
+    dayname1                                 0x0800f9e1   Data           4  main.o(.constdata)
+    dayname2                                 0x0800f9e5   Data           4  main.o(.constdata)
+    dayname3                                 0x0800f9e9   Data           4  main.o(.constdata)
+    dayname4                                 0x0800f9ed   Data           4  main.o(.constdata)
+    dayname5                                 0x0800f9f1   Data           4  main.o(.constdata)
+    dayname6                                 0x0800f9f5   Data           4  main.o(.constdata)
+    dayname7                                 0x0800f9f9   Data           4  main.o(.constdata)
+    dayname                                  0x0800fa00   Data          32  main.o(.constdata)
+    main1                                    0x0800fa20   Data          18  main.o(.constdata)
+    main2                                    0x0800fa32   Data          17  main.o(.constdata)
+    main3                                    0x0800fa43   Data          17  main.o(.constdata)
+    main4                                    0x0800fa54   Data          17  main.o(.constdata)
+    main5                                    0x0800fa65   Data          17  main.o(.constdata)
+    main6                                    0x0800fa76   Data          14  main.o(.constdata)
+    main7                                    0x0800fa84   Data          18  main.o(.constdata)
+    main8                                    0x0800fa96   Data          14  main.o(.constdata)
+    main9                                    0x0800faa4   Data           7  main.o(.constdata)
+    mainmenu                                 0x0800faac   Data          36  main.o(.constdata)
+    undermenu1                               0x0800fad0   Data          18  main.o(.constdata)
+    undermenu2                               0x0800fae2   Data          18  main.o(.constdata)
+    undermenu3                               0x0800faf4   Data          18  main.o(.constdata)
+    undermenu4                               0x0800fb06   Data          18  main.o(.constdata)
+    undermenu5                               0x0800fb18   Data           7  main.o(.constdata)
+    undermenu                                0x0800fb20   Data          20  main.o(.constdata)
+    overmenu1                                0x0800fb34   Data          17  main.o(.constdata)
+    overmenu2                                0x0800fb45   Data          17  main.o(.constdata)
+    overmenu3                                0x0800fb56   Data          17  main.o(.constdata)
+    overmenu4                                0x0800fb67   Data          17  main.o(.constdata)
+    overmenu5                                0x0800fb78   Data           7  main.o(.constdata)
+    overmenu                                 0x0800fb80   Data          20  main.o(.constdata)
+    sourceselectmenu1                        0x0800fb94   Data          10  main.o(.constdata)
+    sourceselectmenu2                        0x0800fb9e   Data          10  main.o(.constdata)
+    sourceselectmenu3                        0x0800fba8   Data           1  main.o(.constdata)
+    sourceselectmenu4                        0x0800fba9   Data           1  main.o(.constdata)
+    sourceselectmenu5                        0x0800fbaa   Data          15  main.o(.constdata)
+    sourceselectmenu                         0x0800fbbc   Data          20  main.o(.constdata)
+    networksystemmenu1                       0x0800fbd0   Data           7  main.o(.constdata)
+    networksystemmenu2                       0x0800fbd7   Data           7  main.o(.constdata)
+    networksystemmenu3                       0x0800fbde   Data           1  main.o(.constdata)
+    networksystemmenu4                       0x0800fbdf   Data           1  main.o(.constdata)
+    networksystemmenu5                       0x0800fbe0   Data          15  main.o(.constdata)
+    networksystemmenu                        0x0800fbf0   Data          20  main.o(.constdata)
+    datetimemenu1                            0x0800fc04   Data          11  main.o(.constdata)
+    datetimemenu2                            0x0800fc0f   Data          12  main.o(.constdata)
+    datetimemenu3                            0x0800fc1b   Data          11  main.o(.constdata)
+    datetimemenu4                            0x0800fc26   Data          12  main.o(.constdata)
+    datetimemenu5                            0x0800fc32   Data          13  main.o(.constdata)
+    datetimemenu6                            0x0800fc3f   Data          16  main.o(.constdata)
+    datetimemenu7                            0x0800fc4f   Data           7  main.o(.constdata)
+    datetimemenu                             0x0800fc58   Data          28  main.o(.constdata)
+    systemtypemenu1                          0x0800fc74   Data          17  main.o(.constdata)
+    systemtypemenu2                          0x0800fc85   Data          17  main.o(.constdata)
+    systemtypemenu3                          0x0800fc96   Data           1  main.o(.constdata)
+    systemtypemenu4                          0x0800fc97   Data           1  main.o(.constdata)
+    systemtypemenu5                          0x0800fc98   Data          15  main.o(.constdata)
+    systemtypemenu                           0x0800fca8   Data          20  main.o(.constdata)
+    freqmenu1                                0x0800fcbc   Data          18  main.o(.constdata)
+    freqmenu2                                0x0800fcce   Data          18  main.o(.constdata)
+    freqmenu3                                0x0800fce0   Data          17  main.o(.constdata)
+    freqmenu4                                0x0800fcf1   Data          17  main.o(.constdata)
+    freqmenu5                                0x0800fd02   Data          17  main.o(.constdata)
+    freqmenu6                                0x0800fd13   Data          17  main.o(.constdata)
+    freqmenu7                                0x0800fd24   Data           7  main.o(.constdata)
+    frequencymenu                            0x0800fd2c   Data          28  main.o(.constdata)
+    GenSchedulemenu1                         0x0800fd48   Data          17  main.o(.constdata)
+    GenSchedulemenu2                         0x0800fd59   Data           9  main.o(.constdata)
+    GenSchedulemenu3                         0x0800fd62   Data          12  main.o(.constdata)
+    GenSchedulemenu4                         0x0800fd6e   Data          12  main.o(.constdata)
+    GenSchedulemenu5                         0x0800fd7a   Data           7  main.o(.constdata)
+    GenSchedulemenu                          0x0800fd84   Data          20  main.o(.constdata)
+    GenStartEnablemenu1                      0x0800fd98   Data          10  main.o(.constdata)
+    GenStartEnablemenu2                      0x0800fda2   Data           9  main.o(.constdata)
+    GenStartEnablemenu3                      0x0800fdab   Data           1  main.o(.constdata)
+    GenStartEnablemenu4                      0x0800fdac   Data           1  main.o(.constdata)
+    GenStartEnablemenu5                      0x0800fdad   Data          15  main.o(.constdata)
+    GenStartEnablemenu                       0x0800fdbc   Data          20  main.o(.constdata)
+    Periodmenu1                              0x0800fdd0   Data           8  main.o(.constdata)
+    Periodmenu2                              0x0800fdd8   Data           9  main.o(.constdata)
+    Periodmenu3                              0x0800fde1   Data          10  main.o(.constdata)
+    Periodmenu4                              0x0800fdeb   Data           1  main.o(.constdata)
+    Periodmenu5                              0x0800fdec   Data          15  main.o(.constdata)
+    Periodmenu                               0x0800fdfc   Data          20  main.o(.constdata)
+    GenStartDateTimemenu1                    0x0800fe10   Data           7  main.o(.constdata)
+    GenStartDateTimemenu2                    0x0800fe17   Data          12  main.o(.constdata)
+    GenStartDateTimemenu3                    0x0800fe23   Data           8  main.o(.constdata)
+    GenStartDateTimemenu4                    0x0800fe2b   Data           9  main.o(.constdata)
+    GenStartDateTimemenu5                    0x0800fe34   Data           7  main.o(.constdata)
+    GenStartDateTimemenu                     0x0800fe3c   Data          20  main.o(.constdata)
+    statusmenu0                              0x0800fe50   Data           7  main.o(.constdata)
+    statusmenu1                              0x0800fe57   Data           6  main.o(.constdata)
+    statusmenu2                              0x0800fe5d   Data           6  main.o(.constdata)
+    statusmenu3                              0x0800fe63   Data          12  main.o(.constdata)
+    statusmenu4                              0x0800fe6f   Data           1  main.o(.constdata)
+    statusmenu5                              0x0800fe70   Data           5  main.o(.constdata)
+    statusmenu6                              0x0800fe75   Data           5  main.o(.constdata)
+    statusmenu7                              0x0800fe7a   Data          11  main.o(.constdata)
+    statusmenu8                              0x0800fe85   Data           1  main.o(.constdata)
+    statusmenu                               0x0800fe88   Data          36  main.o(.constdata)
+    AHBPrescTable                            0x0800feac   Data          16  system_stm32f0xx.o(.constdata)
+    APBPrescTable                            0x0800febc   Data           8  system_stm32f0xx.o(.constdata)
+    Region$$Table$$Base                      0x08012cc8   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08012ce8   Number         0  anon$$obj.o(Region$$Table)
     setvalueselect                           0x20000000   Data           1  main.o(.data)
     loopcount                                0x20000004   Data           4  main.o(.data)
     source1_A                                0x20000008   Data           4  main.o(.data)
@@ -3716,9 +3716,9 @@ Memory Map of the image
 
   Image Entry point : 0x080000c1
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00012f80, Max: 0x00020000, ABSOLUTE, COMPRESSED[0x00012dc0])
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00012f8c, Max: 0x00020000, ABSOLUTE, COMPRESSED[0x00012dcc])
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00012cdc, Max: 0x00020000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00012ce8, Max: 0x00020000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -4039,29 +4039,29 @@ Memory Map of the image
     0x0800b0f6   0x0800b0f6   0x00000002   PAD
     0x0800b0f8   0x0800b0f8   0x00000228   Code   RO          287    i.comparesettingvalue  main.o
     0x0800b320   0x0800b320   0x00001ccc   Code   RO          288    i.lcdupdate         main.o
-    0x0800cfec   0x0800cfec   0x0000049c   Code   RO          289    i.main              main.o
-    0x0800d488   0x0800d488   0x00001e8c   Code   RO          290    i.readvolt          main.o
-    0x0800f314   0x0800f314   0x000000a4   Code   RO         5823    i.ssd1306_DrawPixel  ssd1306.o
-    0x0800f3b8   0x0800f3b8   0x00000024   Code   RO         5825    i.ssd1306_Fill      ssd1306.o
-    0x0800f3dc   0x0800f3dc   0x000000cc   Code   RO         5828    i.ssd1306_Init      ssd1306.o
-    0x0800f4a8   0x0800f4a8   0x00000038   Code   RO         5832    i.ssd1306_Reset     ssd1306.o
-    0x0800f4e0   0x0800f4e0   0x00000014   Code   RO         5833    i.ssd1306_SetContrast  ssd1306.o
-    0x0800f4f4   0x0800f4f4   0x0000000c   Code   RO         5834    i.ssd1306_SetCursor  ssd1306.o
-    0x0800f500   0x0800f500   0x00000028   Code   RO         5835    i.ssd1306_SetDisplayOn  ssd1306.o
-    0x0800f528   0x0800f528   0x00000038   Code   RO         5836    i.ssd1306_UpdateScreen  ssd1306.o
-    0x0800f560   0x0800f560   0x000000c4   Code   RO         5837    i.ssd1306_WriteChar  ssd1306.o
-    0x0800f624   0x0800f624   0x00000038   Code   RO         5838    i.ssd1306_WriteCommand  ssd1306.o
-    0x0800f65c   0x0800f65c   0x0000003c   Code   RO         5839    i.ssd1306_WriteData  ssd1306.o
-    0x0800f698   0x0800f698   0x0000002c   Code   RO         5840    i.ssd1306_WriteString  ssd1306.o
-    0x0800f6c4   0x0800f6c4   0x00000164   Code   RO          292    i.storecomparevalue  main.o
-    0x0800f828   0x0800f828   0x00000144   Code   RO          293    i.system_init       main.o
-    0x0800f96c   0x0800f96c   0x00000534   Data   RO          295    .constdata          main.o
-    0x0800fea0   0x0800fea0   0x00000018   Data   RO         5406    .constdata          system_stm32f0xx.o
-    0x0800feb8   0x0800feb8   0x00002e04   Data   RO         5979    .constdata          ssd1306_fonts.o
-    0x08012cbc   0x08012cbc   0x00000020   Data   RO         6494    Region$$Table       anon$$obj.o
+    0x0800cfec   0x0800cfec   0x000004a8   Code   RO          289    i.main              main.o
+    0x0800d494   0x0800d494   0x00001e8c   Code   RO          290    i.readvolt          main.o
+    0x0800f320   0x0800f320   0x000000a4   Code   RO         5823    i.ssd1306_DrawPixel  ssd1306.o
+    0x0800f3c4   0x0800f3c4   0x00000024   Code   RO         5825    i.ssd1306_Fill      ssd1306.o
+    0x0800f3e8   0x0800f3e8   0x000000cc   Code   RO         5828    i.ssd1306_Init      ssd1306.o
+    0x0800f4b4   0x0800f4b4   0x00000038   Code   RO         5832    i.ssd1306_Reset     ssd1306.o
+    0x0800f4ec   0x0800f4ec   0x00000014   Code   RO         5833    i.ssd1306_SetContrast  ssd1306.o
+    0x0800f500   0x0800f500   0x0000000c   Code   RO         5834    i.ssd1306_SetCursor  ssd1306.o
+    0x0800f50c   0x0800f50c   0x00000028   Code   RO         5835    i.ssd1306_SetDisplayOn  ssd1306.o
+    0x0800f534   0x0800f534   0x00000038   Code   RO         5836    i.ssd1306_UpdateScreen  ssd1306.o
+    0x0800f56c   0x0800f56c   0x000000c4   Code   RO         5837    i.ssd1306_WriteChar  ssd1306.o
+    0x0800f630   0x0800f630   0x00000038   Code   RO         5838    i.ssd1306_WriteCommand  ssd1306.o
+    0x0800f668   0x0800f668   0x0000003c   Code   RO         5839    i.ssd1306_WriteData  ssd1306.o
+    0x0800f6a4   0x0800f6a4   0x0000002c   Code   RO         5840    i.ssd1306_WriteString  ssd1306.o
+    0x0800f6d0   0x0800f6d0   0x00000164   Code   RO          292    i.storecomparevalue  main.o
+    0x0800f834   0x0800f834   0x00000144   Code   RO          293    i.system_init       main.o
+    0x0800f978   0x0800f978   0x00000534   Data   RO          295    .constdata          main.o
+    0x0800feac   0x0800feac   0x00000018   Data   RO         5406    .constdata          system_stm32f0xx.o
+    0x0800fec4   0x0800fec4   0x00002e04   Data   RO         5979    .constdata          ssd1306_fonts.o
+    0x08012cc8   0x08012cc8   0x00000020   Data   RO         6494    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08012cdc, Size: 0x000022b0, Max: 0x00004000, ABSOLUTE, COMPRESSED[0x000000e4])
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08012ce8, Size: 0x000022b0, Max: 0x00004000, ABSOLUTE, COMPRESSED[0x000000e4])
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -4104,7 +4104,7 @@ Image component sizes
        100         16          0          0         36       1359   crc.o
        464         34          0          0          0       1063   gpio.o
       1168        112          0          0          0     531252   m90e32.o
-     28774       4134       1332        246        136      45275   main.o
+     28786       4138       1332        246        136      45267   main.o
        100         18          0          0         32       1375   rtc.o
        492         40          0          0        200       2194   spi.o
        944         66          0          8       1024       9406   ssd1306.o
@@ -4144,7 +4144,7 @@ Image component sizes
        188          0          0          0          0       4324   usbd_ioreq.o
 
     ----------------------------------------------------------------------
-     59126       5280      13360        676       8204     764053   Object Totals
+     59138       5284      13360        676       8204     764045   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         46          0          0         11          4          0   (incl. Padding)
 
@@ -4211,15 +4211,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     63660       5428      13360        676       8204     754485   Grand Totals
-     63660       5428      13360        228       8204     754485   ELF Image Totals (compressed)
-     63660       5428      13360        228          0          0   ROM Totals
+     63672       5432      13360        676       8204     754477   Grand Totals
+     63672       5432      13360        228       8204     754477   ELF Image Totals (compressed)
+     63672       5432      13360        228          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                77020 (  75.21kB)
+    Total RO  Size (Code + RO Data)                77032 (  75.23kB)
     Total RW  Size (RW Data + ZI Data)              8880 (   8.67kB)
-    Total ROM Size (Code + RO Data + RW Data)      77248 (  75.44kB)
+    Total ROM Size (Code + RO Data + RW Data)      77260 (  75.45kB)
 
 ==============================================================================
 
