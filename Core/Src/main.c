@@ -423,25 +423,17 @@ void checkgenpromp(void);
 void checkgenschedule(void);
 uint8_t chechphasesequen(unsigned char selectsource);
 void checkfault (void);
+uint8_t retransfer(void);
 
 volatile int16_t systickcount =0;
 volatile signed char beepcount = 0;
 volatile signed int ctrlATScount = 0;
 
-void checkfault (void)
+uint8_t retransfer(void)
 {
-	if((phase_sequen_source1)||(phase_sequen_source2))
-	{
-		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_SET);
-		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,ON_rly);
-	}
-	else
-	{
-		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,OFF_rly);
-	}
+	
 }
-
+	
 void HAL_SYSTICK_Callback()
 {	
 	systickcount++;
@@ -824,7 +816,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		// CHECK MENU TIMEOUT
 		if(menucount)
 		{
-			if(--menucount <=0)
+			if(--menucount <= 0)
 			{
 				menucount =0;
 				PageMenuCount = mainpage_T;
@@ -841,7 +833,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		}
 		if(initstartdelaycount)
 		{
-			if(--initstartdelaycount <=0)
+			if(--initstartdelaycount <= 0)
 			{
 				initstartdelaycount =0;
 				start_ats = 1;
@@ -850,7 +842,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		}
 		if(GenstartTimeCount)
 		{
-			if(--GenstartTimeCount <=0)
+			if(--GenstartTimeCount <= 0)
 			{
 				GenstartTimeCount =0;
 				HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
@@ -4950,7 +4942,6 @@ void ats_process(void)
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 						HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
 						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
-						
 					}	
         }
         else if ((source1OK) && (!UnderResTimeCount)) // Return to normal
@@ -4967,7 +4958,6 @@ void ats_process(void)
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 						HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
 						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
-						
 					}
         }
 			}
@@ -5031,6 +5021,20 @@ uint8_t chechphasesequen(unsigned char selectsource)
 	}
 	else{
 		return 0;
+	}
+}
+
+void checkfault (void)
+{
+	if((phase_sequen_source1)||(phase_sequen_source2))
+	{
+		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,ON_rly);
+	}
+	else
+	{
+		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,OFF_rly);
 	}
 }
 
