@@ -428,18 +428,54 @@ uint8_t retransfer(void);
 volatile int16_t systickcount =0;
 volatile signed char beepcount = 0;
 volatile signed int ctrlATScount = 0;
+volatile signed int ReTransfercount = 0;
+volatile signed char ReTransfer_flag = 0;
 
-// master 15.43
 uint8_t retransfer(void)
 {
-	
+	switch (ReTransfer_flag)
+  {
+  	case 1:
+			
+		
+		
+			if(source_out == selecsource1)
+			{
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+				HAL_Delay(500);
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+				source_out = selecsource1;
+				releaserelay =1;
+				ctrlATScount = CTRL_ATS_TIMEOUT;
+			}
+			else //source_out == selecsource2
+			{
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+				HAL_Delay(250);
+				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+				source_out = selecsource2;
+				releaserelay =1;
+				ctrlATScount = CTRL_ATS_TIMEOUT;
+			}
+  		break;
+  	case 2:
+  		break;
+		case 3:
+  		break;
+  	default:
+  		break;
+  }
 }
 	
 void HAL_SYSTICK_Callback()
 {	
 	systickcount++;
 	
-	// off beep
+	// Off beep
 	if(beepcount)
 	{
 		if(--beepcount <=0)
@@ -453,6 +489,14 @@ void HAL_SYSTICK_Callback()
 		{
 			HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 			HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+			if(ReTransfer_flag ==0)
+			{
+				ReTransfer_flag =1;
+			}
+			 else if(ReTransfer_flag ==1)
+			{
+				ReTransfer_flag =2;
+			}
 		}
 	}
 	
@@ -838,7 +882,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			{
 				initstartdelaycount =0;
 				start_ats = 1;
-				
+				ReTransfer_flag =0;
+				ctrlATScount =0;
 			}
 		}
 		if(GenstartTimeCount)
@@ -997,6 +1042,11 @@ int main(void)
 			
 		buttonRead();
 		check_releaserelay();
+		if(ReTransfer_flag)
+		{
+			retransfer();
+		}
+		
 		if(genstart == GENSTART)
 		{ 
 			checkgenpromp();
@@ -4902,6 +4952,7 @@ void check_releaserelay(void)
 				HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
 				HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 				releaserelay =0;
+				ctrlATScount =0;
 			}
 		}
 		else if(source_out == selecsource2)
@@ -4913,6 +4964,7 @@ void check_releaserelay(void)
 				HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
 				releaserelay =0;
+				ctrlATScount =0;
 			}
 		}
 	}
