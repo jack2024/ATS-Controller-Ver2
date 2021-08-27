@@ -430,46 +430,8 @@ volatile signed char beepcount = 0;
 volatile signed int ctrlATScount = 0;
 volatile signed int ReTransfercount = 0;
 volatile signed char ReTransfer_flag = 0;
+volatile signed char ReTransferfail = 0;
 
-uint8_t retransfer(void)
-{
-	switch (ReTransfer_flag)
-  {
-  	case 1:
-			
-		
-		
-			if(source_out == selecsource1)
-			{
-				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-				HAL_Delay(500);
-				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-				source_out = selecsource1;
-				releaserelay =1;
-				ctrlATScount = CTRL_ATS_TIMEOUT;
-			}
-			else //source_out == selecsource2
-			{
-				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-				HAL_Delay(250);
-				HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-				source_out = selecsource2;
-				releaserelay =1;
-				ctrlATScount = CTRL_ATS_TIMEOUT;
-			}
-  		break;
-  	case 2:
-  		break;
-		case 3:
-  		break;
-  	default:
-  		break;
-  }
-}
 	
 void HAL_SYSTICK_Callback()
 {	
@@ -493,9 +455,10 @@ void HAL_SYSTICK_Callback()
 			{
 				ReTransfer_flag =1;
 			}
-			 else if(ReTransfer_flag ==1)
+			else if(ReTransfer_flag ==2)
 			{
-				ReTransfer_flag =2;
+				ReTransfer_flag =0;
+				ReTransferfail =1;
 			}
 		}
 	}
@@ -1042,7 +1005,7 @@ int main(void)
 			
 		buttonRead();
 		check_releaserelay();
-		if(ReTransfer_flag)
+		if(ReTransfer_flag == 1)
 		{
 			retransfer();
 		}
@@ -1051,7 +1014,7 @@ int main(void)
 		{ 
 			checkgenpromp();
 		}
-		if(workmodeValue == modemanual)
+		if((workmodeValue == modemanual)|| (ReTransferfail) )
 		{
 			checkauxinput();
 		}
@@ -4043,6 +4006,10 @@ void lcdupdate(void)
 					{
 						sprintf(buff,"PhaseSequenError");
 					}
+					else if(ReTransferfail)
+					{
+						sprintf(buff,"Transfer Fail");
+					}
 					else //state = normal  
 					{
 						if(++toggletime % 2)
@@ -4926,6 +4893,16 @@ uint8_t checkauxinput(void)
 			HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 		}
 	}
+	// check contack normal when transfer fail
+	if((SourceSelectValue == selecsource1)&&(s1_input == GPIO_PIN_RESET))
+	{
+		ReTransferfail = 0;
+	}
+	else if((SourceSelectValue == selecsource2)&&(s2_input == GPIO_PIN_RESET))
+	{
+		ReTransferfail = 0;
+	}
+	
 }
 
 void cleardisplay(void)
@@ -5079,7 +5056,7 @@ uint8_t chechphasesequen(unsigned char selectsource)
 
 void checkfault (void)
 {
-	if((phase_sequen_source1)||(phase_sequen_source2))
+	if((phase_sequen_source1)||(phase_sequen_source2)||(ReTransferfail))
 	{
 		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_SET);
 		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,ON_rly);
@@ -5089,6 +5066,34 @@ void checkfault (void)
 		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,OFF_rly);
 	}
+}
+
+uint8_t retransfer(void)
+{
+	if(source_out == selecsource1)
+	{
+		HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+		HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+		HAL_Delay(1000);
+		HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+		HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+		source_out = selecsource1;
+		releaserelay =1;
+		ctrlATScount = CTRL_ATS_TIMEOUT;
+	}
+	else //source_out == selecsource2
+	{
+		HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+		HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+		HAL_Delay(250);
+		HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+		HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+		source_out = selecsource2;
+		releaserelay =1;
+		ctrlATScount = CTRL_ATS_TIMEOUT;
+	}
+	ReTransfer_flag = 2;
+
 }
 
 /* USER CODE END 4 */
