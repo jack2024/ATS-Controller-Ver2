@@ -3108,7 +3108,7 @@ void buttonRead(void)
 								break;
 							case MainselectSet_T: //2
 								// Save befor back
-								SourceSelectValue = Submenu2Count+1;
+								source_out = SourceSelectValue = Submenu2Count+1;
 								EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 								PageMenuCount = mainpage_T;
 								setvalueselect = NONselect;
@@ -3912,51 +3912,60 @@ void lcdupdate(void)
 							}
 							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						}
-						else{						
-							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-							if(SourceSelectValue == SELECTSOURCE1)
+						else{
+							
+							if(ReTransferfail)
 							{
-								if(NetworkSelectValue == sys3P4W){
-									if((V1_A <= 10) || (V1_B <= 10) || (V1_C <= 10))
-									{
-										sprintf(buff,"Phase Loss");	
-									}
-									else{
-										sprintf(buff,"%s",statusmenu[State]);
-									}
-								}
-								else{ // sys1P2W
-									if((V1_A <= 0)){
-										sprintf(buff,"Phase Loss");	
-									}
-									else{
-										sprintf(buff,"%s",statusmenu[State]);
-									}
-								}	
+								sprintf(buff,"Transfer Fail");
 							}
-							else// SourceSelectValue == SELECTSOURCE2
+							else
 							{
-								if(NetworkSelectValue == sys3P4W)
+								//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+								if(SourceSelectValue == SELECTSOURCE1)
 								{
-									if((V2_A <= 10) || (V2_B <= 10) || (V2_C <= 10))
-									{
+									if(NetworkSelectValue == sys3P4W){
+										if((V1_A <= 10) || (V1_B <= 10) || (V1_C <= 10))
+										{
 											sprintf(buff,"Phase Loss");	
+										}
+										else{
+											sprintf(buff,"%s",statusmenu[State]);
+										}
 									}
-									else{
-										sprintf(buff,"%s",statusmenu[State]);
+									else{ // sys1P2W
+										if((V1_A <= 0)){
+											sprintf(buff,"Phase Loss");	
+										}
+										else{
+											sprintf(buff,"%s",statusmenu[State]);
+										}
+									}	
+								}
+								else// SourceSelectValue == SELECTSOURCE2
+								{
+									if(NetworkSelectValue == sys3P4W)
+									{
+										if((V2_A <= 10) || (V2_B <= 10) || (V2_C <= 10))
+										{
+												sprintf(buff,"Phase Loss");	
+										}
+										else{
+											sprintf(buff,"%s",statusmenu[State]);
+										}
+									}
+									else  // sys1P2W
+									{ 
+										if((V2_A <= 0)){
+											sprintf(buff,"Phase Loss");	
+										}
+										else{
+											sprintf(buff,"%s",statusmenu[State]);
+										}
 									}
 								}
-								else  // sys1P2W
-								{ 
-									if((V2_A <= 0)){
-										sprintf(buff,"Phase Loss");	
-									}
-									else{
-										sprintf(buff,"%s",statusmenu[State]);
-									}
-								}
+								//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 							}
-							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+							
 						}
 					}
 					//               2                          4
@@ -4002,13 +4011,14 @@ void lcdupdate(void)
 				else // state = normal 
 				{ 
 					// check phase sequen error
-					if((NetworkSelectValue == sys3P4W) && ((phase_sequen_source1)||(phase_sequen_source2)))
-					{
-						sprintf(buff,"PhaseSequenError");
-					}
-					else if(ReTransferfail)
+					
+					if(ReTransferfail)
 					{
 						sprintf(buff,"Transfer Fail");
+					}
+					else if((NetworkSelectValue == sys3P4W) && ((phase_sequen_source1)||(phase_sequen_source2)))
+					{
+						sprintf(buff,"PhaseSequenError");
 					}
 					else //state = normal  
 					{
@@ -4894,11 +4904,11 @@ uint8_t checkauxinput(void)
 		}
 	}
 	// check contack normal when transfer fail
-	if((SourceSelectValue == selecsource1)&&(s1_input == GPIO_PIN_RESET))
+	if((source_out == selecsource1)&&(s1_input == GPIO_PIN_RESET))
 	{
 		ReTransferfail = 0;
 	}
-	else if((SourceSelectValue == selecsource2)&&(s2_input == GPIO_PIN_RESET))
+	else if((source_out == selecsource2)&&(s2_input == GPIO_PIN_RESET))
 	{
 		ReTransferfail = 0;
 	}
