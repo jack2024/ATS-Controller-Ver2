@@ -1507,14 +1507,11 @@ void readvolt(void)
 						{
 							if(source2OK)
 							{
-								//if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-									source_out = selecsource2;
-									releaserelay =1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
 							}
 							else
 							{
@@ -1567,18 +1564,15 @@ void readvolt(void)
 							State = State_nor;
 							if(systemValue == main_main)
 							{
-								//if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-									source_out = selecsource1;
-									releaserelay =1;
-									if(Checksource2OK)
-									{
-										Checksource2OK =0;
-									}
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+								source_out = selecsource1;
+								releaserelay =1;
+								if(Checksource2OK)
+								{
+									Checksource2OK =0;
+								}
 							}
 							else //(main_gens)
 							{
@@ -1622,14 +1616,11 @@ void readvolt(void)
 						State = State_Over;
 						if(systemValue == main_main)
 						{
-							//if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
-							//{
-								ctrlATScount = CTRL_ATS_TIMEOUT;
-								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-								source_out = selecsource2;
-								releaserelay =1;
-							//}
+							ctrlATScount = CTRL_ATS_TIMEOUT;
+							HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+							source_out = selecsource2;
+							releaserelay =1;
 						}
 						else //(main_gens)
 						{
@@ -1672,14 +1663,11 @@ void readvolt(void)
 							State = State_nor;
 							if(systemValue == main_main)
 							{
-								//if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-									source_out = selecsource1;
-									releaserelay =1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+								source_out = selecsource1;
+								releaserelay =1;
 							}
 							else //(main_gens)
 							{
@@ -1728,14 +1716,11 @@ void readvolt(void)
 						{
 							if(source1OK)
 							{
-								//if(HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-									source_out = selecsource1;
-									releaserelay =1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+								source_out = selecsource1;
+								releaserelay =1;
 							}
 							else
 							{
@@ -1788,18 +1773,15 @@ void readvolt(void)
 							State = State_nor;
 							if(systemValue == main_main)
 							{
-								//if(!HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-									source_out = selecsource2;
-									releaserelay =1;
-									if(Checksource1OK)
-									{
-										Checksource1OK =0;
-									}
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
+								if(Checksource1OK)
+								{
+									Checksource1OK =0;
+								}
 							}
 							else //(main_gens)
 							{
@@ -1843,15 +1825,11 @@ void readvolt(void)
 						State = State_Over;
 						if(systemValue == main_main)
 						{
-							//if(HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
-							//{
-								ctrlATScount = CTRL_ATS_TIMEOUT;
-								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-								source_out = selecsource1;
-								releaserelay =1;
-							//}
-
+							ctrlATScount = CTRL_ATS_TIMEOUT;
+							HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+							source_out = selecsource1;
+							releaserelay =1;
 						}
 						else //(main_gens)
 						{
@@ -1895,14 +1873,11 @@ void readvolt(void)
 							State = State_nor;
 							if(systemValue == main_main)
 							{
-								//if(!HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-									source_out = selecsource2;
-									releaserelay =1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
 							}
 							else //(main_gens)
 							{
@@ -1961,7 +1936,8 @@ void readvolt(void)
 		freqS2 = GetFrequency(SOURCE2);
 		V2_A = (uint16_t)source2_A;
 		
-		if(V2_A <10){
+		if(V2_A <10)
+		{
 			V2_A = 0;
 			if(freqS2 >0)
 				freqS2 =0;
@@ -1969,7 +1945,8 @@ void readvolt(void)
 		F_S2 = (uint16_t)freqS2;
 		if(F_S2 >= freqOverValue)
 		{
-			if(++freq2overcount > 5){
+			if(++freq2overcount > 5)
+			{
 				freq2overcount = 5;
 			}
 		}
@@ -2015,14 +1992,11 @@ void readvolt(void)
 						{
 							if(source2OK)
 							{
-								//if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-									source_out = selecsource2;
-									releaserelay =1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
 							}
 							else
 							{
@@ -2069,14 +2043,11 @@ void readvolt(void)
 							State = State_nor;
 							if(systemValue == main_main)
 							{
-								//if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-									source_out = selecsource1;
-									releaserelay =1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+								source_out = selecsource1;
+								releaserelay =1;
 							}
 							else //(main_gens)
 							{
@@ -2120,14 +2091,11 @@ void readvolt(void)
 						if(systemValue == main_main)
 						{
 							if(source2OK){
-								//if(HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-									source_out = selecsource2;
-									releaserelay =1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
 							}
 							else{
 								Checksource2OK = 1;
@@ -2175,14 +2143,11 @@ void readvolt(void)
 							State = State_nor;
 							if(systemValue == main_main)
 							{
-								//if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-									source_out = selecsource1;
-									releaserelay =1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+								source_out = selecsource1;
+								releaserelay =1;
 							}
 							else //(main_gens)
 							{
@@ -2253,14 +2218,11 @@ void readvolt(void)
 						{
 							if(source1OK)
 							{
-								//if(HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-									source_out = selecsource1;
-									releaserelay =1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+								source_out = selecsource1;
+								releaserelay =1;
 							}
 							else
 							{
@@ -2312,14 +2274,11 @@ void readvolt(void)
 							State = State_nor;
 							if(systemValue == main_main)
 							{
-								//if(!HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-									source_out = selecsource2;
-									releaserelay =1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
 							}
 							else //(main_gens)
 							{
@@ -2365,14 +2324,11 @@ void readvolt(void)
 						{
 							if(source1OK)
 							{
-								//if(HAL_GPIO_ReadPin(Digital_In1_GPIO_Port, Digital_In1_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-									source_out = selecsource1;
-									releaserelay = 1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+								source_out = selecsource1;
+								releaserelay = 1;
 							}
 							else
 							{
@@ -2420,14 +2376,11 @@ void readvolt(void)
 							State = State_nor;
 							if(systemValue == main_main)
 							{
-								//if(!HAL_GPIO_ReadPin(Digital_In2_GPIO_Port, Digital_In2_Pin))
-								//{
-									ctrlATScount = CTRL_ATS_TIMEOUT;
-									HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
-									HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
-									source_out = selecsource2;
-									releaserelay =1;
-								//}
+								ctrlATScount = CTRL_ATS_TIMEOUT;
+								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
+								source_out = selecsource2;
+								releaserelay =1;
 							}
 							else //(main_gens)
 							{
@@ -2842,7 +2795,7 @@ void buttonRead(void)
 									{
 										Submenu2Count = main_main ;
 									}
-								break;
+									break;
 								case FreqSet_T:
 									if(--Submenu2Count < 0)
 									{
@@ -2859,8 +2812,7 @@ void buttonRead(void)
               	default:
               		break;
               }
-          		break;
-							
+          		break;		
 						case Pagemenu3_T:
 							switch (setvalueselect)
 							{
@@ -2938,29 +2890,25 @@ void buttonRead(void)
 								case SecondsSet:
 									if(--Dateset.WeekDay <= 0) Dateset.WeekDay = 7;
 								default:
-									break;
-								
+									break;					
 								case FreqUnderSet:
 									if(--freqUnderValue < 40)
 									{
 										freqUnderValue =40;
 									}
-									break;
-									
+									break;			
 								case FreqUnderReturnSet:
 									if(--freqUnderResValue < 40)
 									{
 										freqUnderResValue =40;
 									}
 									break;
-									
 								case FreqOverSet:
 									if(--freqOverValue < 50)
 									{
 										freqOverValue =50;
 									}
-									break;
-										
+									break;	
 								case FreqOverReturnSet:
 									if(--freqOverResValue < 50)
 									{
@@ -3012,22 +2960,26 @@ void buttonRead(void)
 								switch (Submenu3Count)
 								{
 									case ScheduleDate_T:
-										if(--genschedulestart.genschedule_date < 1){
+										if(--genschedulestart.genschedule_date < 1)
+										{
 											genschedulestart.genschedule_date = 31;
 										}
 										break;
 									case ScheduleDayofweek_T:
-										if(--genschedulestart.genschedule_dayofweek < 1){
+										if(--genschedulestart.genschedule_dayofweek < 1)
+										{
 												genschedulestart.genschedule_dayofweek = 7;
 										}
 										break;
 									case ScheduleSetHours_T:
-										if(--genschedulestart.genschedule_hour < 1){
+										if(--genschedulestart.genschedule_hour < 1)
+										{
 												genschedulestart.genschedule_hour = 23;
 										}
 										break;
 									case ScheduleMinute_T:
-										if(--genschedulestart.genschedule_minute < 1){
+										if(--genschedulestart.genschedule_minute < 1)
+										{
 												genschedulestart.genschedule_minute = 59;
 										}
 										break;
@@ -3153,7 +3105,8 @@ void buttonRead(void)
 												SourceSelectValue = selecsource1;
 												releaserelay =1;
 											}
-											else{
+											else
+											{
 												Checksource1OK = 1;
 											}			
 										}
@@ -3169,7 +3122,8 @@ void buttonRead(void)
 												SourceSelectValue = selecsource1;
 												releaserelay =1;
 											}
-											else{
+											else
+											{
 												Checksource1OK = 1;
 											}
 										}
@@ -3298,7 +3252,6 @@ void buttonRead(void)
 												Checksource1OK = 1;
 											}
 										}
-
 									////////////////////////////////////////////
 								}
 							
