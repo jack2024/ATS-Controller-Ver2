@@ -87,12 +87,12 @@ void EEPROMWriteInt(uint32_t addr, uint16_t Value);
 #define FreqABNormalTimeSet_addr 0x20
 #define FreqNormalTimeSet_addr 0x22
 
-#define GesScheduleEnable_addr	0x24
-#define GesScheduleEvery_addr	0x26
-#define GesScheduleDate_addr	0x28
-#define GesScheduleDayofweek_addr	0x2A
-#define GesScheduleHour_addr	0x2C
-#define GesScheduleMinute_addr	0x2E
+#define GenScheduleEnable_addr	0x24
+#define GenScheduleEvery_addr	0x26
+#define GenScheduleDate_addr	0x28
+#define GenScheduleDayofweek_addr	0x2A
+#define GenScheduleHour_addr	0x2C
+#define GenScheduleMinute_addr	0x2E
 #define GesScheduleTime_addr	0x30
 	
 /* USER CODE END PTD */
@@ -3313,12 +3313,12 @@ void buttonRead(void)
                 		break;
 									case ScheduleGoback_T: //4
 										// Save befor goback
-										EEPROMWriteInt(GesScheduleEnable_addr , genschedulestart.genschedule_enable);
-										EEPROMWriteInt(GesScheduleEvery_addr , genschedulestart.genschedule_every);
-										EEPROMWriteInt(GesScheduleDate_addr , genschedulestart.genschedule_date);
-										EEPROMWriteInt(GesScheduleDayofweek_addr , genschedulestart.genschedule_dayofweek);
-										EEPROMWriteInt(GesScheduleHour_addr , genschedulestart.genschedule_hour);
-										EEPROMWriteInt(GesScheduleMinute_addr , genschedulestart.genschedule_minute);
+										EEPROMWriteInt(GenScheduleEnable_addr , genschedulestart.genschedule_enable);
+										EEPROMWriteInt(GenScheduleEvery_addr , genschedulestart.genschedule_every);
+										EEPROMWriteInt(GenScheduleDate_addr , genschedulestart.genschedule_date);
+										EEPROMWriteInt(GenScheduleDayofweek_addr , genschedulestart.genschedule_dayofweek);
+										EEPROMWriteInt(GenScheduleHour_addr , genschedulestart.genschedule_hour);
+										EEPROMWriteInt(GenScheduleMinute_addr , genschedulestart.genschedule_minute);
 										EEPROMWriteInt(GesScheduleTime_addr , genschedulestart.genschedule_time);									
 										
 										PageMenuCount = Pagemenu1_T;									
@@ -3934,7 +3934,7 @@ void lcdupdate(void)
 							
 							if(ReTransferfail)
 							{
-								sprintf(buff,"Transfer Fail");
+								sprintf(buff,"Fail of Transfer");
 							}
 							else
 							{
@@ -4032,11 +4032,11 @@ void lcdupdate(void)
 					
 					if(ReTransferfail)
 					{
-						sprintf(buff,"Transfer Fail");
+						sprintf(buff,"Fail of Transfer");
 					}
 					else if((NetworkSelectValue == sys3P4W) && ((phase_sequen_source1)||(phase_sequen_source2)))
 					{
-						sprintf(buff,"PhaseSequenError");
+						sprintf(buff,"PhaseSequenceError");
 					}
 					else //state = normal  
 					{
@@ -4731,12 +4731,12 @@ void ReadSetting(void)
 	EEPROMWriteInt(FreqABNormalTimeSet_addr , freqABnormalTimeSetValue);
 	EEPROMWriteInt(FreqNormalTimeSet_addr , freqNormalTimeSetValue);
 	
-	EEPROMWriteInt(GesScheduleEnable_addr , genschedulestart.genschedule_enable);
-	EEPROMWriteInt(GesScheduleEvery_addr , genschedulestart.genschedule_every);
-	EEPROMWriteInt(GesScheduleDate_addr , genschedulestart.genschedule_date);
-	EEPROMWriteInt(GesScheduleDayofweek_addr , genschedulestart.genschedule_dayofweek);
-	EEPROMWriteInt(GesScheduleHour_addr , genschedulestart.genschedule_hour);
-	EEPROMWriteInt(GesScheduleMinute_addr , genschedulestart.genschedule_minute);
+	EEPROMWriteInt(GenScheduleEnable_addr , genschedulestart.genschedule_enable);
+	EEPROMWriteInt(GenScheduleEvery_addr , genschedulestart.genschedule_every);
+	EEPROMWriteInt(GenScheduleDate_addr , genschedulestart.genschedule_date);
+	EEPROMWriteInt(GenScheduleDayofweek_addr , genschedulestart.genschedule_dayofweek);
+	EEPROMWriteInt(GenScheduleHour_addr , genschedulestart.genschedule_hour);
+	EEPROMWriteInt(GenScheduleMinute_addr , genschedulestart.genschedule_minute);
 	EEPROMWriteInt(GesScheduleTime_addr , genschedulestart.genschedule_time);			
 }
 /* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
