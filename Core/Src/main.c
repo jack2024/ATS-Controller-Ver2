@@ -2559,8 +2559,18 @@ void buttonRead(void)
 									}
               		break;
 								case MainselectSet_T:
-									if(++Submenu2Count > 1)
+//									if(++Submenu2Count > 1)
+//									{
+//										Submenu2Count =0;
+//									}
+									if(systemValue == main_main)
 									{
+										if(++Submenu2Count > 1)
+										{
+											Submenu2Count =0;
+										}
+									}
+									else{ // if systemValue = main vs gen Mainselect always Source 1
 										Submenu2Count =0;
 									}
               		break;
@@ -2800,9 +2810,19 @@ void buttonRead(void)
 									}
               		break;
 								case MainselectSet_T:
-									if(--Submenu2Count < 0)
+//									if(--Submenu2Count < 0)
+//									{
+//										Submenu2Count = 1;
+//									}
+									if(systemValue == main_main)
 									{
-										Submenu2Count = 1;
+										if(--Submenu2Count < 0)
+										{
+											Submenu2Count = 1;
+										}
+									}
+									else{ // if systemValue = main vs gen Mainselect always Source 1
+										Submenu2Count =0;
 									}
               		break;
               	case ConfigSet_T:
@@ -3108,6 +3128,10 @@ void buttonRead(void)
 								break;
 							case MainselectSet_T: //2
 								// Save befor back
+								if(systemValue == main_gens)
+								{
+									SourceSelectValue = source_out = selecsource1;
+								}
 								source_out = SourceSelectValue = Submenu2Count+1;
 								EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 								PageMenuCount = mainpage_T;
@@ -3236,7 +3260,48 @@ void buttonRead(void)
 								systemValue = Submenu2Count;
 								EEPROMWriteInt(system_addr, systemValue);
 								PageMenuCount = mainpage_T;
-								setvalueselect = NONselect;		
+								setvalueselect = NONselect;
+								SourceSelectValue = source_out = selecsource1;
+								if(systemValue == main_gens)
+								{
+									if(NetworkSelectValue == sys3P4W)
+										{
+											if((V1_A > UnderValue) && (V1_B > UnderValue) && (V1_C > UnderValue)&&
+											(V1_A < OverValue) && (V1_B < OverValue) && (V1_C < OverValue) &&
+											(F_S1 > freqUnderValue) && (F_S1 < freqOverValue) )
+											{
+												ctrlATScount = CTRL_ATS_TIMEOUT;
+												HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+												HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+												HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
+												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
+												SourceSelectValue = selecsource1;
+												releaserelay =1;
+											}
+											else{
+												Checksource1OK = 1;
+											}			
+										}
+										else{ //sys1P2W
+											if((V1_A > UnderValue) && (V1_A < OverValue) &&
+											(F_S1 > freqUnderValue) && (F_S1 < freqOverValue))
+											{
+												ctrlATScount = CTRL_ATS_TIMEOUT;
+												HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+												HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+												HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
+												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
+												SourceSelectValue = selecsource1;
+												releaserelay =1;
+											}
+											else{
+												Checksource1OK = 1;
+											}
+										}
+
+									////////////////////////////////////////////
+								}
+							
 							break;
 							case FreqSet_T: //6
 								switch (Submenu2Count)
@@ -4787,6 +4852,11 @@ void restorevalue(void)
 
 uint8_t comparesettingvalue(void)
 {
+	if(systemValue == main_gens)
+	{
+		SourceSelectValue = SELECTSOURCE1;
+		source_out = selecsource1;
+	}
 	if((UnderValue_compare != UnderValue) ||
 		(UnderResValue_compare != UnderResValue)||
 		(UnderTimSetValue_compare != UnderTimSetValue)||
@@ -4815,11 +4885,7 @@ uint8_t comparesettingvalue(void)
 		(genschedulestart.genschedule_minute != genschedulestart_compare.genschedule_minute)||
 		(genschedulestart.genschedule_time != genschedulestart_compare.genschedule_time))
 	{
-		if(systemValue == main_gens)
-		{
-			SourceSelectValue = SELECTSOURCE1;
-			source_out = selecsource1;
-		}
+		
 		return 1;
 	}
 	else
@@ -4879,7 +4945,6 @@ void system_init(void)
 		default:
 			break;
 	}
-	
 	ctrlATScount = CTRL_ATS_TIMEOUT;
 }
 
@@ -5029,7 +5094,8 @@ void ats_process(void)
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 					}
-					else{
+					else
+					{
 						ctrlATScount = CTRL_ATS_TIMEOUT;
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
@@ -5084,22 +5150,19 @@ uint8_t retransfer(void)
 		HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
 		HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 		source_out = selecsource1;
-		releaserelay =1;
-		ctrlATScount = CTRL_ATS_TIMEOUT;
 	}
 	else //source_out == selecsource2
 	{
 		HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
 		HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-		HAL_Delay(250);
+		HAL_Delay(1000);
 		HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 		HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 		source_out = selecsource2;
-		releaserelay =1;
-		ctrlATScount = CTRL_ATS_TIMEOUT;
 	}
+	releaserelay =1;
+	ctrlATScount = CTRL_ATS_TIMEOUT;
 	ReTransfer_flag = 2;
-
 }
 
 /* USER CODE END 4 */
