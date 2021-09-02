@@ -3774,7 +3774,6 @@ void lcdupdate(void)
 					ssd1306_SetCursor(101, 5);
 					ssd1306_WriteString(buff, Font_7x10, White);
 				}
-				
 				ssd1306_SetCursor(3, 17);
 				if(DisplayMain == Display1_T)
 				{
@@ -3784,7 +3783,6 @@ void lcdupdate(void)
 				{
 					ssd1306_WriteString("U2[LL]", Font_7x10, White);	
 				}
-				
 				if(DisplayMain == Display1_T)
 				{
 					snprintf(buff, 4, "%d  ", V2_A);
@@ -3802,8 +3800,7 @@ void lcdupdate(void)
 				{
 					ssd1306_SetCursor(73, 17);
 					ssd1306_WriteString(buff, Font_7x10, White);
-				}
-					
+				}			
 				if(NetworkSelectValue == sys3P4W)
 				{			
 					if(DisplayMain == Display1_T)
@@ -3814,7 +3811,6 @@ void lcdupdate(void)
 					{
 						snprintf(buff, 4, "%f  ", (V2_B*1.732));
 					}
-
 					ssd1306_SetCursor(73, 17);
 					ssd1306_WriteString(buff, Font_7x10, White);
 					
@@ -3828,8 +3824,7 @@ void lcdupdate(void)
 					}
 					ssd1306_SetCursor(101, 17);
 					ssd1306_WriteString(buff, Font_7x10, White);
-				}	
-				
+				}			
 				ssd1306_SetCursor(3, 29);
 				ssd1306_WriteString("F1", Font_7x10, White);	
 				
