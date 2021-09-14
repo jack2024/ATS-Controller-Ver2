@@ -832,6 +832,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				Submenu2Count = 0;
 				setvalueselect = NONselect;
 				//restorevalue();
+				if(NetworkSelectValue == sys1P2W)
+				{
+					DisplayMain = Display1_T;
+				}
 				if(comparesettingvalue())
 				{
 					FlashErase();
@@ -1478,7 +1482,7 @@ void readvolt(void)
 			Checksource2OK =0;
 		}
 		
-		if(start_ats)
+		if((start_ats) && (workmodeValue == modeauto))
 		{
 			if(SourceSelectValue == SELECTSOURCE1)
 			{
@@ -1927,9 +1931,15 @@ void readvolt(void)
 			freq1overcount = 0;
 		}
 		
-		if((V1_A > UnderValue)&&(V1_A < OverValue) && (F_S1 > freqUnderValue) && (F_S1 < freqOverValue))
+		if((V1_A > UnderValue) && (V1_A < OverValue) && (F_S1 > freqUnderValue) && (F_S1 < freqOverValue))
 		{
 			source1OK = 1;
+			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
+		}
+		else
+		{
+			source1OK = 0;
+			HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_RESET);
 		}
 		
 		source2_A = GetLineVoltageA(SOURCE2);
@@ -1958,6 +1968,12 @@ void readvolt(void)
 		if((V2_A > UnderValue)&&(V2_A < OverValue) && (F_S2 > freqUnderValue) && (F_S2 < freqOverValue)  )
 		{
 			source2OK = 1;
+			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_SET);
+		}
+		else
+		{
+			source2OK = 0;
+			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
 		}
 		
 		if((Checksource1OK) && (source1OK) && (source2OK))
@@ -1969,7 +1985,7 @@ void readvolt(void)
 			Checksource2OK =0;
 		}
 
-		if(start_ats)
+		if((start_ats)&& (workmodeValue == modeauto))
 		{
 			if(SourceSelectValue == SELECTSOURCE1)
 			{
@@ -2242,7 +2258,6 @@ void readvolt(void)
 							Timer_flag = 1; // start timer
 						}
 					}
-					
 				}
 				
 				if( ((V2_A > UnderValue )&&(F_S2 > freqUnderValue) ) && (State == State_PreUnder))
@@ -2477,6 +2492,7 @@ void buttonRead(void)
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 					releaserelay =1;
 					source_out = SELECTSOURCE1;
+					
 				}
 				else //Mode Auto
 				{	
@@ -3010,7 +3026,7 @@ void buttonRead(void)
 					EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 					FlashErase();
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
-					system_init();
+					//system_init();
 					releaserelay =1;
 					source_out = SELECTSOURCE2;
 				}
@@ -3174,6 +3190,10 @@ void buttonRead(void)
 							case ConfigSet_T: //3
 								// Save befor back
 								NetworkSelectValue = Submenu2Count;
+								if(NetworkSelectValue == sys1P2W)
+								{
+									DisplayMain = Display1_T;
+								}
 								EEPROMWriteInt(NetworkSelect_addr, NetworkSelectValue);
 								PageMenuCount = mainpage_T;
 								setvalueselect = NONselect;
@@ -3475,6 +3495,10 @@ void buttonRead(void)
 					EEPROMWriteInt(ModeSelect_addr, modemanual);
 					FlashErase();
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
+					if(NetworkSelectValue == sys1P2W)
+					{
+						DisplayMain = Display1_T;
+					}
 				}
 				else //workmodeValue = modemanual;
 				{
@@ -3787,7 +3811,7 @@ void lcdupdate(void)
 				{
 					snprintf(buff, 4, "%d  ", V2_A);
 				}
-				else if(DisplayMain == Display2_T)
+				else if(DisplayMain == Display2_T) 
 				{
 					snprintf(buff, 4, "%f  ", (V2_A*1.732));
 				}
