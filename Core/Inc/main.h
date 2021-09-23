@@ -28,7 +28,7 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f0xx_hal.h"
+#include "stm32f0xx_hal.h" 
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -42,7 +42,6 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-
 									
 /* USER CODE END EC */
 
@@ -64,6 +63,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define Relay_AUX2_Pin GPIO_PIN_13
 #define Relay_AUX2_GPIO_Port GPIOC
+//#define Relay_AUX2_Pin GPIO_PIN_3
+//#define Relay_AUX2_GPIO_Port GPIOA
 #define LED_S1_Pin GPIO_PIN_0
 #define LED_S1_GPIO_Port GPIOA
 #define LED_S2_Pin GPIO_PIN_1
@@ -72,10 +73,13 @@ void Error_Handler(void);
 #define LED_HEALTY_GPIO_Port GPIOA
 #define Relay_AUX1_Pin GPIO_PIN_3
 #define Relay_AUX1_GPIO_Port GPIOA
+//#define Relay_AUX1_Pin GPIO_PIN_13
+//#define Relay_AUX1_GPIO_Port GPIOC
+
 #define SPI1_CS1_Pin GPIO_PIN_4
 #define SPI1_CS1_GPIO_Port GPIOA
 #define LED_S2ON_Pin GPIO_PIN_4
-#define LED_S2ON_GPIO_Port GPIOC
+#define LED_S2ON_GPIO_Port GPIOC	
 #define LED_Auto_Pin GPIO_PIN_5
 #define LED_Auto_GPIO_Port GPIOC
 #define LED_Manual_Pin GPIO_PIN_0
@@ -130,8 +134,20 @@ void Error_Handler(void);
 #define SOURCE2_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
-#define RLY_GENS_Port Relay_AUX1_GPIO_Port
-#define RLY_GENS_Pin	Relay_AUX1_Pin
+//#define Relay_AUX1_Pin GPIO_PIN_13
+//#define Relay_AUX1_GPIO_Port GPIOC
+
+//#define Relay_AUX2_Pin GPIO_PIN_3
+//#define Relay_AUX2_GPIO_Port GPIOA
+
+#define RLY_GENS_Port Relay_AUX2_GPIO_Port
+#define RLY_GENS_Pin	Relay_AUX2_Pin
+
+#define LockModeMANUAL_Port Digital_In3_GPIO_Port
+#define LockModeMANUAL_Pin Digital_In3_Pin
+
+#define LockModeAUTO_Port Digital_In4_GPIO_Port
+#define LockModeAUTO_Pin Digital_In4_Pin
 
 
 /* USER CODE END Private defines */

@@ -94,7 +94,9 @@ void EEPROMWriteInt(uint32_t addr, uint16_t Value);
 #define GenScheduleHour_addr	0x2C
 #define GenScheduleMinute_addr	0x2E
 #define GesScheduleTime_addr	0x30
-	
+
+#define rd(j,k)  HAL_GPIO_ReadPin(j, k)
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -551,7 +553,8 @@ void HAL_SYSTICK_Callback()
 				UnderResTimeCount = 0;
 				if(SourceSelectValue == SELECTSOURCE1)
 				{
-					if(source1OK){
+					if(source1OK)
+					{
 						State = State_nor;
 						if(systemValue == main_main)
 						{
@@ -563,11 +566,11 @@ void HAL_SYSTICK_Callback()
 						}
 						else //(main_gens)
 						{
-								ctrlATScount = CTRL_ATS_TIMEOUT;
-								HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
-								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
-								source_out = selecsource1;
-								releaserelay =1;
+							ctrlATScount = CTRL_ATS_TIMEOUT;
+							HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+							source_out = selecsource1;
+							releaserelay =1;
 							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
 							genstart = GENSTOP;
 						}
@@ -576,7 +579,7 @@ void HAL_SYSTICK_Callback()
 						freqUnderflag = 0 ;
 					}
 				}
-				else // (SourceSelectValue == SELECTSOURCE2)
+				else //(SourceSelectValue == SELECTSOURCE2)
 				{
 					source2OK = 1;
 				}
@@ -975,12 +978,12 @@ int main(void)
 		loopcount++;
 			
 		buttonRead();
+		
 		check_releaserelay();
 		if(ReTransfer_flag == 1)
 		{
 			retransfer();
 		}
-		
 		if(genstart == GENSTART)
 		{ 
 			checkgenpromp();
@@ -994,7 +997,7 @@ int main(void)
 			HAL_GPIO_TogglePin(LCD_D2_GPIO_Port,LCD_D2_Pin);	
 			readvolt(); //1 ms.
 		}
-		if(((loopcount % 20000) == 0))// 120.4 ms.
+		if(((loopcount % 20000) == 0))	// 120.4 ms.
 		{
 			hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
 			if (HAL_SPI_Init(&hspi1) != HAL_OK)
@@ -1114,6 +1117,16 @@ int main(void)
 			HAL_GPIO_TogglePin(LED_HEALTY_GPIO_Port,LED_HEALTY_Pin);
 			if(systemValue == main_gens){
 				checkgenschedule();
+			}
+			else if ((systemValue == main_main)|| (workmodeValue == modemanual)){ //systemValue == main_main
+				if(source_out == SELECTSOURCE1)
+				{
+					HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,OFF_rly);
+				}
+				else if(source_out == SELECTSOURCE2)
+				{
+					HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,ON_rly);
+				}
 			}
 		}
 		//HAL_IWDG_Refresh(&hiwdg);
@@ -2413,7 +2426,6 @@ void readvolt(void)
 }
 /* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
 
-#define rd(j,k)  HAL_GPIO_ReadPin(j, k)
 void buttonRead(void)
 {
 	enum{st1, st2, st3, st4,st5};
@@ -2421,20 +2433,20 @@ void buttonRead(void)
   uint16_t tempValue;
 	char datalcd[10];
 
-  if(rd(btn_UP_GPIO_Port,btn_UP_Pin)&&rd(btn_DW_GPIO_Port,btn_DW_Pin)&&rd(btn_EN_GPIO_Port,btn_EN_Pin)&&rd(btn_MODE_GPIO_Port,btn_MODE_Pin))
+  if(rd(btn_UP_GPIO_Port,btn_UP_Pin)&&rd(btn_DW_GPIO_Port,btn_DW_Pin)&&rd(btn_EN_GPIO_Port,btn_EN_Pin)&&rd(btn_MODE_GPIO_Port,btn_MODE_Pin)&&rd(LockModeMANUAL_Port,LockModeMANUAL_Pin)&&rd(LockModeAUTO_Port,LockModeAUTO_Pin))
   {    
     state = st1;  
     return;
   }
 
-  if(((!rd(btn_UP_GPIO_Port,btn_UP_Pin))||(!rd(btn_DW_GPIO_Port,btn_DW_Pin))||(!rd(btn_EN_GPIO_Port,btn_EN_Pin))||(!rd(btn_MODE_GPIO_Port,btn_MODE_Pin)))&&state == st1)
+  if(((!rd(btn_UP_GPIO_Port,btn_UP_Pin))||(!rd(btn_DW_GPIO_Port,btn_DW_Pin))||(!rd(btn_EN_GPIO_Port,btn_EN_Pin))||(!rd(btn_MODE_GPIO_Port,btn_MODE_Pin))||(!rd(LockModeMANUAL_Port,LockModeMANUAL_Pin))||(!rd(LockModeAUTO_Port,LockModeAUTO_Pin)))&&state == st1)
   {
     state = st2;
     deb = 2500;
     return;
   }
 
-  if(((!rd(btn_UP_GPIO_Port,btn_UP_Pin))||(!rd(btn_DW_GPIO_Port,btn_DW_Pin))||(!rd(btn_EN_GPIO_Port,btn_EN_Pin))||(!rd(btn_MODE_GPIO_Port,btn_MODE_Pin)))&&state == st2)
+  if(((!rd(btn_UP_GPIO_Port,btn_UP_Pin))||(!rd(btn_DW_GPIO_Port,btn_DW_Pin))||(!rd(btn_EN_GPIO_Port,btn_EN_Pin))||(!rd(btn_MODE_GPIO_Port,btn_MODE_Pin))||(!rd(LockModeMANUAL_Port,LockModeMANUAL_Pin))||(!rd(LockModeAUTO_Port,LockModeAUTO_Pin)))&&state == st2)
   {
     if(deb)
     {
@@ -3501,6 +3513,55 @@ void buttonRead(void)
 				}
 				state = st3;
 			}
+			else if(!rd(LockModeMANUAL_Port,LockModeMANUAL_Pin))
+			{
+				workmodeValue = modemanual;
+				HAL_GPIO_WritePin(LED_Manual_GPIO_Port,LED_Manual_Pin,GPIO_PIN_SET);
+				HAL_GPIO_WritePin(LED_Auto_GPIO_Port,LED_Auto_Pin,GPIO_PIN_RESET);
+				EEPROMWriteInt(ModeSelect_addr, modemanual);
+				FlashErase();
+				FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
+				if(NetworkSelectValue == sys1P2W)
+				{
+					DisplayMain = Display1_T;
+				}
+				state = st3;
+			}
+			else if(!rd(LockModeAUTO_Port,LockModeAUTO_Pin))
+			{
+				workmodeValue = modeauto;
+				HAL_GPIO_WritePin(LED_Manual_GPIO_Port,LED_Manual_Pin,GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(LED_Auto_GPIO_Port,LED_Auto_Pin,GPIO_PIN_SET);
+				EEPROMWriteInt(ModeSelect_addr, modeauto);
+				FlashErase();
+				FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
+				
+				switch (SourceSelectValue)
+				{
+					case SELECTSOURCE1:
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
+						HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
+						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
+						SourceSelectValue = selecsource1;
+						releaserelay =1;
+						break;
+					case SELECTSOURCE2:
+						ctrlATScount = CTRL_ATS_TIMEOUT;
+						HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
+						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);	
+						HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
+						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
+						SourceSelectValue = selecsource2;
+						releaserelay =1;
+						break;
+					default:
+						break;
+				}
+				state = st3;
+			}
+			
 			
 			lcdupdate();
 			menucount = MENUTIMEOUT;
@@ -5069,12 +5130,12 @@ void checkfault (void)
 	if((phase_sequen_source1)||(phase_sequen_source2)||(ReTransferfail))
 	{
 		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_SET);
-		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,ON_rly);
+		HAL_GPIO_WritePin(Relay_AUX1_GPIO_Port,Relay_AUX1_Pin,ON_rly);
 	}
 	else
 	{
 		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,OFF_rly);
+		HAL_GPIO_WritePin(Relay_AUX1_GPIO_Port,Relay_AUX1_Pin,OFF_rly);
 	}
 }
 
