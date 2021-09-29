@@ -1121,11 +1121,12 @@ int main(void)
 			}
 			//systemValue == main_main
 			else if ((systemValue == main_main) || (workmodeValue == modemanual)){ 
-				if(source_out == SELECTSOURCE1)
+				//if(source_out == SELECTSOURCE1)
+				if(workmodeValue == modeauto)
 				{
 					HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,OFF_rly);
 				}
-				else if(source_out == SELECTSOURCE2)
+				else 
 				{
 					HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,ON_rly);
 				}
@@ -2489,9 +2490,10 @@ void buttonRead(void)
 							}
           		break;
           	case Pagemenu1_T:
-							if(++Submenu1Count > 8)
+							//if(++Submenu1Count > 8)
+							if(--Submenu1Count < 0)
 							{
-								Submenu1Count =0;
+								Submenu1Count =8;
 							}
           		break;
 						case Pagemenu2_T:
@@ -2499,15 +2501,17 @@ void buttonRead(void)
 							switch (Submenu1Count)
               {
               	case UnderSet_T:
-									if(++Submenu2Count > 4)
+									//if(++Submenu2Count > 4)
+									if(--Submenu2Count < 0)
 									{
-										Submenu2Count =0;
+										Submenu2Count =4;
 									}
               		break;
               	case OvererSet_T:
-									if(++Submenu2Count > 4)
+									//if(++Submenu2Count > 4)
+									if(--Submenu2Count < 0)
 									{
-										Submenu2Count =0;
+										Submenu2Count =4;
 									}
               		break;
 								case MainselectSet_T:
@@ -2533,9 +2537,10 @@ void buttonRead(void)
 									}
               		break;
 								case TimeSet_T:
-									if(++Submenu2Count > 6)
+									//if(++Submenu2Count > 6)
+									if(--Submenu2Count < 0)
 									{
-										Submenu2Count =0;
+										Submenu2Count =6;
 									}
               		break;
 								case SystemSet_T:
@@ -2545,15 +2550,17 @@ void buttonRead(void)
 									}
 									break;
 								case FreqSet_T:
-									if(++Submenu2Count > 6)
+									//if(++Submenu2Count > 6)
+									if(--Submenu2Count < 0)
 									{
-										Submenu2Count =0;
+										Submenu2Count =6;
 									}
 									break;
 								case Schedule_T:
-									if(++Submenu2Count > 4)
+									//if(++Submenu2Count > 4)
+									if(--Submenu2Count < 0)
 									{
-										Submenu2Count =0;
+										Submenu2Count =4;
 									}
 									break;
 
@@ -2656,16 +2663,24 @@ void buttonRead(void)
 									}
 								break;
 								case SchedulePeriodSet:
-									if(++Submenu3Count > 2)
+									if(--Submenu3Count < 0)
 									{
-										Submenu3Count =0;
+										Submenu3Count =2;
 									}
+//									if(++Submenu3Count > 2)
+//									{
+//										Submenu3Count =0;
+//									}								
 								break;
 								case ScheduleSetDateTimeSet:
-									if(++Submenu3Count > 4)
+									if(--Submenu3Count < 0)
 									{
-										Submenu3Count =0;
+										Submenu3Count =4;
 									}
+//									if(++Submenu3Count > 4)
+//									{
+//										Submenu3Count =0;
+//									}
 								break;
 								case ScheduleStartTimeSet:
 									if(++genschedulestart.genschedule_time  > 360)
@@ -2741,24 +2756,27 @@ void buttonRead(void)
 							}
           		break;
           	case Pagemenu1_T:
-							if(--Submenu1Count < 0)
+							//if(--Submenu1Count < 0)
+							if(++Submenu1Count > 8)
 							{
-								Submenu1Count = 8;
+								Submenu1Count = 0;
 							}
           		break;
 						case Pagemenu2_T:
 							switch (Submenu1Count)
               {
               	case UnderSet_T:
-									if(--Submenu2Count < 0)
+									//if(--Submenu2Count < 0)
+									if(++Submenu2Count > 4)
 									{
-										Submenu2Count = 4;
+										Submenu2Count = 0;
 									}
               		break;
               	case OvererSet_T:
-									if(--Submenu2Count < 0)
+									//if(--Submenu2Count < 0)
+									if(++Submenu2Count > 4)
 									{
-										Submenu2Count = 4;
+										Submenu2Count = 0;
 									}
               		break;
 								case MainselectSet_T:
@@ -2784,9 +2802,10 @@ void buttonRead(void)
 									}
               		break;
 								case TimeSet_T:
-									if(--Submenu2Count < 0)
+									//if(--Submenu2Count < 0)
+									if(++Submenu2Count > 6)
 									{
-										Submenu2Count = 6;
+										Submenu2Count = 0;
 									}
               		break;
 								case SystemSet_T:
@@ -2796,15 +2815,17 @@ void buttonRead(void)
 									}
 									break;
 								case FreqSet_T:
-									if(--Submenu2Count < 0)
+									//if(--Submenu2Count < 0)
+									if(++Submenu2Count > 6)
 									{
-										Submenu2Count = 6;
+										Submenu2Count = 0;
 									}
 							break;
 								case Schedule_T:
-									if(--Submenu2Count < 0)
+									//if(--Submenu2Count < 0)
+									if(++Submenu2Count > 4)
 									{
-										Submenu2Count =4;
+										Submenu2Count =0;
 									}
 									break;
 								
@@ -2935,16 +2956,24 @@ void buttonRead(void)
 									}
 								break;
 								case SchedulePeriodSet:
-									if(--Submenu3Count < 0)
+									if(++Submenu3Count > 2)
 									{
-										Submenu3Count =2;
+										Submenu3Count =0;
 									}
+//									if(--Submenu3Count < 0)
+//									{
+//										Submenu3Count =2;
+//									}
 								break;
 								case ScheduleSetDateTimeSet:
-									if(--Submenu3Count < 0)
+									if(++Submenu3Count > 4)
 									{
-										Submenu3Count =4;
+										Submenu3Count =0;
 									}
+//									if(--Submenu3Count < 0)
+//									{
+//										Submenu3Count =4;
+//									}
 								break;
 								case ScheduleStartTimeSet:
 									if(--genschedulestart.genschedule_time < 1)
@@ -5142,6 +5171,15 @@ void checkfault (void)
 		HAL_GPIO_WritePin(LED_Fault_GPIO_Port,LED_Fault_Pin,GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(Relay_AUX1_GPIO_Port,Relay_AUX1_Pin,OFF_rly);
 	}
+	
+	// clear fault phase sequenerror 
+	if(NetworkSelectValue == sys1P2W){
+		if(phase_sequen_source1)
+			phase_sequen_source1 =0;
+		if(phase_sequen_source2)
+			phase_sequen_source2 =0;
+	}
+	
 }
 
 uint8_t retransfer(void)
