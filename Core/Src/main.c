@@ -2444,7 +2444,10 @@ void buttonRead(void)
   if(((!rd(btn_UP_GPIO_Port,btn_UP_Pin))||(!rd(btn_DW_GPIO_Port,btn_DW_Pin))||(!rd(btn_EN_GPIO_Port,btn_EN_Pin))||(!rd(btn_MODE_GPIO_Port,btn_MODE_Pin))||(!rd(LockModeMANUAL_Port,LockModeMANUAL_Pin))||(!rd(LockModeAUTO_Port,LockModeAUTO_Pin)))&&state == st1)
   {
     state = st2;
-    deb = 2500;
+		if((!rd(btn_EN_GPIO_Port,btn_EN_Pin)) && (PageMenuCount == mainpage_T) && (workmodeValue == modeauto))
+			deb = 60000;
+		else
+			deb = 2500;
     return;
   }
 
