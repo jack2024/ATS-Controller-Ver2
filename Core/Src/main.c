@@ -967,6 +967,8 @@ int main(void)
 	CommEnergyIC(SOURCE2, 0, EMMIntEn1, 0x7000);
 	
 	initstartdelaycount = INIT_STARTDELAY;
+	
+	//jj 29/9/64 
   /* USER CODE END 2 */
 
   /* Infinite loop */
