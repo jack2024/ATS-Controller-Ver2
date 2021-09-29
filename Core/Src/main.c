@@ -971,8 +971,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	
-	//  
+	 
   while (1)
   {
 		loopcount++;
@@ -992,7 +991,7 @@ int main(void)
 		{
 			checkauxinput();
 		}
-		if(((loopcount % 100) == 0) && (lcdflag ==0)&& (start_ats)) // 10.4 ms.
+		if(((loopcount % 100) == 0) && (lcdflag ==0)&& (start_ats))// 10.4 ms.
 		{
 			HAL_GPIO_TogglePin(LCD_D2_GPIO_Port,LCD_D2_Pin);	
 			readvolt(); //1 ms.
@@ -1118,7 +1117,8 @@ int main(void)
 			if(systemValue == main_gens){
 				checkgenschedule();
 			}
-			else if ((systemValue == main_main)|| (workmodeValue == modemanual)){ //systemValue == main_main
+			//systemValue == main_main
+			else if ((systemValue == main_main) || (workmodeValue == modemanual)){ 
 				if(source_out == SELECTSOURCE1)
 				{
 					HAL_GPIO_WritePin(Relay_AUX2_GPIO_Port,Relay_AUX2_Pin,OFF_rly);
