@@ -58,7 +58,7 @@
 #define INIT_STARTDELAY	3
 
 /*        fLASH            */
-char Flashdata[48];
+char Flashdata[512];
 #define FLASH_PAGE_START_ADDRESS    0x0801F800
 #define FLASH_PAGE_END_ADDRESS      0x0801FFFF
 #define FLASH_PAGE_size             2048
@@ -2446,7 +2446,7 @@ void buttonRead(void)
   {
     state = st2;
 		if((!rd(btn_EN_GPIO_Port,btn_EN_Pin)) && (PageMenuCount == mainpage_T) && (workmodeValue == modeauto))
-			deb = 60000;
+			deb = 45000;
 		else
 			deb = 2500;
     return;
@@ -2802,7 +2802,6 @@ void buttonRead(void)
 									}
               		break;
 								case TimeSet_T:
-									//if(--Submenu2Count < 0)
 									if(++Submenu2Count > 6)
 									{
 										Submenu2Count = 0;
@@ -2815,14 +2814,12 @@ void buttonRead(void)
 									}
 									break;
 								case FreqSet_T:
-									//if(--Submenu2Count < 0)
 									if(++Submenu2Count > 6)
 									{
 										Submenu2Count = 0;
 									}
 							break;
 								case Schedule_T:
-									//if(--Submenu2Count < 0)
 									if(++Submenu2Count > 4)
 									{
 										Submenu2Count =0;
