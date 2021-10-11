@@ -434,7 +434,10 @@ volatile signed int ReTransfercount = 0;
 volatile signed char ReTransfer_flag = 0;
 volatile signed char ReTransferfail = 0;
 
-	
+volatile signed char display_genstarted = 0;
+volatile signed char display_switching = 0;
+
+//volatile signed int toggleLEDS2_count = 0;	
 void HAL_SYSTICK_Callback()
 {	
 	systickcount++;
@@ -785,12 +788,34 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef * hspi)
 }
 
 volatile signed char menucount = 0;
+
 //Interrupt TIM Overflow routine 1 Sec..
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	
 	if(htim->Instance == TIM7)
 	{
+		// Toggle LED S2 (Genstart)
+		if((genstart == GENSTART)&& (source2OK == 0) )
+		{
+			HAL_GPIO_TogglePin(LED_S2_GPIO_Port,LED_S2_Pin);	
+		}
+		if(display_genstarted)
+		{
+			if(--display_genstarted ==0)
+			{
+				display_genstarted =0;
+			}
+		}
+		if(display_switching)
+		{
+			if(--display_switching ==0)
+			{
+				display_switching =0;
+			}
+		}
+		
+		
 		// CHECK MENU TIMEOUT
 		if(menucount)
 		{
@@ -1453,7 +1478,14 @@ void readvolt(void)
 		else
 		{
 			source2OK = 0;
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+			if(systemValue == main_main){
+				HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+			}
+			else{//(main_gens)
+				if(genstart == GENSTOP){
+					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+				}
+			}
 		}
 		
 		if((Checksource1OK) && (source1OK) && (source2OK))
@@ -1955,7 +1987,14 @@ void readvolt(void)
 		else
 		{
 			source2OK = 0;
-			HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+			if(systemValue == main_main){
+				HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+			}
+			else{//(main_gens)
+				if(genstart == GENSTOP){
+					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+				}
+			}
 		}
 		
 		if((Checksource1OK) && (source1OK) && (source2OK))
@@ -2188,7 +2227,14 @@ void readvolt(void)
 				else
 				{
 					source2OK = 0;
-					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+					if(systemValue == main_main){
+						HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+					}
+					else{//(main_gens)
+						if(genstart == GENSTOP){
+							HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+						}
+					}
 				}
 			}
 			else //*****(SourceSelectValue == SELECTSOURCE2)
@@ -2418,7 +2464,14 @@ void readvolt(void)
 				}
 				else
 				{
-					HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+					if(systemValue == main_main){
+						HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+					}
+					else{//(main_gens)
+						if(genstart == GENSTOP){
+							HAL_GPIO_WritePin(LED_S2_GPIO_Port,LED_S2_Pin,GPIO_PIN_RESET);
+						}
+					}
 				}
 
 			} // (SourceSelectValue == SELECTSOURCE2)
@@ -2756,7 +2809,6 @@ void buttonRead(void)
 							}
           		break;
           	case Pagemenu1_T:
-							//if(--Submenu1Count < 0)
 							if(++Submenu1Count > 8)
 							{
 								Submenu1Count = 0;
@@ -2766,14 +2818,12 @@ void buttonRead(void)
 							switch (Submenu1Count)
               {
               	case UnderSet_T:
-									//if(--Submenu2Count < 0)
 									if(++Submenu2Count > 4)
 									{
 										Submenu2Count = 0;
 									}
               		break;
               	case OvererSet_T:
-									//if(--Submenu2Count < 0)
 									if(++Submenu2Count > 4)
 									{
 										Submenu2Count = 0;
@@ -3613,6 +3663,24 @@ void lcdupdate(void)
 	static uint16_t toggletime =0; 
 
 	cleardisplay();
+	
+	if((genstart == GENSTART)&& (source2OK == 0) && (source1OK == 0))
+	{
+		ssd1306_SetCursor(4, 23);
+		ssd1306_WriteString("GenStarting", Font_11x18, White);	
+		//ssd1306_WriteString(buff, Font_11x18, White);	
+		ssd1306_UpdateScreen();
+		display_genstarted = 4;
+		return;		
+	}
+	else if ((genstart == GENSTART)&& (source2OK) && (source1OK == 0) &&(display_genstarted) )
+	{
+		ssd1306_SetCursor(9, 23);
+		ssd1306_WriteString("GenStarted", Font_11x18, White);	
+		//ssd1306_WriteString(buff, Font_11x18, White);	
+		ssd1306_UpdateScreen();
+		return;		
+	}
 	
 	//  Show Setting Value
 	if((setvalueselect > NONselect) && (setvalueselect <= FreqNormalTimeSet))
