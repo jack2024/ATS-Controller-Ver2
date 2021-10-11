@@ -745,7 +745,8 @@ void HAL_SYSTICK_Callback()
 							genstart = GENSTOP;
 						}
 					}
-					if(F_S2 <= freqOverResValue){
+					if(F_S2 <= freqOverResValue)
+					{
 						freqOverflag = 0;
 					}	
 				}
@@ -2833,7 +2834,7 @@ void buttonRead(void)
 					FlashErase();
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 					releaserelay =1;
-					display_switching = 2;
+					//display_switching = 2;
 					source_out = SELECT_NON;
 				}
 				else //Mode Auto
@@ -3357,7 +3358,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 												SourceSelectValue = selecsource1;
 												releaserelay =1;
-												display_switching = 2;
+												//display_switching = 2;
 											}
 											else{
 												Checksource1OK = 1;
@@ -3374,7 +3375,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 												SourceSelectValue = selecsource1;
 												releaserelay =1;
-												display_switching = 2;
+												//display_switching = 2;
 											}
 											else{
 												Checksource1OK = 1;

@@ -150,9 +150,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>984</LineNumber>
+          <LineNumber>483</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134271650</Address>
+          <Address>134232614</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -161,23 +161,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>../Core/Src/main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\ATS_V2\../Core/Src/main.c\984</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>998</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134271732</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Core/Src/main.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\ATS_V2\../Core/Src/main.c\998</Expression>
+          <Expression>\\ATS_V2\../Core/Src/main.c\483</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -295,6 +279,11 @@
           <count>22</count>
           <WinNumber>1</WinNumber>
           <ItemText>ReTransferfail,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>23</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>source2OK</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
