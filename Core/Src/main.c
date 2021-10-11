@@ -489,6 +489,7 @@ void HAL_SYSTICK_Callback()
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 								source_out = selecsource2;
 								releaserelay =1;
+								display_switching = 2;
 						}
 						else{
 							Checksource2OK = 1;
@@ -522,6 +523,7 @@ void HAL_SYSTICK_Callback()
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
+								display_switching = 2;
 						}
 						else{
 							Checksource1OK = 1;
@@ -566,6 +568,7 @@ void HAL_SYSTICK_Callback()
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
+								display_switching = 2;
 						}
 						else //(main_gens)
 						{
@@ -574,6 +577,7 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 							source_out = selecsource1;
 							releaserelay =1;
+							display_switching = 2;
 							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
 							genstart = GENSTOP;
 						}
@@ -596,6 +600,7 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 							source_out = selecsource2;
 							releaserelay =1;
+							display_switching = 2;
 					}
 					else //(main_gens)
 					{
@@ -628,6 +633,7 @@ void HAL_SYSTICK_Callback()
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 								source_out = selecsource2;
 								releaserelay =1;
+								display_switching = 2;
 						}
 						else{
 							Checksource2OK = 1;
@@ -654,6 +660,7 @@ void HAL_SYSTICK_Callback()
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
+								display_switching = 2;
 						}
 						else
 						{
@@ -692,6 +699,7 @@ void HAL_SYSTICK_Callback()
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
+								display_switching = 2;
 						}
 						else //(main_gens)
 						{
@@ -700,8 +708,9 @@ void HAL_SYSTICK_Callback()
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
-							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
-							genstart = GENSTOP;
+								display_switching = 2;
+								HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
+								genstart = GENSTOP;
 						}
 					}
 					if(F_S1 <= freqOverResValue){
@@ -719,6 +728,7 @@ void HAL_SYSTICK_Callback()
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 								source_out = selecsource2;
 								releaserelay =1;
+								display_switching = 2;
 						}
 						else //(main_gens)
 						{
@@ -729,6 +739,7 @@ void HAL_SYSTICK_Callback()
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
+								display_switching = 2;
 							//}
 							HAL_GPIO_WritePin(RLY_GENS_Port,RLY_GENS_Pin,OFF_rly);
 							genstart = GENSTOP;
@@ -748,6 +759,7 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 							source_out = selecsource2;
 							releaserelay =1;
+							display_switching = 2;
 					}
 					else //(main_gens)
 					{
@@ -914,6 +926,7 @@ void checkgenpromp(void)
 				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 				source_out = selecsource2;
 				releaserelay =1;
+				display_switching = 2;
 			}
 		}
 	}
@@ -929,6 +942,7 @@ void checkgenpromp(void)
 				HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 				source_out = selecsource2;
 				releaserelay =1;
+				display_switching = 2;
 			}
 		}
 	}
@@ -1051,6 +1065,7 @@ int main(void)
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 						source_out = selecsource2;
 						releaserelay =1;
+						display_switching = 2;
 						Checksource2OK =0;
 					}
 			}
@@ -1062,6 +1077,7 @@ int main(void)
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 						source_out = selecsource2;
 						releaserelay =1;
+						display_switching = 2;
 						Checksource2OK =0;
 				}
 			}
@@ -1079,6 +1095,7 @@ int main(void)
 					HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
 					source_out = selecsource1;
 					releaserelay =1;
+					display_switching = 2;
 					Checksource1OK =0;
 				}
 			}
@@ -1092,6 +1109,7 @@ int main(void)
 					HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,ON_rly);
 					source_out = selecsource1;
 					releaserelay =1;
+					display_switching = 2;
 					Checksource1OK =0;
 				}
 			}
@@ -1531,6 +1549,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 								source_out = selecsource2;
 								releaserelay =1;
+								display_switching = 2;
 							}
 							else
 							{
@@ -1588,6 +1607,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
+								display_switching = 2;
 								if(Checksource2OK)
 								{
 									Checksource2OK =0;
@@ -1640,6 +1660,7 @@ void readvolt(void)
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 							source_out = selecsource2;
 							releaserelay =1;
+							display_switching = 2;
 						}
 						else //(main_gens)
 						{
@@ -1687,6 +1708,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
+								display_switching = 2;
 							}
 							else //(main_gens)
 							{
@@ -1740,6 +1762,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
+								display_switching = 2;
 							}
 							else
 							{
@@ -1797,6 +1820,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 								source_out = selecsource2;
 								releaserelay =1;
+								display_switching = 2;
 								if(Checksource1OK)
 								{
 									Checksource1OK =0;
@@ -1848,6 +1872,7 @@ void readvolt(void)
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 							source_out = selecsource1;
 							releaserelay =1;
+							display_switching = 2;
 						}
 						else //(main_gens)
 						{
@@ -1896,6 +1921,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 								source_out = selecsource2;
 								releaserelay =1;
+								display_switching = 2;
 							}
 							else //(main_gens)
 							{
@@ -2034,6 +2060,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 								source_out = selecsource2;
 								releaserelay =1;
+								display_switching = 2;
 							}
 							else
 							{
@@ -2085,6 +2112,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
+								display_switching = 2;
 							}
 							else //(main_gens)
 							{
@@ -2133,6 +2161,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 								source_out = selecsource2;
 								releaserelay =1;
+								display_switching = 2;
 							}
 							else{
 								Checksource2OK = 1;
@@ -2185,6 +2214,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
+								display_switching = 2;
 							}
 							else //(main_gens)
 							{
@@ -2267,6 +2297,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay =1;
+								display_switching = 2;
 							}
 							else
 							{
@@ -2322,6 +2353,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 								source_out = selecsource2;
 								releaserelay =1;
+								display_switching = 2;
 							}
 							else //(main_gens)
 							{
@@ -2372,6 +2404,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 								source_out = selecsource1;
 								releaserelay = 1;
+								display_switching = 2;
 							}
 							else
 							{
@@ -2424,6 +2457,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);
 								source_out = selecsource2;
 								releaserelay =1;
+								display_switching = 2;
 							}
 							else //(main_gens)
 							{
@@ -2523,13 +2557,16 @@ void buttonRead(void)
 					HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,OFF_rly);
 					HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
 					HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
-					SourceSelectValue = selecsource1;
 					EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 					FlashErase();
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 					releaserelay =1;
+					if(source_out == SELECTSOURCE2)
+					{
+						display_switching = 2;
+					}
 					source_out = SELECTSOURCE1;
-					
+					SourceSelectValue = selecsource1;
 				}
 				else //Mode Auto
 				{	
@@ -2796,6 +2833,7 @@ void buttonRead(void)
 					FlashErase();
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 					releaserelay =1;
+					display_switching = 2;
 					source_out = SELECT_NON;
 				}
 				else //Mode Auto
@@ -3074,20 +3112,25 @@ void buttonRead(void)
 			}
 			else if(!rd(btn_EN_GPIO_Port,btn_EN_Pin))
 			{
-				if(workmodeValue == modemanual)
+				if(workmodeValue == modemanual) 
 				{
 					ctrlATScount = CTRL_ATS_TIMEOUT;
 					HAL_GPIO_WritePin(SOURCE1_GPIO_Port,SOURCE1_Pin,OFF_rly);
 					HAL_GPIO_WritePin(SOURCE2_GPIO_Port,SOURCE2_Pin,ON_rly);	
 					HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
-					SourceSelectValue = selecsource2;
+					
 					EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
 					FlashErase();
 					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t*)Flashdata, 128);
 					//system_init();
 					releaserelay =1;
+					if(source_out == SELECTSOURCE1)
+					{
+						display_switching = 2;
+					}
 					source_out = SELECTSOURCE2;
+					SourceSelectValue = selecsource2;
 				}
 				else //Mode Auto
 				{
@@ -3179,6 +3222,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 												SourceSelectValue = selecsource1;
 												releaserelay =1;
+												display_switching = 2;
 											}
 											else
 											{
@@ -3196,6 +3240,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 												SourceSelectValue = selecsource1;
 												releaserelay =1;
+												display_switching = 2;
 											}
 											else
 											{
@@ -3217,6 +3262,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
 												SourceSelectValue = selecsource2;
 												releaserelay =1;
+												display_switching = 2;
 											}
 											else
 											{
@@ -3235,6 +3281,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
 												SourceSelectValue = selecsource2;
 												releaserelay =1;
+												display_switching = 2;
 											}
 											else
 											{
@@ -3310,6 +3357,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 												SourceSelectValue = selecsource1;
 												releaserelay =1;
+												display_switching = 2;
 											}
 											else{
 												Checksource1OK = 1;
@@ -3326,6 +3374,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 												SourceSelectValue = selecsource1;
 												releaserelay =1;
+												display_switching = 2;
 											}
 											else{
 												Checksource1OK = 1;
@@ -3578,6 +3627,7 @@ void buttonRead(void)
 							HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 							SourceSelectValue = selecsource1;
 							releaserelay =1;
+							//display_switching = 2;
 							break;
 						case SELECTSOURCE2:
 							ctrlATScount = CTRL_ATS_TIMEOUT;
@@ -3587,6 +3637,7 @@ void buttonRead(void)
 							HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
 							SourceSelectValue = selecsource2;
 							releaserelay =1;
+							//display_switching = 2;
 							break;
 						default:
 							break;
@@ -3627,6 +3678,7 @@ void buttonRead(void)
 						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 						SourceSelectValue = selecsource1;
 						releaserelay =1;
+						display_switching = 2;
 						break;
 					case SELECTSOURCE2:
 						ctrlATScount = CTRL_ATS_TIMEOUT;
@@ -3636,6 +3688,7 @@ void buttonRead(void)
 						HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
 						SourceSelectValue = selecsource2;
 						releaserelay =1;
+						display_switching = 2;
 						break;
 					default:
 						break;
@@ -3667,19 +3720,38 @@ void lcdupdate(void)
 	if((genstart == GENSTART)&& (source2OK == 0) && (source1OK == 0))
 	{
 		ssd1306_SetCursor(4, 23);
-		ssd1306_WriteString("GenStarting", Font_11x18, White);	
-		//ssd1306_WriteString(buff, Font_11x18, White);	
+		ssd1306_WriteString("GenStarting", Font_11x18, White);		
 		ssd1306_UpdateScreen();
-		display_genstarted = 4;
+		display_genstarted = 2;
 		return;		
 	}
 	else if ((genstart == GENSTART)&& (source2OK) && (source1OK == 0) &&(display_genstarted) )
 	{
 		ssd1306_SetCursor(9, 23);
-		ssd1306_WriteString("GenStarted", Font_11x18, White);	
-		//ssd1306_WriteString(buff, Font_11x18, White);	
+		ssd1306_WriteString("GenStarted", Font_11x18, White);		
 		ssd1306_UpdateScreen();
+		display_switching = 3; // for display "Transfer to Ux"
 		return;		
+	}
+	else if(display_switching)
+	{
+		if(source_out == selecsource1)
+		{
+			ssd1306_SetCursor(4, 13);
+			ssd1306_WriteString("Transfer to", Font_11x18, White);	
+			ssd1306_SetCursor(53, 36);
+			ssd1306_WriteString("U1", Font_11x18, White);
+			ssd1306_UpdateScreen();
+			return;		
+		}
+		else{//selecsource2
+			ssd1306_SetCursor(4, 13);
+			ssd1306_WriteString("Transfer to", Font_11x18, White);	
+			ssd1306_SetCursor(53, 36);
+			ssd1306_WriteString("U2", Font_11x18, White);
+			ssd1306_UpdateScreen();
+			return;		
+		}
 	}
 	
 	//  Show Setting Value
@@ -3691,7 +3763,7 @@ void lcdupdate(void)
 				ssd1306_SetCursor(36, 3);
 				ssd1306_WriteString("VoltUnder", Font_7x10, White);	
 				
-				ssd1306_SetCursor(47, 3+15);
+				ssd1306_SetCursor(47, 18);
 				snprintf(buff, 4, "%d  ", UnderValue);
 				ssd1306_WriteString(buff, Font_11x18, White);
     		break;
@@ -3699,7 +3771,7 @@ void lcdupdate(void)
 				ssd1306_SetCursor(15, 3);
 				ssd1306_WriteString("VoltUnderReturn", Font_7x10, White);	
 				
-				ssd1306_SetCursor(47, 3+15);
+				ssd1306_SetCursor(47, 18);
 				snprintf(buff, 4, "%d  ", UnderResValue);
 				ssd1306_WriteString(buff, Font_11x18, White);			
     		break;
