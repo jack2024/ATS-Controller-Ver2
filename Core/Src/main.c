@@ -4749,7 +4749,6 @@ void lcdupdate(void)
 
 }
 
-
 void ReadSetting(void)
 {
 	UnderValue = *(uint8_t *)0x801F800;
