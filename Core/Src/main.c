@@ -2518,10 +2518,11 @@ void readvolt(void)
 }
 /* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  */
 
+uint32_t deb;  //deb == Debount
 void buttonRead(void)
 {
 	enum{st1, st2, st3, st4,st5};
-  static uint32_t state ,deb;  //deb == Debount
+  static uint32_t state ;
   uint16_t tempValue;
 	char datalcd[10];
 
@@ -3224,7 +3225,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 												SourceSelectValue = selecsource1;
 												releaserelay =1;
-												display_switching = 3; loopcount = 19999;
+												//display_switching = 3; loopcount = 19999;
 											}
 											else
 											{
@@ -3242,7 +3243,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 												SourceSelectValue = selecsource1;
 												releaserelay =1;
-												display_switching = 3; loopcount = 19999;
+												//display_switching = 3; loopcount = 19999;
 											}
 											else
 											{
@@ -3264,7 +3265,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
 												SourceSelectValue = selecsource2;
 												releaserelay =1;
-												display_switching = 3; loopcount = 19999;
+												//display_switching = 3; loopcount = 19999;
 											}
 											else
 											{
@@ -3283,7 +3284,7 @@ void buttonRead(void)
 												HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_SET);
 												SourceSelectValue = selecsource2;
 												releaserelay =1;
-												display_switching = 3; loopcount = 19999;
+												//display_switching = 3; loopcount = 19999;
 											}
 											else
 											{
@@ -4301,7 +4302,12 @@ void lcdupdate(void)
 				{ 
 					// check phase sequen error
 					
-					if(ReTransferfail)
+					
+					if((!rd(btn_EN_GPIO_Port,btn_EN_Pin)) && (PageMenuCount == mainpage_T) && (workmodeValue == modeauto) && (deb))
+					{
+						sprintf(buff,"LongPress to ENT.Menu");
+					}
+					else if(ReTransferfail)
 					{
 						sprintf(buff,"Fail of Transfer");
 					}
