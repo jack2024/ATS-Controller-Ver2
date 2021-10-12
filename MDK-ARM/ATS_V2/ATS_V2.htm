@@ -3,7 +3,7 @@
 <title>Static Call Graph - [ATS_V2\ATS_V2.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ATS_V2\ATS_V2.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Oct 12 14:55:36 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Oct 12 15:53:05 2021
 <BR><P>
 <H3>Maximum Stack Usage =        312 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1115,7 +1115,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Receive
 </UL>
 
-<P><STRONG><a name="[c9]"></a>HAL_SYSTICK_Callback</STRONG> (Thumb, 1756 bytes, Stack size 8 bytes, main.o(i.HAL_SYSTICK_Callback))
+<P><STRONG><a name="[c9]"></a>HAL_SYSTICK_Callback</STRONG> (Thumb, 1842 bytes, Stack size 8 bytes, main.o(i.HAL_SYSTICK_Callback))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = HAL_SYSTICK_Callback
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -1201,7 +1201,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_IRQHandler
 </UL>
 
-<P><STRONG><a name="[d2]"></a>HAL_TIM_PeriodElapsedCallback</STRONG> (Thumb, 264 bytes, Stack size 8 bytes, main.o(i.HAL_TIM_PeriodElapsedCallback))
+<P><STRONG><a name="[d2]"></a>HAL_TIM_PeriodElapsedCallback</STRONG> (Thumb, 274 bytes, Stack size 8 bytes, main.o(i.HAL_TIM_PeriodElapsedCallback))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = HAL_TIM_PeriodElapsedCallback &rArr; FlashWrite
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
@@ -2038,7 +2038,7 @@ Global Symbols
 
 <P><STRONG><a name="[16a]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[12a]"></a>buttonRead</STRONG> (Thumb, 6312 bytes, Stack size 8 bytes, main.o(i.buttonRead))
+<P><STRONG><a name="[12a]"></a>buttonRead</STRONG> (Thumb, 6384 bytes, Stack size 8 bytes, main.o(i.buttonRead))
 <BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = buttonRead &rArr; lcdupdate &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_SetTime
@@ -2091,7 +2091,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[132]"></a>checkgenpromp</STRONG> (Thumb, 302 bytes, Stack size 8 bytes, main.o(i.checkgenpromp))
+<P><STRONG><a name="[132]"></a>checkgenpromp</STRONG> (Thumb, 314 bytes, Stack size 8 bytes, main.o(i.checkgenpromp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = checkgenpromp
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -2120,7 +2120,7 @@ Global Symbols
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 </UL>
 
-<P><STRONG><a name="[12d]"></a>lcdupdate</STRONG> (Thumb, 7956 bytes, Stack size 64 bytes, main.o(i.lcdupdate))
+<P><STRONG><a name="[12d]"></a>lcdupdate</STRONG> (Thumb, 7948 bytes, Stack size 64 bytes, main.o(i.lcdupdate))
 <BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = lcdupdate &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteData &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_WriteString
@@ -2144,7 +2144,7 @@ Global Symbols
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
 </UL>
 
-<P><STRONG><a name="[3b]"></a>main</STRONG> (Thumb, 1296 bytes, Stack size 0 bytes, main.o(i.main))
+<P><STRONG><a name="[3b]"></a>main</STRONG> (Thumb, 1326 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = main &rArr; readvolt &rArr; GetLineVoltageC &rArr; CommEnergyIC &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
@@ -2183,7 +2183,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[141]"></a>readvolt</STRONG> (Thumb, 7788 bytes, Stack size 8 bytes, main.o(i.readvolt))
+<P><STRONG><a name="[141]"></a>readvolt</STRONG> (Thumb, 7914 bytes, Stack size 8 bytes, main.o(i.readvolt))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = readvolt &rArr; GetLineVoltageC &rArr; CommEnergyIC &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
