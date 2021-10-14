@@ -362,6 +362,8 @@ volatile signed char Timer_flag =0;
 volatile int16_t PhaseSequenceerror , Status0;
 //volatile int16_t StartMeasureCount = 5000;
 
+volatile int16_t   dataIC1 ,dataIC2;
+
 volatile signed char initstartdelaycount = INIT_STARTDELAY, start_ats = 0;
 
 RTC_TimeTypeDef Timeupdate = {0};
@@ -991,10 +993,11 @@ int main(void)
 	HAL_GPIO_WritePin(Buzzer_GPIO_Port, Buzzer_Pin,OFF_BUZZER);
 	HAL_GPIO_WritePin(SPI1_CS1_GPIO_Port,SPI1_CS1_Pin,GPIO_PIN_SET);
 	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port,SPI2_CS_Pin,GPIO_PIN_SET);
-	HAL_Delay(1);
+	HAL_Delay(300);
 	
 	InitEnergyIC(SOURCE2);
 	InitEnergyIC(SOURCE1);
+
 	
 	ReadSetting();
 	system_init();
@@ -1004,10 +1007,12 @@ int main(void)
 
 	HAL_TIM_Base_Start_IT(&htim7);
 	
-	CommEnergyIC(SOURCE1, 0, EMMIntEn1, 0x7000);
-	CommEnergyIC(SOURCE2, 0, EMMIntEn1, 0x7000);
+	//CommEnergyIC(SOURCE1, 0, EMMIntEn1, 0x7000);
+	//CommEnergyIC(SOURCE2, 0, EMMIntEn1, 0x7000);
 	
 	initstartdelaycount = INIT_STARTDELAY;
+	
+	
 	
 	//jj 29/9/64 
   /* USER CODE END 2 */
@@ -1036,7 +1041,7 @@ int main(void)
 		}
 		if(((loopcount % 100) == 0) && (lcdflag ==0)&& (start_ats))// 10.4 ms.
 		{
-			HAL_GPIO_TogglePin(LCD_D2_GPIO_Port,LCD_D2_Pin);	
+			//HAL_GPIO_TogglePin(LCD_D2_GPIO_Port,LCD_D2_Pin);	
 			readvolt(); //1 ms.
 		}
 		if(((loopcount % 20000) == 0))	// 120.4 ms.
@@ -1161,6 +1166,10 @@ int main(void)
 			checkfault();
 			
 			HAL_GPIO_TogglePin(LED_HEALTY_GPIO_Port,LED_HEALTY_Pin);
+			
+			dataIC1 = CommEnergyIC(SOURCE1, 1, ZXConfig, 0xFFFF);
+			dataIC2 = CommEnergyIC(SOURCE2, 1, ZXConfig, 0xFFFF);
+			
 			if(systemValue == main_gens){
 				checkgenschedule();
 			}
@@ -4153,7 +4162,6 @@ void lcdupdate(void)
 				
 				uint8_t timecountdisplay;
 				//  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-				// state = ab normal
 				if(State)
 				{ 
 					if(State <= State_Under){
@@ -4293,16 +4301,12 @@ void lcdupdate(void)
 							sprintf(buff,"%s",statusmenu[State]);
 						}
 					}
-//					if(State == State_SequenError)
-//					{
-//						sprintf(buff,"Phase Loss");
-//					}
+
 				}
 				else // state = normal 
 				{ 
 					// check phase sequen error
-					
-					
+									
 					if((!rd(btn_EN_GPIO_Port,btn_EN_Pin)) && (PageMenuCount == mainpage_T) && (workmodeValue == modeauto) && (deb))
 					{
 						sprintf(buff,"LongPress to ENT.Menu");

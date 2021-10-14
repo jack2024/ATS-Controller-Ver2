@@ -12,7 +12,8 @@ uint16_t CommEnergyIC(uint8_t selectsource,unsigned char RW, uint16_t address, u
 	uint16_t Result;
   //SPI interface rate is 200 to 160k bps. It Will need to be slowed down for EnergyIC
   //switch MSB and LSB of value
-
+	
+	
   //Set read write flag
 	if(RW)
 	{
@@ -29,6 +30,8 @@ uint16_t CommEnergyIC(uint8_t selectsource,unsigned char RW, uint16_t address, u
 	}
 	else // Read V2
 	{
+		//address = ~address;
+		//val = ~val;
 		HAL_GPIO_WritePin(SPI2_CS_GPIO_Port,SPI2_CS_Pin,GPIO_PIN_RESET);
 	}
 	
@@ -96,8 +99,6 @@ uint16_t CommEnergyIC(uint8_t selectsource,unsigned char RW, uint16_t address, u
 		//Result = ~Result;
 		return Result;
 	}
-	//delayUS(1);
-	
   //return Result;
 }
 float  GetLineVoltageA(unsigned char selectsource) {
@@ -180,14 +181,23 @@ unsigned short GetSysStatus1(unsigned char selectsource) {
 }
 
 void InitEnergyIC(unsigned char selectsource) {
-  unsigned short systemstatus0;
+//  unsigned short systemstatus0;
 	
-	CommEnergyIC(selectsource, 0, MeterEn, 0xFFFF); //Perform EnMeter ---jj
+	//CommEnergyIC(selectsource, 0, MeterEn, 0x0001); //Perform EnMeter ---jj
+	//CommEnergyIC(selectsource, 0, SoftReset, 0x789A); //Perform soft reset
 	
-	CommEnergyIC(selectsource, 0, SoftReset, 0x789A); //Perform soft reset
+	CommEnergyIC(selectsource, 0, SoftReset, 0x789A);     // 70 Perform soft reset
+	CommEnergyIC(selectsource, 0, CfgRegAccEn, 0x55AA);   // 7F enable register config access
+	CommEnergyIC(selectsource, 0, MeterEn, 0x0001);       // 00 Enable Metering
+	
+	CommEnergyIC(selectsource, 0, EMMIntEn0, 0xB76F);     // 75 Enable interrupts
+  CommEnergyIC(selectsource, 0, EMMIntEn1, 0xDDFD);     // 76 Enable interrupts
+  CommEnergyIC(selectsource, 0, EMMIntState0, 0x0001);  // 73 Clear interrupt flags
+  CommEnergyIC(selectsource, 0, EMMIntState1, 0x0001);  // 74 Clear interrupt flags
+	
   //CommEnergyIC(0, FuncEn0, 0x0030); //Voltage sag irq=1, report on warnout pin=1, energy dir change irq=0
   //CommEnergyIC(0, FuncEn1, 0x0030); //Voltage sag irq=1, report on warnout pin=1, energy dir change irq=0
-  CommEnergyIC(selectsource, 0, SagTh, 0x1F2F); //Voltage sag threshhold
+  //CommEnergyIC(selectsource, 0, SagTh, 0x1F2F); //Voltage sag threshhold
   
   //Set metering config values
   CommEnergyIC(selectsource, 0, ConfigStart, 0x5678); //Metering calibration startup command. Register 31 to 3B need to be set
@@ -224,20 +234,21 @@ void InitEnergyIC(unsigned char selectsource) {
 	CommEnergyIC(selectsource, 1, CSOne, 0x0000);
 
   //Set measurement calibration values
-  CommEnergyIC(selectsource, 0, AdjStart, 0x5678); //Measurement calibration startup command, registers 61-6F
-  CommEnergyIC(selectsource, 0, UgainA, 0xD8E9);  //A SVoltage rms gain
-  CommEnergyIC(selectsource, 0, IgainA, 0x1BC9); //A line current gain
-  CommEnergyIC(selectsource, 0, UoffsetA, 0x0000); //A Voltage offset
-  CommEnergyIC(selectsource, 0, IoffsetA, 0x0000); //A line current offset
-  CommEnergyIC(selectsource, 0, UgainB, 0xD8E9);  //B Voltage rms gain
-  CommEnergyIC(selectsource, 0, IgainB, 0x1BC9); //B line current gain
-  CommEnergyIC(selectsource, 0, UoffsetB, 0x0000); //B Voltage offset
-  CommEnergyIC(selectsource, 0, IoffsetB, 0x0000); //B line current offset
-  CommEnergyIC(selectsource, 0, UgainC, 0xD8E9);  //C Voltage rms gain
-  CommEnergyIC(selectsource, 0, IgainC, 0x1BC9); //C line current gain
-  CommEnergyIC(selectsource, 0, UoffsetC, 0x0000); //C Voltage offset
-  CommEnergyIC(selectsource, 0, IoffsetC, 0x0000); //C line current offset
-  CommEnergyIC(selectsource, 0, CSThree, 0xA694); //Write CSThree, as self calculated
+	
+//  CommEnergyIC(selectsource, 0, AdjStart, 0x5678); //Measurement calibration startup command, registers 61-6F
+//  CommEnergyIC(selectsource, 0, UgainA, 0xD8E9);  //A SVoltage rms gain
+//  CommEnergyIC(selectsource, 0, IgainA, 0x1BC9); //A line current gain
+//  CommEnergyIC(selectsource, 0, UoffsetA, 0x0000); //A Voltage offset
+//  CommEnergyIC(selectsource, 0, IoffsetA, 0x0000); //A line current offset
+//  CommEnergyIC(selectsource, 0, UgainB, 0xD8E9);  //B Voltage rms gain
+//  CommEnergyIC(selectsource, 0, IgainB, 0x1BC9); //B line current gain
+//  CommEnergyIC(selectsource, 0, UoffsetB, 0x0000); //B Voltage offset
+//  CommEnergyIC(selectsource, 0, IoffsetB, 0x0000); //B line current offset
+//  CommEnergyIC(selectsource, 0, UgainC, 0xD8E9);  //C Voltage rms gain
+//  CommEnergyIC(selectsource, 0, IgainC, 0x1BC9); //C line current gain
+//  CommEnergyIC(selectsource, 0, UoffsetC, 0x0000); //C Voltage offset
+//  CommEnergyIC(selectsource, 0, IoffsetC, 0x0000); //C line current offset
+//  CommEnergyIC(selectsource, 0, CSThree, 0xA694); //Write CSThree, as self calculated
 
   //Serial.print("Checksum 3:");
   //Serial.println(CommEnergyIC(1, CSThree, 0x0000), HEX); //Checksum 3. Needs to be calculated based off the above values.
@@ -247,13 +258,24 @@ void InitEnergyIC(unsigned char selectsource) {
   CommEnergyIC(selectsource, 0, CalStart, 0x8765); //Checks correctness of 41-4D registers and starts normal metering if ok
   CommEnergyIC(selectsource, 0, AdjStart, 0x8765); //Checks correct ness of 61-6F registers and starts normal measurement  if ok
 
-  CommEnergyIC(selectsource, 0, ZXConfig, 0x4400); //  jj
+	if(selectsource == SOURCE1)
+	{
+		CommEnergyIC(selectsource, 0, ZXConfig, 0); //0x9387 = ~0x6C78
+	}
+	else{ // SOURCE2
+		CommEnergyIC(selectsource, 0, ZXConfig, 0x0);
+	}
+
+  //CommEnergyIC(selectsource, 0, ZXConfig, 0x6C78); //  jj
+	//CommEnergyIC(selectsource, 0, ZXConfig, 0x9387);
+	
+	CommEnergyIC(selectsource, 0, CfgRegAccEn, 0x0000); // 7F end configuration
 	
 	//CommEnergyIC(selectsource, 0, SagTh, 0xBA54); //  jj 200v Threshold
 	//CommEnergyIC(selectsource, 0, PhaseLossTh, 0xBA54); //  jj 200v Threshold
 	//CommEnergyIC(selectsource, 0, EMMIntEn1, 0x7F00);
 
-	systemstatus0 = GetSysStatus0(selectsource);
+	//systemstatus0 = GetSysStatus0(selectsource);
 	
 }
 

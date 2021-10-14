@@ -3,7 +3,7 @@
 <title>Static Call Graph - [ATS_V2\ATS_V2.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ATS_V2\ATS_V2.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Oct 12 16:32:17 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Thu Oct 14 16:25:11 2021
 <BR><P>
 <H3>Maximum Stack Usage =        312 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -585,7 +585,6 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CommEnergyIC
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chechphasesequen
-<LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitEnergyIC
 </UL>
 
 <P><STRONG><a name="[74]"></a>HAL_CRCEx_Polynomial_Set</STRONG> (Thumb, 106 bytes, Stack size 16 bytes, stm32f0xx_hal_crc_ex.o(i.HAL_CRCEx_Polynomial_Set))
@@ -1274,11 +1273,10 @@ Global Symbols
 <P><STRONG><a name="[17]"></a>HardFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f0xx_it.o(i.HardFault_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f072xb.o(RESET)
 </UL>
-<P><STRONG><a name="[e4]"></a>InitEnergyIC</STRONG> (Thumb, 568 bytes, Stack size 16 bytes, m90e32.o(i.InitEnergyIC))
-<BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = InitEnergyIC &rArr; GetSysStatus0 &rArr; CommEnergyIC &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<P><STRONG><a name="[e4]"></a>InitEnergyIC</STRONG> (Thumb, 474 bytes, Stack size 8 bytes, m90e32.o(i.InitEnergyIC))
+<BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = InitEnergyIC &rArr; CommEnergyIC &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetSysStatus0
-<LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CommEnergyIC
+<BR>[Calls]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CommEnergyIC
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -2146,7 +2144,7 @@ Global Symbols
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonRead
 </UL>
 
-<P><STRONG><a name="[3b]"></a>main</STRONG> (Thumb, 1326 bytes, Stack size 0 bytes, main.o(i.main))
+<P><STRONG><a name="[3b]"></a>main</STRONG> (Thumb, 1328 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = main &rArr; readvolt &rArr; GetLineVoltageC &rArr; CommEnergyIC &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
