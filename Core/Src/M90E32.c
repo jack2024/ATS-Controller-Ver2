@@ -185,10 +185,19 @@ void InitEnergyIC(unsigned char selectsource) {
 	
 	//CommEnergyIC(selectsource, 0, MeterEn, 0x0001); //Perform EnMeter ---jj
 	//CommEnergyIC(selectsource, 0, SoftReset, 0x789A); //Perform soft reset
+
+	if(selectsource == SOURCE1)
+	{
+		CommEnergyIC(selectsource, 0, SoftReset, 0x789A);     // 70 Perform soft reset
+		CommEnergyIC(selectsource, 0, CfgRegAccEn, 0x55AA);   // 7F enable register config access
+		CommEnergyIC(selectsource, 0, MeterEn, 0x0001);       // 00 Enable Metering
+	}
+	else{
+		CommEnergyIC(selectsource, 0, SoftReset, 0x789A);     // 70 Perform soft reset
+		CommEnergyIC(selectsource, 0, CfgRegAccEn, 0x55AA);   // 7F enable register config access
+		CommEnergyIC(selectsource, 0, MeterEn, 0x0001);       // 00 Enable Metering
+	}
 	
-	CommEnergyIC(selectsource, 0, SoftReset, 0x789A);     // 70 Perform soft reset
-	CommEnergyIC(selectsource, 0, CfgRegAccEn, 0x55AA);   // 7F enable register config access
-	CommEnergyIC(selectsource, 0, MeterEn, 0x0001);       // 00 Enable Metering
 	
 	CommEnergyIC(selectsource, 0, EMMIntEn0, 0xB76F);     // 75 Enable interrupts
   CommEnergyIC(selectsource, 0, EMMIntEn1, 0xDDFD);     // 76 Enable interrupts
@@ -200,34 +209,34 @@ void InitEnergyIC(unsigned char selectsource) {
   //CommEnergyIC(selectsource, 0, SagTh, 0x1F2F); //Voltage sag threshhold
   
   //Set metering config values
-  CommEnergyIC(selectsource, 0, ConfigStart, 0x5678); //Metering calibration startup command. Register 31 to 3B need to be set
-  CommEnergyIC(selectsource, 0, PLconstH, 0x00B9); //PL Constant MSB
-  CommEnergyIC(selectsource, 0, PLconstL, 0xC1F3); //PL Constant LSB
+//  CommEnergyIC(selectsource, 0, ConfigStart, 0x5678); //Metering calibration startup command. Register 31 to 3B need to be set
+//  CommEnergyIC(selectsource, 0, PLconstH, 0x00B9); //PL Constant MSB
+//  CommEnergyIC(selectsource, 0, PLconstL, 0xC1F3); //PL Constant LSB
   CommEnergyIC(selectsource, 0, MMode0, 0x0087); //Metering Mode Configuration. All defaults. See pg 58 of datasheet.
   CommEnergyIC(selectsource, 0, MMode1, 0x5555); //PGA Gain Configuration. x2 for DPGA and PGA. See pg 59 of datasheet
-  CommEnergyIC(selectsource, 0, PStartTh, 0x08BD); //Active Startup Power Threshold
-  CommEnergyIC(selectsource, 0, QStartTh, 0x0AEC); //Reactive Startup Power Threshold
-  CommEnergyIC(selectsource, 0, CSZero, 0x5F59); //Write CSOne, as self calculated
+//  CommEnergyIC(selectsource, 0, PStartTh, 0x08BD); //Active Startup Power Threshold
+//  CommEnergyIC(selectsource, 0, QStartTh, 0x0AEC); //Reactive Startup Power Threshold
+//  CommEnergyIC(selectsource, 0, CSZero, 0x5F59); //Write CSOne, as self calculated
   
   //Serial.print("Checksum 0:");
   //Serial.println(CommEnergyIC(1, CSZero, 0x0000), HEX); //Checksum 0. Needs to be calculated based off the above values.
   CommEnergyIC(selectsource, 1, CSZero, 0x0000);
 	
   //Set metering calibration values
-  CommEnergyIC(selectsource, 0, CalStart, 0x5678); //Metering calibration startup command. Register 41 to 4D need to be set
-  CommEnergyIC(selectsource, 0, GainA, 0x1D39); //Line calibration gain
-  CommEnergyIC(selectsource, 0, PhiA, 0x0000); //Line calibration angle
-  CommEnergyIC(selectsource, 0, GainB, 0x1D39); //Line calibration gain
-  CommEnergyIC(selectsource, 0, PhiB, 0x0000); //Line calibration angle
-  CommEnergyIC(selectsource, 0, GainC, 0x1D39); //Line calibration gain
-  CommEnergyIC(selectsource, 0, PhiC, 0x0000); //Line calibration angle
-  CommEnergyIC(selectsource, 0, PoffsetA, 0x0000); //A line active power offset
-  CommEnergyIC(selectsource, 0, QoffsetA, 0x0000); //A line reactive power offset
-  CommEnergyIC(selectsource, 0, PoffsetB, 0x0000); //B line active power offset
-  CommEnergyIC(selectsource, 0, QoffsetB, 0x0000); //B line reactive power offset
-  CommEnergyIC(selectsource, 0, PoffsetC, 0x0000); //C line active power offset
-  CommEnergyIC(selectsource, 0, QoffsetC, 0x0000); //C line reactive power offset
-  CommEnergyIC(selectsource, 0, CSOne, 0x2402); //Write CSOne, as self calculated
+//  CommEnergyIC(selectsource, 0, CalStart, 0x5678); //Metering calibration startup command. Register 41 to 4D need to be set
+//  CommEnergyIC(selectsource, 0, GainA, 0x1D39); //Line calibration gain
+//  CommEnergyIC(selectsource, 0, PhiA, 0x0000); //Line calibration angle
+//  CommEnergyIC(selectsource, 0, GainB, 0x1D39); //Line calibration gain
+//  CommEnergyIC(selectsource, 0, PhiB, 0x0000); //Line calibration angle
+//  CommEnergyIC(selectsource, 0, GainC, 0x1D39); //Line calibration gain
+//  CommEnergyIC(selectsource, 0, PhiC, 0x0000); //Line calibration angle
+//  CommEnergyIC(selectsource, 0, PoffsetA, 0x0000); //A line active power offset
+//  CommEnergyIC(selectsource, 0, QoffsetA, 0x0000); //A line reactive power offset
+//  CommEnergyIC(selectsource, 0, PoffsetB, 0x0000); //B line active power offset
+//  CommEnergyIC(selectsource, 0, QoffsetB, 0x0000); //B line reactive power offset
+//  CommEnergyIC(selectsource, 0, PoffsetC, 0x0000); //C line active power offset
+//  CommEnergyIC(selectsource, 0, QoffsetC, 0x0000); //C line reactive power offset
+//  CommEnergyIC(selectsource, 0, CSOne, 0x2402); //Write CSOne, as self calculated
   
   //Serial.print("Checksum 1:");
   //Serial.println(CommEnergyIC(1, CSOne, 0x0000), HEX); //Checksum 1. Needs to be calculated based off the above values.
@@ -258,16 +267,15 @@ void InitEnergyIC(unsigned char selectsource) {
   CommEnergyIC(selectsource, 0, CalStart, 0x8765); //Checks correctness of 41-4D registers and starts normal metering if ok
   CommEnergyIC(selectsource, 0, AdjStart, 0x8765); //Checks correct ness of 61-6F registers and starts normal measurement  if ok
 
-	if(selectsource == SOURCE1)
-	{
-		CommEnergyIC(selectsource, 0, ZXConfig, 0); //0x9387 = ~0x6C78
-	}
-	else{ // SOURCE2
-		CommEnergyIC(selectsource, 0, ZXConfig, 0x0);
-	}
+//	if(selectsource == SOURCE1)
+//	{
+//		CommEnergyIC(selectsource, 0, ZXConfig, 0x0); //0x9387 = ~0x6C78
+//	}
+//	else{ // SOURCE2
+//		CommEnergyIC(selectsource, 0, ZXConfig, 0x0);
+//	}
 
-  //CommEnergyIC(selectsource, 0, ZXConfig, 0x6C78); //  jj
-	//CommEnergyIC(selectsource, 0, ZXConfig, 0x9387);
+	CommEnergyIC(selectsource, 0, ZXConfig, 0x0);
 	
 	CommEnergyIC(selectsource, 0, CfgRegAccEn, 0x0000); // 7F end configuration
 	

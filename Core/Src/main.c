@@ -783,11 +783,11 @@ volatile int16_t exticount =0;
 volatile uint8_t exit1_flag=0, exit2_flag=0 ;
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	if((exit1_flag==0)&&(GPIO_Pin == GPIO_PIN_1))
+	if(GPIO_Pin == GPIO_PIN_1)
 	{
 		exit1_flag = 255;
 	}
-	if((exit2_flag==0)&&(GPIO_Pin == GPIO_PIN_0))
+	if(GPIO_Pin == GPIO_PIN_0)
 	{
 		exit2_flag = 255;
 	}
@@ -995,9 +995,9 @@ int main(void)
 	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port,SPI2_CS_Pin,GPIO_PIN_SET);
 	HAL_Delay(300);
 	
-	InitEnergyIC(SOURCE2);
+	
 	InitEnergyIC(SOURCE1);
-
+	InitEnergyIC(SOURCE2);
 	
 	ReadSetting();
 	system_init();
