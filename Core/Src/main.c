@@ -5381,7 +5381,6 @@ void checkfault (void)
 	}
 	
 }
-
 uint8_t retransfer(void)
 {
 	if(source_out == selecsource1)
