@@ -95,7 +95,7 @@ void EEPROMWriteInt(uint32_t addr, uint16_t Value);
 #define GenScheduleMinute_addr	0x2E
 #define GesScheduleTime_addr	0x30
 
-#define rd(j,k)  HAL_GPIO_ReadPin(j, k)
+#define rd(j,k)  HAL_GPIO_ReadPin(j,k)
 
 /* USER CODE END PTD */
 
@@ -2242,7 +2242,7 @@ void readvolt(void)
 						}
 					}		
 				}
-				if( ((V1_A >= OverResValue)||(F_S1 >= freqOverResValue)) && ((State == State_nor)&&(State == State_PreOverRes)) )
+				if( ((V1_A >= OverResValue)||(F_S1 >= freqOverResValue)) && ((State == State_nor)||(State == State_PreOverRes)) )
 				{
 					State = State_Over;
 					Timer_flag = 0; // stop timer
@@ -2485,7 +2485,7 @@ void readvolt(void)
 						}
 					}
 				}
-				if( ((V2_A >= OverResValue)||(F_S2 >= freqOverResValue)) && ((State == State_nor)&&(State == State_PreOverRes)) )
+				if( ((V2_A >= OverResValue)||(F_S2 >= freqOverResValue)) && ((State == State_nor)||(State == State_PreOverRes)) )
 				{
 					State = State_Over;
 					Timer_flag = 0; // stop timer
