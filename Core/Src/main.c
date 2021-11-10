@@ -3638,7 +3638,7 @@ void buttonRead(void)
 							HAL_GPIO_WritePin(LED_S1ON_GPIO_Port,LED_S1ON_Pin,GPIO_PIN_SET);
 							HAL_GPIO_WritePin(LED_S2ON_GPIO_Port,LED_S2ON_Pin,GPIO_PIN_RESET);
 							SourceSelectValue = selecsource1;
-							releaserelay =1;
+							releaserelay = 1;
 							//display_switching = 3; loopcount = 19999;
 							break;
 						case SELECTSOURCE2:
