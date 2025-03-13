@@ -149,6 +149,18 @@ void Error_Handler(void);
 #define LockModeAUTO_Port Digital_In4_GPIO_Port
 #define LockModeAUTO_Pin Digital_In4_Pin
 
+//////////////////////////////////////////////////////
+#define LED_S1_GREEN_Pin GPIO_PIN_13	//LCD_D2_Pin
+#define LED_S1_GREEN_GPIO_Port GPIOB	//LCD_D2_GPIO_Port
+
+#define LED_S1ON_GREEN_Pin GPIO_PIN_14	//LCD_D3_Pin
+#define LED_S1ON_GREEN_GPIO_Port GPIOB	//LCD_D3_GPIO_Port
+
+#define LED_S2_GREEN_Pin GPIO_PIN_8		//LCD_BL_Pin
+#define LED_S2_GREEN_GPIO_Port GPIOC	//LCD_BL_GPIO_Port
+
+#define LED_S2ON_GREEN_Pin GPIO_PIN_15	//LCD_D4_Pin
+#define LED_S2ON_GREEN_GPIO_Port GPIOB	//LCD_D4_GPIO_Port
 
 /* USER CODE END Private defines */
 

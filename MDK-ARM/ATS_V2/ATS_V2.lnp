@@ -51,6 +51,6 @@
 "ats_v2\ssd1306_tests.o"
 "ats_v2\fonts.o"
 --library_type=microlib --strict --scatter "ATS_V2\ATS_V2.sct"
---summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "ATS_V2.map" -o ATS_V2\ATS_V2.axf
