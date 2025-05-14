@@ -1,4 +1,5 @@
 #include "stm32f0xx_hal.h"
+#include <math.h>
 
 #define SoftReset 0x70 //Software Reset
 #define MeterEn 0x00 //Software Reset
@@ -113,6 +114,12 @@
 #define PangleB 0xFA //Phase Angle between Voltage and B Line Current
 #define PangleC 0xFB //Phase Angle between Voltage and C Line Current
 
+#define UangleA 0xFD
+#define UangleB 0xFE
+#define UangleC 0xFF 
+
+#define PI 3.14159265358979323846
+
 #define SOURCE1 0
 #define SOURCE2 1
 
@@ -135,5 +142,10 @@ unsigned short GetSysStatus0(unsigned char selectsource);
 unsigned short GetSysStatus1(unsigned char selectsource);
 unsigned short  GetMeterStatus0(unsigned char selectsource);
 unsigned short  GetMeterStatus1(unsigned char selectsource);
+float GetVoltageAngleA(unsigned char selectsource);
+float GetVoltageAngleB(unsigned char selectsource);
+float GetVoltageAngleC(unsigned char selectsource);
+float deg2rad(float deg);
+float GetLineToLineVoltage(float VA, float VB, float angleA_deg, float angleB_deg);
 
 uint8_t TestFunction(uint8_t address, uint8_t reg);

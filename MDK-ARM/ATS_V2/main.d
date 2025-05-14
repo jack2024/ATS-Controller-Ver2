@@ -60,6 +60,7 @@ ats_v2\main.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h
 ats_v2\main.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
 ats_v2\main.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h
 ats_v2\main.o: ../Core/Inc/M90E32.h
+ats_v2\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ats_v2\main.o: .\stm32-ssd1306-master\ssd1306\ssd1306_tests.h
 ats_v2\main.o: .\stm32-ssd1306-master\ssd1306\ssd1306.h
 ats_v2\main.o: .\stm32-ssd1306-master\ssd1306\ssd1306_conf.h

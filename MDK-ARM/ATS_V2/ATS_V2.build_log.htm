@@ -26,27 +26,49 @@ Project File Date:  11/24/2021
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Build target 'ATS_V2'
+Rebuild target 'ATS_V2'
 assembling startup_stm32f072xb.s...
 compiling M90E32.c...
+../Core/Inc/M90E32.h(145): warning:  #1295-D: Deprecated declaration GetVoltageAngleA - give arg types
+  float GetVoltageAngleA();
+../Core/Inc/M90E32.h(146): warning:  #1295-D: Deprecated declaration GetVoltageAngleB - give arg types
+  float GetVoltageAngleB();
+../Core/Inc/M90E32.h(147): warning:  #1295-D: Deprecated declaration GetVoltageAngleC - give arg types
+  float GetVoltageAngleC();
+..\Core\Src\M90E32.c(123): error:  #165: too few arguments in function call
+    unsigned short angle = CommEnergyIC(1, 
+angleA, 0xFFFF);
+..\Core\Src\M90E32.c(128): error:  #165: too few arguments in function call
+    unsigned short angle = CommEnergyIC(1, 
+angleB, 0xFFFF);
+..\Core\Src\M90E32.c(133): error:  #165: too few arguments in function call
+    unsigned short angle = CommEnergyIC(1, 
+angleC, 0xFFFF);
+..\Core\Src\M90E32.c: 3 warnings, 3 errors
 compiling main.c...
+../Core/Inc/M90E32.h(145): warning:  #1295-D: Deprecated declaration GetVoltageAngleA - give arg types
+  float GetVoltageAngleA();
+../Core/Inc/M90E32.h(146): warning:  #1295-D: Deprecated declaration GetVoltageAngleB - give arg types
+  float GetVoltageAngleB();
+../Core/Inc/M90E32.h(147): warning:  #1295-D: Deprecated declaration GetVoltageAngleC - give arg types
+  float GetVoltageAngleC();
 .\stm32-ssd1306-master\ssd1306\ssd1306.h(168): warning:  #1295-D: Deprecated declaration ssd1306_GetDisplayOn - give arg types
   uint8_t ssd1306_GetDisplayOn();
-../Core/Src/main.c(2554): warning:  #177-D: variable "tempValue"  was declared but never referenced
-    uint16_t tempValue;
-../Core/Src/main.c(2555): warning:  #177-D: variable "datalcd"  was declared but never referenced
+../Core/Src/main.c(2800): warning:  #177-D: variable "tempValue"  was declared but never referenced
+        uint16_t tempValue;
+../Core/Src/main.c(2801): warning:  #177-D: variable "datalcd"  was declared but never referenced
         char datalcd[10];
-../Core/Src/main.c(3770): warning:  #177-D: variable "strbuff"  was declared but never referenced
+../Core/Src/main.c(4063): warning:  #177-D: variable "strbuff"  was declared but never referenced
         char strbuff[20];
-../Core/Src/main.c(4982): warning:  #186-D: pointless comparison of unsigned integer with zero
-        if((systemValue > main_main)||(systemValue < main_gens)){
-../Core/Src/main.c(5259): warning:  #940-D: missing return statement at end of non-void function "checkauxinput" 
+../Core/Src/main.c(5315): warning:  #186-D: pointless comparison of unsigned integer with zero
+        if ((systemValue > main_main) || (systemValue < main_gens))
+../Core/Src/main.c(5596): warning:  #940-D: missing return statement at end of non-void function "checkauxinput" 
   }
-../Core/Src/main.c(5263): warning:  #177-D: variable "delta"  was declared but never referenced
+../Core/Src/main.c(5600): warning:  #177-D: variable "delta"  was declared but never referenced
         uint32_t delta;
-../Core/Src/main.c(5469): warning:  #940-D: missing return statement at end of non-void function "retransfer" 
+../Core/Src/main.c(5807): warning:  #940-D: missing return statement at end of non-void function "retransfer" 
   }
-../Core/Src/main.c: 8 warnings, 0 errors
+../Core/Src/main.c: 11 warnings, 0 errors
 compiling gpio.c...
 compiling crc.c...
 compiling rtc.c...
@@ -115,10 +137,7 @@ stm32-ssd1306-master\ssd1306\ssd1306.h(168): warning:  #1295-D: Deprecated decla
   uint8_t ssd1306_GetDisplayOn();
 stm32-ssd1306-master\ssd1306\ssd1306_tests.c: 1 warning, 0 errors
 compiling fonts.c...
-linking...
-Program Size: Code=50784 RO-data=8400 RW-data=620 ZI-data=8644  
-FromELF: creating hex file...
-"ATS_V2\ATS_V2.axf" - 0 Error(s), 16 Warning(s).
+"ATS_V2\ATS_V2.axf" - 3 Error(s), 22 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -139,6 +158,7 @@ Package Vendor: ARM
       Source file:   CMSIS\Core\Template\ARMv8-M\main_s.c
       Source file:   CMSIS\Core\Template\ARMv8-M\tz_context.c
       Include file:  CMSIS\Core\Include\tz_context.h
+Target not created.
 </pre>
 </body>
 </html>

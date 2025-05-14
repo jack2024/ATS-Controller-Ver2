@@ -119,6 +119,31 @@ float  GetLineVoltageC(unsigned char selectsource) {
 	
 }
 
+float GetVoltageAngleA(unsigned char selectsource) {
+  unsigned short angle = CommEnergyIC(selectsource,1, UangleA, 0xFFFF);
+  return ((float)angle) / 10.0; // ????????? 0
+}
+
+float GetVoltageAngleB(unsigned char selectsource) {
+  unsigned short angle = CommEnergyIC(selectsource,1, UangleB, 0xFFFF);
+  return ((float)angle) / 10.0; // ????????? ° (0.1° ??? LSB)
+}
+
+float GetVoltageAngleC(unsigned char selectsource) {
+  unsigned short angle = CommEnergyIC(selectsource,1, UangleC, 0xFFFF);
+  return ((float)angle) / 10.0;
+}
+float deg2rad(float deg) {
+  return deg * (PI / 180.0);
+}
+//  Line-to-Line Voltage 
+float GetLineToLineVoltage(float VA, float VB, float angleA_deg, float angleB_deg) {
+  float angle_rad = deg2rad(angleA_deg - angleB_deg);
+  float Vab = sqrt(VA*VA + VB*VB - 2 * VA * VB * cos(angle_rad));
+  return Vab;
+}
+
+
 unsigned short  GetMeterStatus0(unsigned char selectsource) {
   return CommEnergyIC(selectsource, 1, EnStatus0, 0xFFFF);
 }

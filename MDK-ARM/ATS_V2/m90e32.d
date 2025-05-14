@@ -41,5 +41,6 @@ ats_v2\m90e32.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim.h
 ats_v2\m90e32.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim_ex.h
 ats_v2\m90e32.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h
 ats_v2\m90e32.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h
+ats_v2\m90e32.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ats_v2\m90e32.o: ../Core/Inc/spi.h
 ats_v2\m90e32.o: ../Core/Inc/main.h
