@@ -61,20 +61,20 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define Relay_AUX2_Pin GPIO_PIN_13
-#define Relay_AUX2_GPIO_Port GPIOC
-//#define Relay_AUX2_Pin GPIO_PIN_3
-//#define Relay_AUX2_GPIO_Port GPIOA
+//#define Relay_AUX2_Pin GPIO_PIN_13
+//#define Relay_AUX2_GPIO_Port GPIOC
+
 #define LED_S1_Pin GPIO_PIN_0
 #define LED_S1_GPIO_Port GPIOA
 #define LED_S2_Pin GPIO_PIN_1
 #define LED_S2_GPIO_Port GPIOA
 #define LED_HEALTY_Pin GPIO_PIN_2
-#define LED_HEALTY_GPIO_Port GPIOA
+#define LED_HEALTY_GPIO_Port GPIOA 
+
 #define Relay_AUX1_Pin GPIO_PIN_3
 #define Relay_AUX1_GPIO_Port GPIOA
-//#define Relay_AUX1_Pin GPIO_PIN_13
-//#define Relay_AUX1_GPIO_Port GPIOC
+#define Relay_AUX2_Pin GPIO_PIN_13
+#define Relay_AUX2_GPIO_Port GPIOC
 
 #define SPI1_CS1_Pin GPIO_PIN_4
 #define SPI1_CS1_GPIO_Port GPIOA
@@ -133,12 +133,6 @@ void Error_Handler(void);
 #define SOURCE2_Pin GPIO_PIN_9
 #define SOURCE2_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
-//#define Relay_AUX1_Pin GPIO_PIN_13
-//#define Relay_AUX1_GPIO_Port GPIOC
-
-//#define Relay_AUX2_Pin GPIO_PIN_3
-//#define Relay_AUX2_GPIO_Port GPIOA
 
 #define RLY_GENS_Port Relay_AUX2_GPIO_Port
 #define RLY_GENS_Pin	Relay_AUX2_Pin
