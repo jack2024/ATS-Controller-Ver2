@@ -1293,7 +1293,7 @@ int main(void)
 			}
 		}
 
-		if ((loopcount % 35000) == 0) // 1.5 sec.
+		if ((loopcount % 35000) == 0) // 1.5 sec. 
 		{
 			//  Check Phase Sequen
 			if ((NetworkSelectValue == sys3P4W) && (start_ats) && (State == State_nor))
@@ -1307,7 +1307,7 @@ int main(void)
 					}
 					else // chechphasesequen(SOURCE1) == 0
 					{
-						if (phase_sequen_source1)
+						if ((phase_sequen_source1) || (phase_sequen_source2) )
 						{
 							if (++phasesequencount >= 5)
 								phase_sequen_source1 = 0;
@@ -1654,7 +1654,7 @@ void readvolt(void)
 
 		if ((V1_A > UnderValue) && (V1_B > UnderValue) && (V1_C > UnderValue) &&
 			(V1_A < OverValue) && (V1_B < OverValue) && (V1_C < OverValue) &&
-			(F_S1 > freqUnderValue) && (F_S1 < freqOverValue))
+			(F_S1 > freqUnderValue) && (F_S1 < freqOverValue)&&(!chechphasesequen(SOURCE1)))
 		{
 			source1OK = 1;
 			// HAL_GPIO_WritePin(LED_S1_GPIO_Port,LED_S1_Pin,GPIO_PIN_SET);
@@ -1712,7 +1712,7 @@ void readvolt(void)
 
 		if ((V2_A > UnderValue) && (V2_B > UnderValue) && (V2_C > UnderValue) &&
 			(V2_A < OverValue) && (V2_B < OverValue) && (V2_C < OverValue) &&
-			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue))
+			(F_S2 > freqUnderValue) && (F_S2 < freqOverValue)&&(!chechphasesequen(SOURCE2)))
 		{
 			source2OK = 1;
 			HAL_GPIO_WritePin(LED_S2_GPIO_Port, LED_S2_Pin, GPIO_PIN_SET);
@@ -1750,7 +1750,7 @@ void readvolt(void)
 			{
 				/*****************UNDER**********************/
 				if ((((V1_A <= UnderValue) || (V1_B <= UnderValue) || (V1_C <= UnderValue)) || (F_S1 <= freqUnderValue)) &&
-					((State == State_nor) || (State == State_PreOverRes)))
+					((State == State_nor) || (State == State_PreOverRes))&&(!chechphasesequen(SOURCE2)))  //&&(!chechphasesequen(SOURCE2))
 				{
 					if ((V1_A <= UnderValue) || (V1_B <= UnderValue) || (V1_C <= UnderValue))
 					{
@@ -1763,7 +1763,7 @@ void readvolt(void)
 						{
 							freqUnderflag = 1;
 						}
-					}
+					}                            
 
 					State = State_PreUnder;
 					if (UnderTimeCount == 0)
@@ -1772,7 +1772,7 @@ void readvolt(void)
 						State = State_Under;
 						if (systemValue == main_main)
 						{
-							if (source2OK)
+							if ((source2OK)&&(!chechphasesequen(SOURCE2)) )
 							{
 								ctrlATScount = CTRL_ATS_TIMEOUT;
 								HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, OFF_rly);
@@ -1809,7 +1809,7 @@ void readvolt(void)
 					Timer_flag = 0; // stop timer
 				}
 				// UNDER RETURN
-				if ((((V1_A >= UnderResValue) && (V1_B >= UnderResValue) && (V1_C >= UnderResValue)) && (F_S1 >= freqUnderResValue)) && (State == State_Under))
+				if ((((V1_A >= UnderResValue) && (V1_B >= UnderResValue) && (V1_C >= UnderResValue)) && (F_S1 >= freqUnderResValue)) && (State == State_Under)&&(!chechphasesequen(SOURCE1)))
 				{
 					if ((V1_A >= UnderResValue) && (V1_B >= UnderResValue) && (V1_C >= UnderResValue) && (!freqUnderflag))
 					{
@@ -2160,7 +2160,7 @@ void readvolt(void)
 					Timer_flag = 0; // stop timer
 				}
 				// over return
-				if ((((V2_A <= OverResValue) && (V2_B <= OverResValue) && (V2_C <= OverResValue)) && (F_S2 <= freqOverResValue)) && (State == State_Over))
+				if ((((V2_A <= OverResValue) && (V2_B <= OverResValue) && (V2_C <= OverResValue)) && (F_S2 <= freqOverResValue)) && (State == State_Over)&&(!phase_sequen_source2))
 				{
 					if (((V2_A <= OverResValue) && (V2_B <= OverResValue) && (V2_C <= OverResValue)) && (!freqOverflag))
 					{
@@ -4667,9 +4667,28 @@ void lcdupdate(void)
 									{
 										sprintf(buff, "Phase Loss");
 									}
-									else
-									{
+									else if ((V1_A <= UnderResValue) || (V1_B <= UnderResValue) || (V1_C <= UnderResValue)) {
 										sprintf(buff, "%s", statusmenu[State]);
+									}
+									else
+									{                                     //(!chechphasesequen(SOURCE2))
+										if((!chechphasesequen(SOURCE1))|| (!chechphasesequen(SOURCE2)) ){
+											if ((V2_A >= UnderResValue) && (V2_B >= UnderResValue) && (V2_C >= UnderResValue))
+												sprintf(buff, "PhaseSequenceError");
+											else
+											{
+												 if (++toggletime % 2)
+												{
+													sprintf(buff, "%d/%s/%d %d %02d %s", Dateupdate.Date, mountname[Dateupdate.Month], Dateupdate.Year, Timeupdate.Hours, Timeupdate.Minutes, dayname[Dateupdate.WeekDay]);
+												}
+												else
+												{
+													sprintf(buff, "%d/%s/%d %d:%02d %s", Dateupdate.Date, mountname[Dateupdate.Month], Dateupdate.Year, Timeupdate.Hours, Timeupdate.Minutes, dayname[Dateupdate.WeekDay]);
+												}
+											}
+										}
+										else
+											sprintf(buff, "%s", statusmenu[State]);
 									}
 								}
 								else
@@ -4763,9 +4782,25 @@ void lcdupdate(void)
 				{
 					sprintf(buff, "Fail of Transfer");
 				}
-				else if ((NetworkSelectValue == sys3P4W) && ((phase_sequen_source1) || (phase_sequen_source2)))
+				//else if ((NetworkSelectValue == sys3P4W) && ((phase_sequen_source1) || (phase_sequen_source2)))  //(!chechphasesequen(SOURCE2))
+				else if ((NetworkSelectValue == sys3P4W) && ((phase_sequen_source1) || (chechphasesequen(SOURCE2)) ) )
+				//else if ((NetworkSelectValue == sys3P4W) && ((phase_sequen_source1)  ) )
 				{
-					sprintf(buff, "PhaseSequenceError");
+					if (((V2_A >= UnderResValue) && (V2_B >= UnderResValue) && (V2_C >= UnderResValue))&&(workmodeValue == modeauto)) {
+						sprintf(buff, "PhaseSequenceError");
+					}
+					else
+					{
+						 if (++toggletime % 2)
+						{
+							sprintf(buff, "%d/%s/%d %d %02d %s", Dateupdate.Date, mountname[Dateupdate.Month], Dateupdate.Year, Timeupdate.Hours, Timeupdate.Minutes, dayname[Dateupdate.WeekDay]);
+						}
+						else
+						{
+							sprintf(buff, "%d/%s/%d %d:%02d %s", Dateupdate.Date, mountname[Dateupdate.Month], Dateupdate.Year, Timeupdate.Hours, Timeupdate.Minutes, dayname[Dateupdate.WeekDay]);
+						}
+					}
+					
 				}
 				else // state = normal
 				{
