@@ -3193,25 +3193,6 @@ void buttonRead(void)
 						loopcount = 19999;
 					}
 					
-//					ctrlATScount = CTRL_ATS_TIMEOUT;
-//					HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, OFF_rly);
-//					HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
-//					HAL_GPIO_WritePin(LED_S1ON_GPIO_Port, LED_S1ON_Pin, GPIO_PIN_RESET);
-//					HAL_GPIO_WritePin(LED_S2ON_GPIO_Port, LED_S2ON_Pin, GPIO_PIN_SET);
-//					HAL_GPIO_WritePin(LED_S1ON_GREEN_GPIO_Port, LED_S1ON_GREEN_Pin, GPIO_PIN_SET);
-//					HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_RESET);
-//					// system_init();
-//					releaserelay = 1;
-//					if (source_out == SELECTSOURCE1)
-//					{
-//						display_switching = 3;
-//						loopcount = 19999;
-//					}
-//					source_out = SELECTSOURCE2;
-//					SourceSelectValue = selecsource2;
-//					EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
-//					FlashErase();
-//					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t *)Flashdata, 128);
 
 				}
 				else // Mode Auto
@@ -3498,26 +3479,7 @@ void buttonRead(void)
 			{
 				if (workmodeValue == modemanual)
 				{
-//					ctrlATScount = CTRL_ATS_TIMEOUT;
-//					HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, OFF_rly);
-//					HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
-//					HAL_GPIO_WritePin(LED_S1ON_GPIO_Port, LED_S1ON_Pin, GPIO_PIN_RESET);
-//					HAL_GPIO_WritePin(LED_S2ON_GPIO_Port, LED_S2ON_Pin, GPIO_PIN_SET);
-//					HAL_GPIO_WritePin(LED_S1ON_GREEN_GPIO_Port, LED_S1ON_GREEN_Pin, GPIO_PIN_SET);
-//					HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_RESET);
 
-//					EEPROMWriteInt(SourceSelect_addr, SourceSelectValue);
-//					FlashErase();
-//					FlashWrite(FLASH_PAGE_START_ADDRESS, (uint8_t *)Flashdata, 128);
-//					// system_init();
-//					releaserelay = 1;
-//					if (source_out == SELECTSOURCE1)
-//					{
-//						display_switching = 3;
-//						loopcount = 19999;
-//					}
-//					source_out = SELECTSOURCE2;
-//					SourceSelectValue = selecsource2;
 					
 				}
 				else // Mode Auto
@@ -5418,13 +5380,13 @@ void ReadSetting(void)
 	if ((OverResValue > OverValue - 5) || (OverResValue < 220))
 		OverResValue = OverValue - 5;
 
-	if ((UnderTimSetValue > 60) || (UnderTimSetValue < 0))
+	if ((UnderTimSetValue > 180) || (UnderTimSetValue < 0))
 		UnderTimSetValue = 0;
-	if ((OverTimSetValue > 60) || (OverTimSetValue < 0))
+	if ((OverTimSetValue > 180) || (OverTimSetValue < 0))
 		OverTimSetValue = 0;
-	if ((UnderResTimSetValue > 60) || (UnderResTimSetValue < 0))
+	if ((UnderResTimSetValue > 180) || (UnderResTimSetValue < 0))
 		UnderResTimSetValue = 5;
-	if ((OverResTimSetValue > 60) || (OverResTimSetValue < 0))
+	if ((OverResTimSetValue > 180) || (OverResTimSetValue < 0))
 		OverResTimSetValue = 5;
 
 	if (NetworkSelectValue > NETWORK1P2W)
@@ -5433,7 +5395,7 @@ void ReadSetting(void)
 	}
 	if ((systemValue > main_main) || (systemValue < main_gens))
 	{
-		systemValue = main_gens;
+		systemValue = main_main;
 	}
 
 	if (systemValue == main_gens)
