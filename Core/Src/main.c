@@ -57,6 +57,9 @@
 
 #define INIT_STARTDELAY 3
 
+#define false 0
+#define true  1	
+
 /*        fLASH            */
 char Flashdata[512];
 #define FLASH_PAGE_START_ADDRESS 0x0801F800
@@ -475,15 +478,15 @@ volatile int8_t freqUnderflag = 0, freqOverflag = 0;
 volatile int16_t freqABnormalTimeSetValue, freqNormalTimeSetValue;
 volatile int16_t freqABnormalTimeSetValue_compare, freqNormalTimeSetValue_compare;
 
-volatile int16_t UnderTimeCount = 0, UnderResTimeCount = 0;
+volatile int32_t UnderTimeCount = 0, UnderResTimeCount = 0;
 
-volatile int16_t freqABnormalTimeCount = 0, freqNormalTime = 0;
+volatile int32_t freqABnormalTimeCount = 0, freqNormalTime = 0;
 
-volatile int16_t genstarttimeValue, genstarttimeValue_compare;
+volatile int32_t genstarttimeValue, genstarttimeValue_compare;
 
-volatile int16_t OverTimeCount = 0, OverResTimeCount = 0;
+volatile int32_t OverTimeCount = 0, OverResTimeCount = 0;
 
-volatile int16_t GenstartTimeCount = 0;
+volatile int32_t GenstartTimeCount = 0;
 
 volatile signed char Timer_flag = 0;
 
@@ -532,6 +535,8 @@ enum
 };
 volatile uint8_t genstart = GENSTOP;
 
+volatile uint8_t bt_up_held = false, bt_dw_held = false;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -571,10 +576,24 @@ volatile signed char ReTransferfail = 0;
 volatile signed char display_genstarted = 0;
 volatile signed char display_switching = 0;
 
+volatile uint8_t updateLCD_flag = false;
+
+volatile signed char menucount = 0;
+
+volatile uint16_t  checkAuxATScount;
+
 // volatile signed int toggleLEDS2_count = 0;
 void HAL_SYSTICK_Callback()
 {
 	systickcount++;
+	
+	if (checkAuxATScount > 0)
+	{
+			if (--checkAuxATScount == 0)
+			{
+					// Timeout
+			}
+	}
 
 	// Off beep
 	if (beepcount)
@@ -623,6 +642,7 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 							source_out = selecsource2;
 							releaserelay = 1;
+							checkAuxATScount = 1000;
 							display_switching = 3;
 							loopcount = 19999;
 						}
@@ -662,7 +682,8 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, ON_rly);
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 							source_out = selecsource1;
-							releaserelay = 1;
+							releaserelay = 1; 
+							checkAuxATScount = 1000;
 							display_switching = 3;
 							loopcount = 19999;
 						}
@@ -712,7 +733,8 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, ON_rly);
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 							source_out = selecsource1;
-							releaserelay = 1;
+							releaserelay = 1; 
+							checkAuxATScount = 1000;
 							display_switching = 3;
 							loopcount = 19999;
 						}
@@ -723,6 +745,7 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 							source_out = selecsource1;
 							releaserelay = 1;
+							checkAuxATScount = 1000;
 							display_switching = 3;
 							loopcount = 19999;
 							HAL_GPIO_WritePin(RLY_GENS_Port, RLY_GENS_Pin, OFF_rly);
@@ -748,6 +771,7 @@ void HAL_SYSTICK_Callback()
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 						source_out = selecsource2;
 						releaserelay = 1;
+						checkAuxATScount = 1000;
 						display_switching = 3;
 						loopcount = 19999;
 					}
@@ -782,7 +806,8 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, OFF_rly);
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 							source_out = selecsource2;
-							releaserelay = 1;
+							releaserelay = 1;  
+							checkAuxATScount = 1000;
 							display_switching = 3;
 							loopcount = 19999;
 						}
@@ -812,7 +837,8 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, ON_rly);
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 							source_out = selecsource1;
-							releaserelay = 1;
+							releaserelay = 1;   
+							checkAuxATScount = 1000;
 							display_switching = 3;
 							loopcount = 19999;
 						}
@@ -852,7 +878,8 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, ON_rly);
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 							source_out = selecsource1;
-							releaserelay = 1;
+							releaserelay = 1;  
+							checkAuxATScount = 1000;
 							display_switching = 3;
 							loopcount = 19999;
 						}
@@ -863,6 +890,7 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 							source_out = selecsource1;
 							releaserelay = 1;
+							checkAuxATScount = 1000;
 							display_switching = 3;
 							loopcount = 19999;
 							HAL_GPIO_WritePin(RLY_GENS_Port, RLY_GENS_Pin, OFF_rly);
@@ -885,7 +913,8 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, OFF_rly);
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 							source_out = selecsource2;
-							releaserelay = 1;
+							releaserelay = 1;   
+							checkAuxATScount = 1000;
 							display_switching = 3;
 							loopcount = 19999;
 						}
@@ -897,7 +926,8 @@ void HAL_SYSTICK_Callback()
 							HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, ON_rly);
 							HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 							source_out = selecsource1;
-							releaserelay = 1;
+							releaserelay = 1; 
+							checkAuxATScount = 1000;
 							display_switching = 3;
 							loopcount = 19999;
 							//}
@@ -919,7 +949,8 @@ void HAL_SYSTICK_Callback()
 						HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, OFF_rly);
 						HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 						source_out = selecsource2;
-						releaserelay = 1;
+						releaserelay = 1; 
+						checkAuxATScount = 1000;
 						display_switching = 3;
 						loopcount = 19999;
 					}
@@ -936,6 +967,325 @@ void HAL_SYSTICK_Callback()
 		}
 	}
 	//////////////////////////////
+	/////////////////////////////////////
+   static unsigned int up_counter = 0;
+   static unsigned int dw_counter = 0;
+
+    // Increment counter every 5ms if BT_UP is held
+    if (bt_up_held) {
+        up_counter ++;
+        if (up_counter >= 200) { // Check if 500ms has passed
+						menucount = MENUTIMEOUT;
+            switch (setvalueselect)
+						{
+						case VoltUnderSet:
+							UnderValue++;
+							break;
+						case VoltUnderReturnSet:
+							UnderResValue++;
+							break;
+						case TimeUnderSet:
+							if(++UnderTimSetValue > 600)
+								UnderTimSetValue = 600;
+							//UnderTimSetValue++;
+							break;
+						case TimeUnderReturnSet:
+							if(++UnderResTimSetValue > 600)
+								UnderResTimSetValue = 600;
+							//UnderResTimSetValue++;
+							break;
+						case VoltOverSet:
+							OverValue++;
+							break;
+						case VoltOverReturnSet:
+							OverResValue++;
+							break;
+						case TimeOverSet:
+							if(++OverTimSetValue > 600)
+								OverTimSetValue = 600;
+							//OverTimSetValue++;
+							break;
+						case TimeOverReturnSet:
+							if (++OverResTimSetValue > 600)
+								OverResTimSetValue = 600;
+							//OverResTimSetValue++;
+							break;
+						case DateSet:
+							if (++Dateset.Date > 31)
+								Dateset.Date = 1;
+							break;
+						case MonthSet:
+							if (++Dateset.Month > 12)
+								Dateset.Month = 1;
+							break;
+						case YearSet:
+							if (++Dateset.Year > 99)
+								Dateset.Year = 0;
+							break;
+						case HoursSet:
+							if (++Timeset.Hours > 23)
+								Timeset.Hours = 0;
+							break;
+						case MinuteSet:
+							if (++Timeset.Minutes > 59)
+								Timeset.Minutes = 0;
+							break;
+						case SecondsSet:
+							if (++Dateset.WeekDay > 7)
+								Dateset.WeekDay = 1;
+							break;
+
+						case FreqUnderSet:
+							if (++freqUnderValue > 50)
+							{
+								freqUnderValue = 50;
+							}
+							break;
+
+						case FreqUnderReturnSet:
+							if (++freqUnderResValue > 50)
+							{
+								freqUnderResValue = 50;
+							}
+							break;
+
+						case FreqOverSet:
+							if (++freqOverValue > 60)
+							{
+								freqOverValue = 60;
+							}
+							break;
+
+						case FreqOverReturnSet:
+							if (++freqOverResValue > 60)
+							{
+								freqOverResValue = 60;
+							}
+							break;
+
+						case FreqABNormalTimeSet:
+							if (++freqABnormalTimeSetValue > 60)
+							{
+								freqABnormalTimeSetValue = 60;
+							}
+							break;
+
+						case FreqNormalTimeSet:
+							if (++freqNormalTimeSetValue > 60)
+							{
+								freqNormalTimeSetValue = 60;
+							}
+							break;
+						case GenScheduleEnableSet:
+							if (++Submenu3Count > 1)
+							{
+								Submenu3Count = 0;
+							}
+							break;
+						case SchedulePeriodSet:
+							if (--Submenu3Count < 0)
+							{
+								Submenu3Count = 2;
+							}
+							//									if(++Submenu3Count > 2)
+							//									{
+							//										Submenu3Count =0;
+							//									}
+							break;
+						case ScheduleSetDateTimeSet:
+							if (--Submenu3Count < 0)
+							{
+								Submenu3Count = 4;
+							}
+							//									if(++Submenu3Count > 4)
+							//									{
+							//										Submenu3Count =0;
+							//									}
+							break;
+						case ScheduleStartTimeSet:
+							if (++genschedulestart.genschedule_time > 360)
+							{
+								genschedulestart.genschedule_time = 360;
+							}
+							break;
+
+						default:
+							break;
+						}
+            up_counter = 0; // Reset the counter
+						updateLCD_flag = true;
+        }
+    } else {
+        up_counter = 0; // Reset counter if button is not held
+    }
+
+    // Increment counter every 5ms if BT_DW is held
+    if (bt_dw_held) {
+        dw_counter ++;
+        if (dw_counter >= 200) { // Check if 500ms has passed
+						menucount = MENUTIMEOUT;
+            switch (setvalueselect)
+						{
+						case VoltUnderSet:
+							UnderValue--;
+							if (UnderValue < 0)
+							{
+								UnderValue = 0;
+							}
+							break;
+						case VoltUnderReturnSet:
+							UnderResValue--;
+							if (UnderResValue < 0)
+							{
+								UnderResValue = 0;
+							}
+							break;
+						case TimeUnderSet:
+							UnderTimSetValue--;
+							if (UnderTimSetValue < 0)
+							{
+								UnderTimSetValue = 0;
+							}
+							break;
+						case TimeUnderReturnSet:
+							UnderResTimSetValue--;
+							if (UnderResTimSetValue < 0)
+							{
+								UnderResTimSetValue = 0;
+							}
+							break;
+						case VoltOverSet:
+							OverValue--;
+							if (OverValue < 0)
+							{
+								OverValue = 0;
+							}
+							break;
+						case VoltOverReturnSet:
+							OverResValue--;
+							if (OverResValue < 0)
+							{
+								OverResValue = 0;
+							}
+							break;
+						case TimeOverSet:
+							OverTimSetValue--;
+							if (OverTimSetValue < 0)
+							{
+								OverTimSetValue = 0;
+							}
+							break;
+						case TimeOverReturnSet:
+							OverResTimSetValue--;
+							if (OverResTimSetValue < 0)
+							{
+								OverResTimSetValue = 0;
+							}
+							break;
+						case DateSet:
+							if (--Dateset.Date < 1)
+								Dateset.Date = 31;
+							break;
+						case MonthSet:
+							if (--Dateset.Month < 1)
+								Dateset.Month = 12;
+							break;
+						case YearSet:
+							if (--Dateset.Year < 1)
+								Dateset.Year = 99;
+							break;
+						case HoursSet:
+							if (--Timeset.Hours >= 24)
+								Timeset.Hours = 0;
+							break;
+						case MinuteSet:
+							if (--Timeset.Minutes >= 60)
+								Timeset.Minutes = 0;
+							break;
+						case SecondsSet:
+							if (--Dateset.WeekDay <= 0)
+								Dateset.WeekDay = 7;
+						default:
+							break;
+						case FreqUnderSet:
+							if (--freqUnderValue < 40)
+							{
+								freqUnderValue = 40;
+							}
+							break;
+						case FreqUnderReturnSet:
+							if (--freqUnderResValue < 40)
+							{
+								freqUnderResValue = 40;
+							}
+							break;
+						case FreqOverSet:
+							if (--freqOverValue < 50)
+							{
+								freqOverValue = 50;
+							}
+							break;
+						case FreqOverReturnSet:
+							if (--freqOverResValue < 50)
+							{
+								freqOverResValue = 50;
+							}
+							break;
+
+						case FreqABNormalTimeSet:
+							if (--freqABnormalTimeSetValue < 0)
+							{
+								freqABnormalTimeSetValue = 0;
+							}
+							break;
+
+						case FreqNormalTimeSet:
+							if (--freqNormalTimeSetValue < 0)
+							{
+								freqNormalTimeSetValue = 0;
+							}
+							break;
+						case GenScheduleEnableSet:
+							if (--Submenu3Count < 0)
+							{
+								Submenu3Count = 1;
+							}
+							break;
+						case SchedulePeriodSet:
+							if (++Submenu3Count > 2)
+							{
+								Submenu3Count = 0;
+							}
+							//									if(--Submenu3Count < 0)
+							//									{
+							//										Submenu3Count =2;
+							//									}
+							break;
+						case ScheduleSetDateTimeSet:
+							if (++Submenu3Count > 4)
+							{
+								Submenu3Count = 0;
+							}
+							//									if(--Submenu3Count < 0)
+							//									{
+							//										Submenu3Count =4;
+							//									}
+							break;
+						case ScheduleStartTimeSet:
+							if (--genschedulestart.genschedule_time < 1)
+							{
+								genschedulestart.genschedule_time = 1;
+							}
+							break;
+						}
+            dw_counter = 0; // Reset the counter
+						updateLCD_flag = true;
+        }
+    } else {
+        dw_counter = 0; // Reset counter if button is not held
+    }
+	
+	////////////////////////////////
 }
 
 volatile int16_t exticount = 0;
@@ -961,7 +1311,6 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 	}
 }
 
-volatile signed char menucount = 0;
 
 // Interrupt TIM Overflow routine 1 Sec..
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
@@ -1094,7 +1443,8 @@ void checkgenpromp(void)
 				HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, OFF_rly);
 				HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 				source_out = selecsource2;
-				releaserelay = 1;
+				releaserelay = 1; 
+				checkAuxATScount = 1000;
 				display_switching = 3;
 				loopcount = 19999;
 			}
@@ -1112,7 +1462,8 @@ void checkgenpromp(void)
 				HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, OFF_rly);
 				HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 				source_out = selecsource2;
-				releaserelay = 1;
+				releaserelay = 1; 
+				checkAuxATScount = 1000;
 				display_switching = 3;
 				loopcount = 19999;
 			}
@@ -1158,6 +1509,8 @@ int main(void)
 	MX_RTC_Init();
 	MX_TIM7_Init();
 	/* USER CODE BEGIN 2 */
+	HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
+	HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, OFF_rly);
 	HAL_GPIO_WritePin(Buzzer_GPIO_Port, Buzzer_Pin, OFF_BUZZER);
 	HAL_GPIO_WritePin(SPI1_CS1_GPIO_Port, SPI1_CS1_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET);
@@ -1191,10 +1544,18 @@ int main(void)
 
 		buttonRead();
 
-		check_releaserelay();
+		if(!checkAuxATScount){
+		  check_releaserelay();
+			checkauxinput();
+		}
+		
+		if(updateLCD_flag) {
+			updateLCD_flag = false;
+			lcdupdate();
+		}
 		if (ReTransfer_flag == 1)
 		{
-			retransfer();
+			//retransfer();
 		}
 		if (genstart == GENSTART)
 		{
@@ -1202,7 +1563,7 @@ int main(void)
 		}
 		if ((workmodeValue == modemanual) || (ReTransferfail))
 		{
-			checkauxinput();
+			//checkauxinput();
 		}
 		if (((loopcount % 100) == 0) && (lcdflag == 0) && (start_ats)) // 10.4 ms.
 		{
@@ -1237,6 +1598,7 @@ int main(void)
 					HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 					source_out = selecsource2;
 					releaserelay = 1;
+					checkAuxATScount = 1000;
 					display_switching = 3;
 					loopcount = 19999;
 					Checksource2OK = 0;
@@ -1252,6 +1614,7 @@ int main(void)
 					HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 					source_out = selecsource2;
 					releaserelay = 1;
+					checkAuxATScount = 1000;
 					display_switching = 3;
 					loopcount = 19999;
 					Checksource2OK = 0;
@@ -1270,7 +1633,8 @@ int main(void)
 					HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 					HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, ON_rly);
 					source_out = selecsource1;
-					releaserelay = 1;
+					releaserelay = 1;  
+					checkAuxATScount = 1000;
 					display_switching = 3;
 					loopcount = 19999;
 					Checksource1OK = 0;
@@ -1286,6 +1650,7 @@ int main(void)
 					HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, ON_rly);
 					source_out = selecsource1;
 					releaserelay = 1;
+					checkAuxATScount = 1000;
 					display_switching = 3;
 					loopcount = 19999;
 					Checksource1OK = 0;
@@ -1778,7 +2143,8 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE1_GPIO_Port, SOURCE1_Pin, OFF_rly);
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 								source_out = selecsource2;
-								releaserelay = 1;
+								releaserelay = 1; 
+							  checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -1842,6 +2208,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 								source_out = selecsource1;
 								releaserelay = 1;
+							  checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 								if (Checksource2OK)
@@ -1900,6 +2267,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 								source_out = selecsource2;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -1953,6 +2321,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 								source_out = selecsource1;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2012,6 +2381,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 								source_out = selecsource1;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2076,6 +2446,7 @@ void readvolt(void)
 									HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 									source_out = selecsource2;
 									releaserelay = 1;
+									checkAuxATScount = 1000;
 									display_switching = 3;
 									loopcount = 19999;
 									if (Checksource1OK)
@@ -2135,6 +2506,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 								source_out = selecsource1;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2189,6 +2561,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 								source_out = selecsource2;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2340,6 +2713,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 								source_out = selecsource2;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2394,6 +2768,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 								source_out = selecsource1;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2448,6 +2823,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 								source_out = selecsource2;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2506,6 +2882,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 								source_out = selecsource1;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2600,6 +2977,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 								source_out = selecsource1;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2658,6 +3036,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 								source_out = selecsource2;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2712,6 +3091,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 								source_out = selecsource1;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2769,6 +3149,7 @@ void readvolt(void)
 								HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 								source_out = selecsource2;
 								releaserelay = 1;
+								checkAuxATScount = 1000;
 								display_switching = 3;
 								loopcount = 19999;
 							}
@@ -2854,6 +3235,8 @@ void buttonRead(void)
 	if (rd(btn_UP_GPIO_Port, btn_UP_Pin) && rd(btn_DW_GPIO_Port, btn_DW_Pin) && rd(btn_EN_GPIO_Port, btn_EN_Pin) && rd(btn_MODE_GPIO_Port, btn_MODE_Pin) && rd(LockModeMANUAL_Port, LockModeMANUAL_Pin) && rd(LockModeAUTO_Port, LockModeAUTO_Pin))
 	{
 		state = st1;
+		bt_up_held = false;
+    bt_dw_held = false;
 		return;
 	}
 
@@ -2885,6 +3268,7 @@ void buttonRead(void)
 					HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, OFF_rly);
 					
 					releaserelay = 1;
+					checkAuxATScount = 1000;
 					display_switching = 3;
 					loopcount = 19999;
 					if (source_out == SELECTSOURCE2)
@@ -3006,6 +3390,7 @@ void buttonRead(void)
 						break;
 
 					case Pagemenu3_T:
+						bt_up_held = true;
 						switch (setvalueselect)
 						{
 						case VoltUnderSet:
@@ -3015,10 +3400,14 @@ void buttonRead(void)
 							UnderResValue++;
 							break;
 						case TimeUnderSet:
-							UnderTimSetValue++;
+							if(++UnderTimSetValue > 600)
+								UnderTimSetValue = 600;
+							//UnderTimSetValue++;
 							break;
 						case TimeUnderReturnSet:
-							UnderResTimSetValue++;
+							if(++UnderResTimSetValue > 600)
+								UnderResTimSetValue = 600;
+							//UnderResTimSetValue++;
 							break;
 						case VoltOverSet:
 							OverValue++;
@@ -3027,10 +3416,14 @@ void buttonRead(void)
 							OverResValue++;
 							break;
 						case TimeOverSet:
-							OverTimSetValue++;
+							if(++OverTimSetValue > 600)
+								OverTimSetValue = 600;
+							//OverTimSetValue++;
 							break;
 						case TimeOverReturnSet:
-							OverResTimSetValue++;
+							if(++OverResTimSetValue > 600)
+								OverResTimSetValue = 600;
+							//OverResTimSetValue++;
 							break;
 						case DateSet:
 							if (++Dateset.Date > 31)
@@ -3184,6 +3577,7 @@ void buttonRead(void)
 					HAL_GPIO_WritePin(SOURCE2_GPIO_Port, SOURCE2_Pin, ON_rly);
 					
 					releaserelay = 1;
+					checkAuxATScount = 1000;
 					display_switching = 3;
 					loopcount = 19999;
 					if (source_out == SELECTSOURCE1)
@@ -3280,6 +3674,7 @@ void buttonRead(void)
 						}
 						break;
 					case Pagemenu3_T:
+						bt_dw_held = true;
 						switch (setvalueselect)
 						{
 						case VoltUnderSet:
@@ -3574,6 +3969,7 @@ void buttonRead(void)
 										HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_SET);
 										SourceSelectValue = selecsource1;
 										releaserelay = 1;
+										checkAuxATScount = 1000;
 										// display_switching = 3; loopcount = 19999;
 									}
 									else
@@ -3595,6 +3991,7 @@ void buttonRead(void)
 										HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_SET);
 										SourceSelectValue = selecsource1;
 										releaserelay = 1;
+										checkAuxATScount = 1000;
 										// display_switching = 3; loopcount = 19999;
 									}
 									else
@@ -3619,6 +4016,7 @@ void buttonRead(void)
 										HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_RESET);
 										SourceSelectValue = selecsource2;
 										releaserelay = 1;
+										checkAuxATScount = 1000;
 										// display_switching = 3; loopcount = 19999;
 									}
 									else
@@ -3640,6 +4038,7 @@ void buttonRead(void)
 										HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_RESET);
 										SourceSelectValue = selecsource2;
 										releaserelay = 1;
+										checkAuxATScount = 1000;
 										// display_switching = 3; loopcount = 19999;
 									}
 									else
@@ -3718,6 +4117,7 @@ void buttonRead(void)
 										HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_SET);
 										SourceSelectValue = selecsource1;
 										releaserelay = 1;
+										checkAuxATScount = 1000;
 										// display_switching = 3; loopcount = 19999;
 									}
 									else
@@ -3739,6 +4139,7 @@ void buttonRead(void)
 										HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_SET);
 										SourceSelectValue = selecsource1;
 										releaserelay = 1;
+										checkAuxATScount = 1000;
 										// display_switching = 3; loopcount = 19999;
 									}
 									else
@@ -3996,6 +4397,7 @@ void buttonRead(void)
 						HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_SET);
 						SourceSelectValue = selecsource1;
 						releaserelay = 1;
+					  checkAuxATScount = 1000;
 						// display_switching = 3; loopcount = 19999;
 						break;
 					case SELECTSOURCE2:
@@ -4008,6 +4410,7 @@ void buttonRead(void)
 						HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_RESET);
 						SourceSelectValue = selecsource2;
 						releaserelay = 1;
+					  checkAuxATScount = 1000;
 						// display_switching = 3; loopcount = 19999;
 						break;
 					default:
@@ -5380,13 +5783,13 @@ void ReadSetting(void)
 	if ((OverResValue > OverValue - 5) || (OverResValue < 220))
 		OverResValue = OverValue - 5;
 
-	if ((UnderTimSetValue > 180) || (UnderTimSetValue < 0))
+	if ((UnderTimSetValue > 600) || (UnderTimSetValue < 0))
 		UnderTimSetValue = 0;
-	if ((OverTimSetValue > 180) || (OverTimSetValue < 0))
+	if ((OverTimSetValue > 600) || (OverTimSetValue < 0))
 		OverTimSetValue = 0;
-	if ((UnderResTimSetValue > 180) || (UnderResTimSetValue < 0))
+	if ((UnderResTimSetValue > 600) || (UnderResTimSetValue < 0))
 		UnderResTimSetValue = 5;
-	if ((OverResTimSetValue > 180) || (OverResTimSetValue < 0))
+	if ((OverResTimSetValue > 600) || (OverResTimSetValue < 0))
 		OverResTimSetValue = 5;
 
 	if (NetworkSelectValue > NETWORK1P2W)
@@ -5607,6 +6010,7 @@ void system_init(void)
 		HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_SET);
 		SourceSelectValue = selecsourceNON;
 		releaserelay = 1;
+	  checkAuxATScount = 1000;
 		break;
 	case SELECTSOURCE1:
 		ctrlATScount = CTRL_ATS_TIMEOUT;
@@ -5618,6 +6022,7 @@ void system_init(void)
 		HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_SET);
 		SourceSelectValue = selecsource1;
 		releaserelay = 1;
+	  checkAuxATScount = 1000;
 		break;
 	case SELECTSOURCE2:
 		ctrlATScount = CTRL_ATS_TIMEOUT;
@@ -5629,6 +6034,7 @@ void system_init(void)
 		HAL_GPIO_WritePin(LED_S2ON_GREEN_GPIO_Port, LED_S2ON_GREEN_Pin, GPIO_PIN_RESET);
 		SourceSelectValue = selecsource2;
 		releaserelay = 1;
+	  checkAuxATScount = 1000;
 		break;
 	default:
 		break;
@@ -5895,6 +6301,7 @@ uint8_t retransfer(void)
 		source_out = selecsource2;
 	}
 	releaserelay = 1;
+	checkAuxATScount = 1000;
 	ctrlATScount = CTRL_ATS_TIMEOUT;
 	ReTransfer_flag = 2;
 }
